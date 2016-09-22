@@ -5,6 +5,12 @@ import time
 import copy
 from login_sys import iflock
 from login_sys import login
+#最后使用了如下几个全局变量
+#car用来存放购物车信息
+#money当前剩余的金钱
+#p_sort 用来记录分类与number的关系
+#p_sort1 用来记录分类下各物品与number的关系
+#market1用来记录所有物品及价格
 
 user_tables=open('f.txt').read()
 user_tables=eval(user_tables)
@@ -15,15 +21,16 @@ market=eval(market)
 
 car=[] #购物车
 welcome_msg='welcome to market!'.center(50,'*')
-p_sort={} #用来记录分类与number的关系
-p_sort1={} #用来记录分类下各物品与number的关系
+p_sort={}
+p_sort1={}
 
 def init():
     global money
     for u in user_tables.keys():
         if u==username :
-            if user_tables[u][3]==0:
-                money = raw_input('Please enter your salary:')
+            if user_tables[u][3]<10:
+                print('You havn\'t enough money. Please add money!')
+                money = raw_input('How much do you want to add?')
             else:
                 money = user_tables[u][3]
                 money=int(money)
@@ -60,7 +67,6 @@ def find_all_index(arr,item): #显示一个元素在一个列表中的所有位�
     return [i for i,a in enumerate(arr) if a==item]
 
 def query_record(u): #显示总共信息（想同叠加）
-    global summary
     summary=[]
     record=user_record[u]
     values={}
@@ -100,50 +106,56 @@ def check_num(num):
         return 1
 
 def init_shop_list():
-    global parent
-    global choice
     global p_sort
     for i in enumerate(market):
         index = i[0]
         p_product = i[1]
         print(index, p_product)
         p_sort[index] = p_product
-    parent = '0'
-    choice = raw_input('Please enter your choice(\'q\' to exit):')
+    choose(1)    #1代表来自菜单的选择，2代表来自购物的选择，两者都会有选择号码及q、b，但是购物的选择需要多问一个quantity，以此区别
 
-def shop_list(choice):
-    global parent
-    global p_sort1
-    global market1
+def choose(i):
+    choice=raw_input('Please enter your choice(\'q\' for exit and \'b\' for back!):')
     if choice=='q':
         clearing()
     elif choice=='b':
         init_shop_list()
-        shop_list(choice)
-    elif check_num(choice)==0:
-        if int(choice)<=len(p_sort):
-            if parent=='0':
-                market1=market[p_sort[int(choice)]]
-                for i in enumerate(market1):
-                    index = i[0]
-                    p_product = i[1]
-                    p_price = market1[i[1]]
-                    print(index, p_product, p_price)
-                    p_sort1[index]=p_product
-                parent+=str(choice)
-        else:
-            print('Wrong num!')
-            init_shop_list()
-            shop_list(choice)
     else:
-        print('Wrong num!')
-        #choice1 = raw_input('Please enter your choice(\'q\' to exit|\'b\' to back!):')
-        init_shop_list()
-        shop_list(choice)
+        if i == 1:
+            if check_num(choice) == 1:
+                choose(1)
+            else:
+                shop_list(choice)
+        elif i==2 :
+            if check_num(choice)==0:
+                choice = int(choice)
+                quantity = raw_input('Please enter the quantity!')
+                while check_num(quantity)==1:
+                    quantity = raw_input('Please enter the quantity!')
+                quantity=int(quantity)
+                shopping(choice,quantity)
+            else:
+                choose()
+
+def shop_list(choice):
+    global p_sort1
+    global market1
+    if int(choice)<=len(p_sort):
+        market1=market[p_sort[int(choice)]]
+        for i in enumerate(market1):
+            index = i[0]
+            p_product = i[1]
+            p_price = market1[i[1]]
+            print(index, p_product, p_price)
+            p_sort1[index]=p_product
+        choose(2)
+    else:
+        print('Wrong number!')
 
 def shopping(num,quantity):
     global car
     global money
+    print num,type(num),p_sort1
     if num<=len(p_sort1):
         old_money=money
         old_car=copy.deepcopy(car) #要用deepcopy
@@ -193,26 +205,6 @@ if __name__ =='__main__':
     while check_num(money)==1:
         money=int(money)
         init()
-    init_shop_list()
     while 1:
-        shop_list(choice)
-        ###bug
-        choice=raw_input('What do you want to buy?(You can enter \'q\' to exit and \'b\' to back to last menu!)')
-        if choice=='q':
-            clearing()#结算
-        elif choice=='b':
-            init_shop_list()
-            continue
-        quantity=raw_input('How many do you want?')
-        while ((check_num(choice)==1 and (choice!='q' or choice!='b')) or check_num(quantity)==1):
-            choice = raw_input('What do you want to buy?(You can enter \'q\' to exit and \'b\' to back to last menu!)')
-            quantity = raw_input('How many do you want?')
-        choice=int(choice)
-        quantity=int(quantity)
-        ####bug
-        shopping(choice,quantity)
+        init_shop_list()
         print('Your balance:',money,'Product in your car:',car)
-        #以上打上##bug标注的这段很不满意，但不知道该如何修，这里会产生很多bug，但没有思路修
-        #不将choice判断q，b这段写入shopping函数是因为，希望用户输入choice后可以直接进行结算或退到上一层，而不用再输无意义的quantity
-
-
