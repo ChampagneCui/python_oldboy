@@ -135,12 +135,12 @@ def choose(i):
                 quantity=int(quantity)
                 shopping(choice,quantity)
             else:
-                choose()
+                choose(2)
 
 def shop_list(choice):
     global p_sort1
     global market1
-    if int(choice)<=len(p_sort):
+    if int(choice)<len(p_sort):
         market1=market[p_sort[int(choice)]]
         for i in enumerate(market1):
             index = i[0]
@@ -156,7 +156,7 @@ def shopping(num,quantity):
     global car
     global money
     print num,type(num),p_sort1
-    if num<=len(p_sort1):
+    if num<len(p_sort1):
         old_money=money
         old_car=copy.deepcopy(car) #要用deepcopy
         p_price=market1[p_sort1[num]]
