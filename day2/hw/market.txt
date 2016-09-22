@@ -1,0 +1,1 @@
+{'mobile':{'iphone':5999,'xiaomi2':1999},'food':{'coffee':30,'bread':10},'traffic':{'bike':700,'BMW':80000},'cloth':{'T-shirt':200,'trousers':100}}
