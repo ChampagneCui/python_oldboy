@@ -155,7 +155,6 @@ def shop_list(choice):
 def shopping(num,quantity):
     global car
     global money
-    print num,type(num),p_sort1
     if num<len(p_sort1):
         old_money=money
         old_car=copy.deepcopy(car) #要用deepcopy
@@ -189,7 +188,9 @@ def clearing():
     exit('See you next time!')
 
 
-if __name__ =='__main__':
+def main():
+    global username
+    global money
     print(welcome_msg)
     while 1:
         username = raw_input('username:')
@@ -208,3 +209,6 @@ if __name__ =='__main__':
     while 1:
         init_shop_list()
         print('Your balance:',money,'Product in your car:',car)
+
+if __name__ =='__main__':
+    main()

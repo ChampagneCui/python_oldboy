@@ -55,11 +55,4 @@ def login(u,p):
             print('Successful!')
         return 1
 
-if __name__ == '__main__':
-    while 1:
-    	username = raw_input('username:')
-    	password = raw_input('password:')
-    	if iflock(username)==0:  #判断该用户是否为锁定用户
-            login(username,password) #登录
-        else:
-            continue
+
