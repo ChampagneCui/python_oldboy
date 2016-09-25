@@ -16,11 +16,36 @@ HAproxy配置文件操作
 '''
 
 
-def choise()
-    
+def choise():
+    num=raw_input('请输入操作序号：')
+    while num.isdigit() != True:
+        num=raw_input('请输入操作序号：')
+    num = int(num)
+    while num>4 :
+        num = raw_input('请输入操作序号：')
+    choise(num)
 
+def haproxy_conf(num):
+    if num==1:
+        pass
+    elif num==2:
+        pass
+    elif num==3:
+        pass
+    elif num == 4:
+        pass
 
+def feature1(backend): #查看指定backend信息
+    pass
 
+def feature2(backend,server): #添加
+    pass
+
+def feature3(backend,server):#修改
+    pass
+
+def feature4(backend,server):#删除
+    pass
 
 def main():
     with open(conf,'r') as f1:
