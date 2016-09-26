@@ -1,7 +1,7 @@
 #!/usr/bin/env python2.7
 # _*_ coding:utf-8 _*_
+#目前遗留问题，修改的时候，如果修改的新的值是重复的则有bug
 import os
-
 
 conf='haproxy.cfg'
 new_conf='haproxy.cfg.new'
@@ -12,10 +12,9 @@ def welcome():
     print('''
     HAproxy配置文件操作
     1. 查询backend信息
-    2. 可添加backend 和sever信息
-    3. 可修改backend 和sever信息
-    4. 可删除backend 和sever信息
-    6 添加server信息时，如果ip已经存在则修改;如果backend不存在则创建；若信息与已有信息重复则不操作
+    2. 添加backend 和sever信息
+    3. 修改backend 和sever信息
+    4. 删除backend 和sever信息
     ''')
 
 
@@ -150,8 +149,10 @@ def mv():
     os.rename(new_conf,conf)
 
 def main():
-    welcome()
-    choise()
+    while 1:
+        welcome()
+        choise()
+        print('end').center(50, '*')
 
 if __name__ == '__main__':
     main()
