@@ -6,6 +6,7 @@ import os
 conf='haproxy.cfg'
 new_conf='haproxy.cfg.new'
 old_conf='haproxy.cfg.old'
+blank=(' '*6)
 
 def welcome():
     print('''
@@ -29,14 +30,17 @@ def choise():
 
 def haproxy_conf(num):
     if num==1:
-        a=raw_input('Which backend do you want to see?')
-        feature1(a)
+        backend=raw_input('Which backend do you want to see?')
+        feature1(backend)
     elif num==2:
-        a=raw_input('Please enter the backend name:')
-        b=raw_input('Please enter the server information:')
-        feature2(a,b)
+        backend=raw_input('Please enter the backend name:')
+        server=raw_input('Please enter the server information:')
+        feature2(backend,server)
     elif num==3:
-        pass
+        backend = raw_input('Please enter the backend name:')
+        server = raw_input('Please enter the old server information:')
+        new_server = raw_input('Please enter the new server information:')
+        feature3(backend,server,new_server)
     elif num ==4:
         a = raw_input('Please enter the backend name:')
         b = raw_input('Please enter the server information:')
@@ -56,6 +60,19 @@ def public(backend): #查看指定backend信息，思路：遇到匹配的行就
                 print_flag=0
     return result
 
+def if_server_exist(server):
+    global server_ip
+    result_list = []
+    for i in result:
+        new = i.split(' ')
+        result_list += new
+    server_list = server.split(' ')
+    server_ip = server_list[2]
+    if server_ip in result_list:  # server_ip已存在
+        return 0
+    else:
+        return 1
+
 def feature1(backend):
     if public(backend) != []:
         for i in result:
@@ -64,15 +81,8 @@ def feature1(backend):
         print('Find nothing!')
 
 def feature2(backend,server): #添加，思路：如果backend已有就加在现有的下面，没有则加最后
-    blank=(' '*6)
     if public(backend)!=[]: #backend存在
-        result_list=[]
-        for i in result:
-            new=i.split(' ')
-            result_list+=new
-        server_list=server.split(' ')
-        server_ip=server_list[2]
-        if server_ip in result_list: #server_ip已存在
+        if if_server_exist(server)==0:
             print('Already existed!')
         else:
             with open(conf) as f1:
@@ -95,19 +105,29 @@ def feature2(backend,server): #添加，思路：如果backend已有就加在现
                 f2.write(server_temp)
         mv()
 
-def feature3(backend,server):#修改
-    pass
+def feature3(backend,server,new_server):#修改
+    flag=1
+    if public(backend)!=[]: #backend存在
+        if if_server_exist(server)==0:
+            with open(conf) as f1:
+                with open(new_conf, 'w') as f2:
+                    for line in f1:
+                        if line.find('backend %s' % (backend)) >= 0:
+                            flag=0
+                        if flag==0 and line.find(server_ip)>=0:
+                            flag=1
+                            line = ('%s %s \n') % (blank,new_server)
+                        f2.write(line)
+            mv()
+        else:
+            print('No such server in backend:%s') %(backend)
+    else:
+        print('No such backend!')
 
 def feature4(backend,server):#删除
     flag=1
     if public(backend) != []:  # backend存在
-        result_list = []
-        for i in result:
-            new = i.split(' ')
-            result_list += new
-        server_list = server.split(' ')
-        server_ip = server_list[2]
-        if server_ip in result_list:  # server_ip已存在
+        if if_server_exist(server)==0:
             with open(conf) as f1:
                 with open(new_conf, 'w') as f2:
                     for line in f1:
