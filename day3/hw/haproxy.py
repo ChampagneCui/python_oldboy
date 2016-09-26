@@ -42,7 +42,7 @@ def haproxy_conf(num):
 
 def feature1(backend): #查看指定backend信息，思路：遇到匹配的行就把flag设为打印，然后再次遇到空行就flag设为结束
     with open(conf) as f1:
-        print_flag=1
+        print_flag=1 #1表示不输出，0表示输出
         for line in f1:
             if print_flag==0:
                 print line
@@ -53,7 +53,7 @@ def feature1(backend): #查看指定backend信息，思路：遇到匹配的行�
 
 def feature2(backend,server): #添加，思路：如果backend已有就加在现有的下面，没有则加最后
     blank=(' '*5)
-    flag=1
+    flag=1 #1表示没有，0
     with open(conf) as f1:
         with open(new_conf,'w') as f2:
             for line in f1:
