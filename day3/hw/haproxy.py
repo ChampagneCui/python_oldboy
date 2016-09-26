@@ -112,7 +112,7 @@ def feature3(backend,server,new_server):#修改
                 with open(new_conf, 'w') as f2:
                     for line in f1:
                         if line.find('backend %s' % (backend)) >= 0:
-                            flag=0
+                            flag=0 #关键
                         if flag==0 and line.find(server_ip)>=0:
                             flag=1
                             line = ('%s %s \n') % (blank,new_server)
