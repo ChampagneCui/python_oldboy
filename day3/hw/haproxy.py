@@ -1,5 +1,6 @@
 #!/usr/bin/env python2.7
 # _*_ coding:utf-8 _*_
+#新需求：删除及修改的时候，server可以用选项选，而不用完全输入
 import os
 
 conf='haproxy.cfg'
@@ -36,13 +37,39 @@ def haproxy_conf(num): #根据选项调度
         feature2(backend,server)
     elif num==3:
         backend = raw_input('Please enter the backend name:')
-        server = raw_input('Please enter the old server information:')
+        if public(backend)!=[]:
+            for i in enumerate(result):
+                index=i[0]
+                print(i)
+        else:
+            print('No such backend!')
+            haproxy_conf(3)
+        server_index=raw_input('Please enter the old server num:')
+        while server_index.isdigit() != True:
+            server_index = raw_input('Please enter the old server num:')
+        server_index = int(server_index)
+        while server_index > index:
+            server_index = raw_input('Please enter the old server num:')
+        server = result[server_index]
         new_server = raw_input('Please enter the new server information:')
         feature3(backend,server,new_server)
     elif num ==4:
-        a = raw_input('Please enter the backend name:')
-        b = raw_input('Please enter the server information:')
-        feature4(a, b)
+        backend = raw_input('Please enter the backend name:')
+        if public(backend)!=[]:
+            for i in enumerate(result):
+                index=i[0]
+                print(i)
+        else:
+            print('No such backend!')
+            haproxy_conf(3)
+        server_index=raw_input('Please enter the old server num:')
+        while server_index.isdigit() != True:
+            server_index = raw_input('Please enter the old server num:')
+        server_index = int(server_index)
+        while server_index > index:
+            server_index = raw_input('Please enter the old server num:')
+        server = result[server_index]
+        feature4(backend, server)
 
 def public(backend): #查看指定backend信息，思路：遇到匹配的行就把flag设为打印，然后遇到空行就flag设为结束
     global result
@@ -105,25 +132,20 @@ def feature2(backend,server): #添加，思路：如果backend已有就加在现
 
 def feature3(backend,server,new_server):#修改，核心思想：先用if_server_exist判断存不存在，如果存在则在指定backend后遇到的第一个相同server ip处continue掉
     flag=1
-    if public(backend)!=[]: #backend存在
-        if if_server_exist(new_server)==0:
-            print('New server ip already existed!')
-        else:
-            if if_server_exist(server)==0:
-                with open(conf) as f1:
-                    with open(new_conf, 'w') as f2:
-                        for line in f1:
-                            if line.find('backend %s' % (backend)) >= 0:
-                                flag=0 #关键
-                            if flag==0 and line.find(server_ip)>=0:
-                                flag=1
-                                line = ('%s %s \n') % (blank,new_server)
-                            f2.write(line)
-                mv()
-            else:
-                print('No such server in backend:%s') %(backend)
+    if if_server_exist(new_server)==0:
+        print('New server ip already existed!')
     else:
-        print('No such backend!')
+        if if_server_exist(server)==0:
+            with open(conf) as f1:
+                with open(new_conf, 'w') as f2:
+                    for line in f1:
+                        if line.find('backend %s' % (backend)) >= 0:
+                            flag=0 #关键
+                        if flag==0 and line.find(server_ip)>=0:
+                            flag=1
+                            line = ('%s %s \n') % (blank,new_server)
+                        f2.write(line)
+            mv()
 
 def feature4(backend,server):#删除，核心思想与上面修改累死
     flag=1
