@@ -1,0 +1,3 @@
+1.登录函数登录成功会将登录用户写入login_user,同时也会记录current_user(只在内存中)，以此实现多用户登录，退出登录会从login_user中删除
+2.因为每个独立用户都会记录自己的current_user,当进行购物时只需去装饰器判断current_user在不在login_user中就行了
+3.
