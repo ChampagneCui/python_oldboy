@@ -2,103 +2,29 @@
 # -*- coding:utf-8 -*-
 
 import time
-import copy
-from login_sys import login
+import json
+from sys import path
+path.append('..\conf')
+from env import *
+from login_market import login
+from login_market import register
+from login_market import logout
 #最后使用了如下几个全局变量
 #car用来存放购物车信息
 #money当前剩余的金钱
 #p_sort 用来记录分类与number的关系
 #p_sort1 用来记录分类下各物品与number的关系
 #market1用来记录所有物品及价格
-import json
-
-
-car=[] #购物车
-welcome_msg='welcome to market!'.center(50,'*')
-p_sort={}
-p_sort1={}
 
 def outer(func):
     def inner(*args,**kwargs):
+        login_user = json.load(open(login_user_path))
         if current_user in login_user:
             r = func(*args, **kwargs)
             return r
         else:
-            print('请登陆！')
+            print('请登录！')
     return inner
-
-def init():
-    global money
-    for u in user_tables.keys():
-        if u==username :
-            if user_tables[u][3]<10:
-                print('You havn\'t enough money. Please add money!')
-                money = raw_input('How much do you want to add?')
-            else:
-                money = user_tables[u][3]
-                money=int(money)
-                print('You have %s in your account.' %(money))
-                ans=raw_input('Do you want add money?(y/n) and enter \'qd\' to see your shopping record detail and \'q\' to your shopping record!')
-                if ans=='y':
-                    while 1:
-                        add=raw_input('How much do you want to add?(\'q\' to exit)')
-                        if add=='q':
-                            break
-                        if check_num(add) ==0:
-                            money+=int(add)
-                            print('You have %s in your account.' % (money))
-                            break
-                        else:
-                            continue
-                elif ans=='qd':
-                    query_record_detail(username)
-                elif ans=='q':
-                    query_record(username)
-
-def query_record_detail(u): #显示详细（带时间）
-    print('Product','Quantity','Price','Time')
-    count=0
-    for i in user_record[u]:
-        count+=1
-        if count%4==0:
-            print(i)
-        else:
-            print(i),
-    print('end').center(50,'*')
-
-def find_all_index(arr,item): #显示一个元素在一个列表中的所有位置
-    return [i for i,a in enumerate(arr) if a==item]
-
-def query_record(u): #显示总共信息（想同叠加）
-    summary=[]
-    record=user_record[u]
-    values={}
-    for i in market.keys():
-        values=dict(values,**market[i])
-    market_total=values
-    for i in market_total.keys():
-        location = find_all_index(record, i)
-        total = 0
-        total_price=0
-        if location == []:
-            continue
-        elif len(location) == 1:
-            summary.append([i, 1,market_total[i]])
-        else:
-            for n in location:
-                n=int(n)+1
-                a = record[n]
-                total+=a
-                n=n+1
-                b = record[n]
-                total_price+=b
-            summary.append([i,total,total_price])
-    print('Product','Quantity','Total_price')
-    for i in summary:
-        for l in i:
-            print(l),
-        print('')
-    print('end').center(50, '*')
 
 def check_num(num):
     num=str(num)
@@ -108,6 +34,20 @@ def check_num(num):
         print('Please enter a right number!')
         return 1
 
+@outer
+def query_record_detail(u=''): #显示详细（带时间）
+    if u!='':
+        print('Product','Quantity','Price','Time')
+        count=0
+        for i in user_record[u]:
+            count+=1
+            if count%4==0:
+                print(i)
+            else:
+                print(i),
+        print('end').center(50,'*')
+
+@outer
 def init_shop_list():
     global p_sort
     for i in enumerate(market):
@@ -117,6 +57,7 @@ def init_shop_list():
         p_sort[index] = p_product
     choose(1)    #1代表来自菜单的选择，2代表来自购物的选择，两者都会有选择号码及q、b，但是购物的选择需要多问一个quantity，以此区别
 
+@outer
 def choose(i):
     choice=raw_input('Please enter your choice(\'q\' for exit and \'b\' for back!):')
     if choice=='q':
@@ -140,6 +81,7 @@ def choose(i):
             else:
                 choose(2)
 
+@outer
 def shop_list(choice):
     global p_sort1
     global market1
@@ -155,12 +97,10 @@ def shop_list(choice):
     else:
         print('Wrong number!')
 
+@outer
 def shopping(num,quantity):
     global car
-    global money
     if num<len(p_sort1):
-        old_money=money
-        old_car=copy.deepcopy(car) #要用deepcopy
         p_price=market1[p_sort1[num]]
         car.append(p_sort1[num])
         car.append(quantity)
@@ -168,47 +108,53 @@ def shopping(num,quantity):
         timestamp=time.localtime()
         timestamp=time.strftime("%Y-%m-%d %H:%M:%S", timestamp)
         car.append(timestamp)
-        money=int(money)
-        money-=(p_price*quantity)
-        if money<0:
-            print('You haven\'t enough money!')
-            money=old_money
-            car=old_car
     else:
         print('No such product!')
 
+@outer
 def clearing():
-    f=open(user_path,'w')  #结算钱
-    user_tables[username][3]=money
-    result = user_tables
-    f.write(str(result))
-    f.close()
-    r=open(record_path,'w')
-    user_record[username]+=car
-    result = user_record
-    r.write(str(result))
-    r.close()
-    exit('See you next time!')
+    i=2
+    money=0
+    while i < len(car):
+        money+=car[i]
+        i+=4
+    print('您本次购物的商品为：{0}').format(car)
+    print('总金额为{0}').format(money)
+    # f=open(user_path,'w')  #结算钱
+    # user_tables[username][3]=money
+    # result = user_tables
+    # f.write(str(result))
+    # f.close()
+    # r=open(record_path,'w')
+    # user_record[username]+=car
+    # result = user_record
+    # r.write(str(result))
+    # r.close()
+    #exit('See you next time!')
 
 
 def main():
-    global username
-    global money
-    print(welcome_msg)
+    global current_user
     while 1:
-        username = raw_input('username:')
-        password = raw_input('password:')
-        if iflock(username) == 0:  # 判断该用户是否为锁定用户
-            if login(username, password)==0: # 登录
-                break
-            else:
-                continue
+        welcome = raw_input(welcome_msg)
+        if welcome == '1':
+            init_shop_list()
+        elif welcome == '2':
+            username = raw_input('请输入账号：')
+            password = raw_input('请输入密码')
+            if login(username,password) == 0:
+                current_user=username
+        elif welcome == '3':
+            query_record_detail(current_user)
+        elif welcome == '4':
+            register()
+        elif welcome =='5':
+            logout(current_user)
+            exit('欢迎下次光临！')
         else:
-            continue            #至此均为登录阶段
-    init()   #提取用户信息，询问是否充值
-    while check_num(money)==1:
-        money=int(money)
-        init()
-    while 1:
-        init_shop_list()
-        print('Your balance:',money,'Product in your car:',car)
+            print('错误选项，请重新选择!')
+
+
+    # while 1:
+    #     init_shop_list()
+    #     print('Your balance:',money,'Product in your car:',car)
