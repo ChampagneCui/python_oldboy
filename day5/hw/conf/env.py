@@ -2,13 +2,14 @@
 # _*_ coding:utf-8 _*_
 import json
 
-user_path=r'..\db\user.txt'
-record_path=r'..\db\record.txt'
-login_user_path=r'..\db\login_user.txt'
-user_table=json.load(open(r'..\db\user.txt'))
-user_record=json.load(open(r'..\db\record.txt'))
-market=json.load(open(r'..\db\market.txt'))
-#login_user = json.load(open(login_user_path))
+user_path=r'..\db\market\user.txt'
+b_user_path=r'..\db\bank\b_user.txt'
+record_path=r'..\db\market\record.txt'
+login_user_path=r'..\db\market\login_user.txt'
+user_table=json.load(open(r'..\db\market\user.txt'))
+b_user_table=json.load(open(r'..\db\bank\b_user.txt'))
+user_record=json.load(open(r'..\db\market\record.txt'))
+market=json.load(open(r'..\db\market\market.txt'))
 current_user='None'
 welcome_msg='''
 1.购物
