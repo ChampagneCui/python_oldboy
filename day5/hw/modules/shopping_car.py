@@ -9,6 +9,7 @@ from env import *
 from login_market import login
 from login_market import register
 from login_market import logout
+from atm import pay
 #最后使用了如下几个全局变量
 #car用来存放购物车信息
 #money当前剩余的金钱
@@ -120,17 +121,16 @@ def clearing():
         i+=4
     print('您本次购物的商品为：{0}').format(car)
     print('总金额为{0}').format(money)
-    # f=open(user_path,'w')  #结算钱
-    # user_tables[username][3]=money
-    # result = user_tables
-    # f.write(str(result))
-    # f.close()
-    # r=open(record_path,'w')
-    # user_record[username]+=car
-    # result = user_record
-    # r.write(str(result))
-    # r.close()
-    #exit('See you next time!')
+    result=pay(money)
+    if result==0:
+        user_record.append(car)
+        json.dump(user_record,record_path,'w')
+        print('see you next time!')
+    elif result==1:
+        clearing()
+    elif result==2:
+        print('余额不足！')
+        #余额不足
 
 
 def main():
@@ -155,6 +155,4 @@ def main():
             print('错误选项，请重新选择!')
 
 
-    # while 1:
-    #     init_shop_list()
-    #     print('Your balance:',money,'Product in your car:',car)
+main()
