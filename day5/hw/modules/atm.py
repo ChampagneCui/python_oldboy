@@ -37,7 +37,7 @@ def login_bank():
     if b_login(username, password) == 0:
         current_user = username
 
-@b_outer
+#@b_outer
 def get_remain(u):
     '''额度查询'''
     if u in b_user_table.keys():
@@ -89,10 +89,11 @@ def check_detail():
 def pay(amount):
     '''付费及记账，返回0成功，返回1账号密码错误，返回2额度不够'''
     u = raw_input('请输入银行卡账号：')
-    p = raw_input('请输入银行卡密码')
+    p = raw_input('请输入银行卡密码：')
     if u in b_user_table.keys() and p==b_user_table[u][0]:
         u_remain = get_remain(u)
-        if amount + u_remain <=budget:
+        if \
+                                amount + u_remain <= budget:
             new_budget = amount + u_remain
             b_user_table[u][3] = new_budget
             json.dump(b_user_table, b_user_path, 'w')
