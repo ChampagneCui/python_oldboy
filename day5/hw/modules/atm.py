@@ -32,12 +32,13 @@ def b_outer(func):
 
 def login_bank():
     '''登录atm'''
+    global b_current_user
     username = raw_input('请输入账号：')
     password = raw_input('请输入密码')
     if b_login(username, password) == 0:
-        current_user = username
+        b_current_user = username
 
-#@b_outer
+@b_outer
 def get_remain(u):
     '''额度查询'''
     if u in b_user_table.keys():
@@ -56,7 +57,7 @@ def get_cash(u):
         if cash*2<=(budget-u_remain):
             new_budget=cash*1.05+u_remain
             b_user_table[u][3]=new_budget
-            json.dump(b_user_table,b_user_path,'w')
+            json.dump(b_user_table,open(b_user_path,'w'))
         else:
             print('超额！请重新输入')
             get_cash(u)
@@ -76,7 +77,7 @@ def forward_money(u):
             if forward+u_remain<=budget:
                 new_budget=forward+u_remain
                 b_user_table[u][3] = new_budget
-                json.dump(b_user_table,b_user_path,'w')
+                json.dump(b_user_table,open(b_user_path,'w'))
     else:
         print('您输入账户有错，请重新输入！')
         forward_money(u)
@@ -88,22 +89,25 @@ def check_detail():
 
 def pay(amount):
     '''付费及记账，返回0成功，返回1账号密码错误，返回2额度不够'''
+    global b_current_user
     u = raw_input('请输入银行卡账号：')
     p = raw_input('请输入银行卡密码：')
-    if u in b_user_table.keys() and p==b_user_table[u][0]:
+    if b_login(u,p) == 0:
+        b_current_user=u
         u_remain = get_remain(u)
-        if \
-                                amount + u_remain <= budget:
+        if amount + u_remain <= budget:
             new_budget = amount + u_remain
             b_user_table[u][3] = new_budget
-            json.dump(b_user_table, b_user_path, 'w')
+            json.dump(b_user_table, open(b_user_path, 'w'))
             b_user_record[u].append(amount)
             timestamp = time.localtime()
             timestamp = time.strftime("%Y-%m-%d %H:%M:%S", timestamp)
             b_user_record[u].append(timestamp)
-            json.dump(b_user_record,b_record_path,'w')
+            json.dump(b_user_record,open(b_record_path,'w'))
+            b_logout(u)
             return 0
         else:
+            b_logout(u)
             return 2 #额度不够
     else:
         return 1 #失败
