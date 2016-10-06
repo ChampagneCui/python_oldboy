@@ -134,7 +134,11 @@ def manager():
     '''管理接口，包括添加账户、用户额度，冻结账户'''
     choose=raw_input('1.添加账户 2.额度设置 3.冻结账户')
     if choose == '1':
-        pass#添加账户
+        card = raw_input('请输入你要新增的卡号：')
+        user=raw_input('请输入姓名：')
+        passwd=raw_input('请输入密码：')
+        b_user_table[card]=[passwd,user,0,0,'n',1]
+        json.dump(b_user_table, open(b_user_path, 'w'))
     elif choose == '2':
         budget=raw_input('Enter new budget：')
         if check_num(budget)==1:
@@ -144,7 +148,13 @@ def manager():
             with open(budget_path,'w') as f1:
                 f1.write(budget)
     elif choose == '3':
-        pass#冻结账户
+        u=raw_input('请输入你要冻结的卡号：')
+        if u in b_user_table.keys():
+            b_user_table[u][4]='y'
+            json.dump(b_user_table, open(b_user_path, 'w'))
+        else:
+            print('无该账号！')
+            manager()
     else:
         print('错误选项，请重新选择!')
         manager()
@@ -172,7 +182,6 @@ def write_record(u,detail,money):
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S", timestamp)
     b_user_record[u].append(timestamp)
     json.dump(b_user_record, open(b_record_path, 'w'))
-
 
 def b_main():
     global b_current_user

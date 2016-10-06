@@ -21,3 +21,4 @@
 2016-10-06 16:14:15,961 - get_cash - INFO - User 005 get 100! - [atm.py:74]
 2016-10-06 16:14:50,351 - back_money - INFO - User 005 back 100! - [atm.py:161]
 2016-10-06 16:21:04,789 - login - INFO - User 005 login success! - [login_bank.py:41]
+2016-10-06 22:56:34,496 - login - INFO - User 005 login fail! - [login_bank.py:52]
