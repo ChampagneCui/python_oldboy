@@ -30,6 +30,15 @@ def b_outer(func):
             print('请登录！')
     return inner
 
+def b_outer_manager(func):
+    def inner(*args,**kwargs):
+        if b_user_table[b_current_user][5]==2:
+            r = func(*args, **kwargs)
+            return r
+        else:
+            print('对不起，你不是管理员！')
+    return inner
+
 def login_bank():
     '''登录atm'''
     global b_current_user
@@ -58,7 +67,10 @@ def get_cash(u):
             new_budget=cash*1.05+u_remain
             b_user_table[u][3]=new_budget
             json.dump(b_user_table,open(b_user_path,'w'))
-            print('您现在的额度为{0}').format(get_remain(u))
+            print('您现在的额度为{0}').format(budget-get_remain(u))
+            logger = logging.getLogger("get_cash")
+            msg = 'User %s get %d!' % (u,cash)
+            logger.info(msg)
         else:
             print('超额！请重新输入')
             get_cash(u)
@@ -80,8 +92,11 @@ def forward_money(u):
                 new_budget=forward+u_remain
                 b_user_table[u][3] = new_budget
                 json.dump(b_user_table,open(b_user_path,'w'))
-                print('您现在的额度为{0}').format(get_remain(u))
+                print('您现在的额度为{0}').format(budget-get_remain(u))
                 write_record(u, 'forward', forward)
+                logger = logging.getLogger("forward")
+                msg = 'User %s forward %d to %s!' % (u,forward,target_card)
+                logger.info(msg)
             else:
                 print('金额不足，请重新输入')
                 forward_money(u)
@@ -102,6 +117,9 @@ def pay(amount):
             b_user_table[u][3] = new_budget
             json.dump(b_user_table, open(b_user_path, 'w'))
             write_record(b_current_user,'shopping', amount)
+            logger = logging.getLogger("pay")
+            msg = 'User %s pay %d in market!' % (u,amount)
+            logger.info(msg)
             b_logout(u)
             return 0
         else:
@@ -111,22 +129,41 @@ def pay(amount):
         return 1 #失败
 
 @b_outer
+@b_outer_manager
 def manager():
     '''管理接口，包括添加账户、用户额度，冻结账户'''
-    pass
+    choose=raw_input('1.添加账户 2.额度设置 3.冻结账户')
+    if choose == '1':
+        pass#添加账户
+    elif choose == '2':
+        budget=raw_input('Enter new budget：')
+        if check_num(budget)==1:
+            manager()
+        else:
+            budget=int(budget)
+            with open(budget_path,'w') as f1:
+                f1.write(budget)
+    elif choose == '3':
+        pass#冻结账户
+    else:
+        print('错误选项，请重新选择!')
+        manager()
 
 @b_outer
 def back_money(u):
     '''还款'''
     back=raw_input('请输入你要还款的金额:')
     if check_num(back) == 1:
-        back_money()
+        back_money(u)
     else:
         back=int(back)
         b_user_table[u][3]-=back
         json.dump(b_user_table, open(b_user_path, 'w'))
-        print('您现在的额度为{0}').format(get_remain(u))
+        print('您现在的额度为{0}').format(budget-get_remain(u))
         write_record(u,'back money',-back)
+        logger = logging.getLogger("back_money")
+        msg = 'User %s back %d!' % (u, back)
+        logger.info(msg)
 
 def write_record(u,detail,money):
     b_user_record[u].append(detail)
