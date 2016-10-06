@@ -137,8 +137,15 @@ def manager():
         card = raw_input('请输入你要新增的卡号：')
         user=raw_input('请输入姓名：')
         passwd=raw_input('请输入密码：')
-        b_user_table[card]=[passwd,user,0,0,'n',1]
-        json.dump(b_user_table, open(b_user_path, 'w'))
+        if card no in b_user_table.keys():
+            b_user_table[card]=[passwd,user,0,0,'n',1]
+            json.dump(b_user_table, open(b_user_path, 'w'))
+            logger = logging.getLogger("manager")
+            msg = 'Card %s has been created!' % (card)
+            logger.info(msg)
+        else:
+            print('账号已存在！')
+            manager()
     elif choose == '2':
         budget=raw_input('Enter new budget：')
         if check_num(budget)==1:
@@ -147,11 +154,17 @@ def manager():
             budget=int(budget)
             with open(budget_path,'w') as f1:
                 f1.write(budget)
+            logger = logging.getLogger("manager")
+            msg = 'Budget has been changed to %d!' % (budget)
+            logger.info(msg)
     elif choose == '3':
-        u=raw_input('请输入你要冻结的卡号：')
-        if u in b_user_table.keys():
-            b_user_table[u][4]='y'
+        card=raw_input('请输入你要冻结的卡号：')
+        if card in b_user_table.keys():
+            b_user_table[card][4]='y'
             json.dump(b_user_table, open(b_user_path, 'w'))
+            logger = logging.getLogger("manager")
+            msg = 'Card %s has been locked!' % (card)
+            logger.info(msg)
         else:
             print('无该账号！')
             manager()

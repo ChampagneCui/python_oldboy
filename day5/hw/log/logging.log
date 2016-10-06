@@ -22,3 +22,5 @@
 2016-10-06 16:14:50,351 - back_money - INFO - User 005 back 100! - [atm.py:161]
 2016-10-06 16:21:04,789 - login - INFO - User 005 login success! - [login_bank.py:41]
 2016-10-06 22:56:34,496 - login - INFO - User 005 login fail! - [login_bank.py:52]
+2016-10-06 23:01:39,743 - login - INFO - User 005 login success! - [login_bank.py:41]
+2016-10-06 23:02:48,940 - login - INFO - User 005 logout! - [login_bank.py:65]
