@@ -89,11 +89,6 @@ def forward_money(u):
         print('您输入账户有错，请重新输入！')
         forward_money(u)
 
-@b_outer
-def check_detail():
-    '''查流水账'''
-    pass
-
 def pay(amount):
     '''付费及记账，返回0成功，返回1账号密码错误，返回2额度不够'''
     global b_current_user
@@ -139,6 +134,7 @@ def write_record(u,detail,money):
     timestamp = time.localtime()
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S", timestamp)
     b_user_record[u].append(timestamp)
+    json.dump(b_user_record, open(b_record_path, 'w'))
 
 
 def b_main():
@@ -157,10 +153,8 @@ def b_main():
         elif welcome == '4':
             forward_money(b_current_user)
         elif welcome == '5':
-            check_detail(b_current_user)
-        elif welcome == '6':
             manager()
-        elif welcome == '7':
+        elif welcome == '6':
             b_logout(b_current_user)
             exit('欢迎下次光临！')
         else:
