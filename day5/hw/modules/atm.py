@@ -58,6 +58,7 @@ def get_cash(u):
             new_budget=cash*1.05+u_remain
             b_user_table[u][3]=new_budget
             json.dump(b_user_table,open(b_user_path,'w'))
+            print('您现在的额度为{0}').format(get_remain(u))
         else:
             print('超额！请重新输入')
             get_cash(u)
@@ -68,8 +69,9 @@ def forward_money(u):
     forward=raw_input('请输入你要转账的金额')
     target_card=raw_input('请输入你要转账的账号')
     target_u=raw_input('请输入你要转账人的姓名')
-    if b_user_table[target_u][1]==target_card:
+    if b_user_table[target_card][1]==target_u:
         if check_num(forward)==1:
+            print('金额不对：')
             forward_money(u)
         else:
             forward=int(forward)
@@ -78,6 +80,11 @@ def forward_money(u):
                 new_budget=forward+u_remain
                 b_user_table[u][3] = new_budget
                 json.dump(b_user_table,open(b_user_path,'w'))
+                print('您现在的额度为{0}').format(get_remain(u))
+                write_record(u, 'forward', forward)
+            else:
+                print('金额不足，请重新输入')
+                forward_money(u)
     else:
         print('您输入账户有错，请重新输入！')
         forward_money(u)
@@ -99,11 +106,7 @@ def pay(amount):
             new_budget = amount + u_remain
             b_user_table[u][3] = new_budget
             json.dump(b_user_table, open(b_user_path, 'w'))
-            b_user_record[u].append(amount)
-            timestamp = time.localtime()
-            timestamp = time.strftime("%Y-%m-%d %H:%M:%S", timestamp)
-            b_user_record[u].append(timestamp)
-            json.dump(b_user_record,open(b_record_path,'w'))
+            write_record(b_current_user,'shopping', amount)
             b_logout(u)
             return 0
         else:
@@ -117,4 +120,48 @@ def manager():
     '''管理接口，包括添加账户、用户额度，冻结账户'''
     pass
 
-#尝试输入密码次数锁定
+@b_outer
+def back_money(u):
+    '''还款'''
+    back=raw_input('请输入你要还款的金额:')
+    if check_num(back) == 1:
+        back_money()
+    else:
+        back=int(back)
+        b_user_table[u][3]-=back
+        json.dump(b_user_table, open(b_user_path, 'w'))
+        print('您现在的额度为{0}').format(get_remain(u))
+        write_record(u,'back money',-back)
+
+def write_record(u,detail,money):
+    b_user_record[u].append(detail)
+    b_user_record[u].append(money)
+    timestamp = time.localtime()
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S", timestamp)
+    b_user_record[u].append(timestamp)
+
+
+def b_main():
+    global b_current_user
+    while 1:
+        welcome = raw_input(b_welcome_msg)
+        if welcome == '1':
+            get_cash(b_current_user)
+        elif welcome == '2':
+            username = raw_input('请输入卡号：')
+            password = raw_input('请输入密码')
+            if b_login(username, password) == 0:
+                b_current_user = username
+        elif welcome == '3':
+            back_money(b_current_user)
+        elif welcome == '4':
+            forward_money(b_current_user)
+        elif welcome == '5':
+            check_detail(b_current_user)
+        elif welcome == '6':
+            manager()
+        elif welcome == '7':
+            b_logout(b_current_user)
+            exit('欢迎下次光临！')
+        else:
+            print('错误选项，请重新选择!')

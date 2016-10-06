@@ -122,21 +122,21 @@ def clearing():
     print('您本次购物的商品为：{0}').format(car)
     print('总金额为{0}').format(money)
     result=pay(money)
-    if result==0:
+    if result==0:   #付费交给银行
         user_record[current_user].append(car)
         json.dump(user_record,open(record_path,'w'))
+        logout(current_user)
         print('see you next time!')
     elif result==1:
         clearing()
     elif result==2:
         print('余额不足！')
-        #余额不足
 
 
-def main():
+def s_main():
     global current_user
     while 1:
-        welcome = raw_input(welcome_msg)
+        welcome = raw_input(s_welcome_msg)
         if welcome == '1':
             init_shop_list()
         elif welcome == '2':
@@ -153,6 +153,3 @@ def main():
             exit('欢迎下次光临！')
         else:
             print('错误选项，请重新选择!')
-
-
-main()
