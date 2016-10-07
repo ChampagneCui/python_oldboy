@@ -137,7 +137,7 @@ def manager():
         card = raw_input('请输入你要新增的卡号：')
         user=raw_input('请输入姓名：')
         passwd=raw_input('请输入密码：')
-        if card no in b_user_table.keys():
+        if card not in b_user_table.keys():
             b_user_table[card]=[passwd,user,0,0,'n',1]
             json.dump(b_user_table, open(b_user_path, 'w'))
             logger = logging.getLogger("manager")

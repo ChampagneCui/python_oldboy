@@ -126,7 +126,7 @@ def clearing():
         user_record[current_user].append(car)
         json.dump(user_record,open(record_path,'w'))
         logout(current_user)
-        print('see you next time!')
+        exit('see you next time!')
     elif result==1:
         clearing()
     elif result==2:
