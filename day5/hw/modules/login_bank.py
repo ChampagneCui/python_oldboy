@@ -3,7 +3,7 @@
 import json
 from sys import path
 path.append('..\conf')
-from env import *
+from settings import *
 import logging
 import logging.config
 CONF_LOG = "../conf/logging.conf"
@@ -35,14 +35,14 @@ def b_login(u,p):
                 print('Welcome Login!')
                 if b_user_table[u][2]!=0:
                     b_user_table[u][2] = 0
-                    json.dump(b_user_table,open(b_user_path,'w'))
+                    json.dump(b_user_table,open(B_USER_PATH,'w'))
                 logger = logging.getLogger("login")
                 msg = 'User %s login success!' % (u)
                 logger.info(msg)
-                a=json.load(open(b_login_user_path))
+                a=json.load(open(B_LOGIN_USER_PATH))
                 if u not in a:
                     a.append(u)
-                    json.dump(a,open(b_login_user_path,'w'))
+                    json.dump(a,open(B_LOGIN_USER_PATH,'w'))
                 return 0
             else:
                 print('账号或密码错误!')
@@ -55,15 +55,15 @@ def b_login(u,p):
                     logger = logging.getLogger("login")
                     msg = 'User %s has been locked!' % (u)
                     logger.info(msg)
-                json.dump(b_user_table, open(b_user_path, 'w'))
+                json.dump(b_user_table, open(B_USER_PATH, 'w'))
                 return 1
 
 def b_logout(u):
-    a = json.load(open(b_login_user_path))
+    a = json.load(open(B_LOGIN_USER_PATH))
     logger = logging.getLogger("login")
     msg = 'User %s logout!' % (u)
     logger.info(msg)
     if u in a:
         a.remove(u)
-        json.dump(a, open(b_login_user_path, 'w'))
+        json.dump(a, open(B_LOGIN_USER_PATH, 'w'))
 

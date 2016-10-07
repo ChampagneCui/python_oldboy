@@ -6,7 +6,7 @@ import time
 import json
 from sys import path
 path.append('..\conf')
-from env import *
+from settings import *
 from login_bank import b_login
 from login_bank import b_logout
 CONF_LOG = "../conf/logging.conf"
@@ -22,7 +22,7 @@ def check_num(num):
 
 def b_outer(func):
     def inner(*args,**kwargs):
-        b_login_user = json.load(open(b_login_user_path))
+        b_login_user = json.load(open(B_LOGIN_USER_PATH))
         if b_current_user in b_login_user:
             r = func(*args, **kwargs)
             return r
@@ -66,7 +66,7 @@ def get_cash(u):
         if cash*2<=(budget-u_remain):
             new_budget=cash*1.05+u_remain
             b_user_table[u][3]=new_budget
-            json.dump(b_user_table,open(b_user_path,'w'))
+            json.dump(b_user_table,open(B_USER_PATH,'w'))
             print('您现在的额度为{0}').format(budget-get_remain(u))
             logger = logging.getLogger("get_cash")
             msg = 'User %s get %d!' % (u,cash)
@@ -81,25 +81,29 @@ def forward_money(u):
     forward=raw_input('请输入你要转账的金额')
     target_card=raw_input('请输入你要转账的账号')
     target_u=raw_input('请输入你要转账人的姓名')
-    if b_user_table[target_card][1]==target_u:
-        if check_num(forward)==1:
-            print('金额不对：')
-            forward_money(u)
-        else:
-            forward=int(forward)
-            u_remain=get_remain(u)
-            if forward+u_remain<=budget:
-                new_budget=forward+u_remain
-                b_user_table[u][3] = new_budget
-                json.dump(b_user_table,open(b_user_path,'w'))
-                print('您现在的额度为{0}').format(budget-get_remain(u))
-                write_record(u, 'forward', forward)
-                logger = logging.getLogger("forward")
-                msg = 'User %s forward %d to %s!' % (u,forward,target_card)
-                logger.info(msg)
-            else:
-                print('金额不足，请重新输入')
+    if b_user_table.get(target_card) !=None:
+        if b_user_table[target_card][1]==target_u:
+            if check_num(forward)==1:
+                print('金额不对：')
                 forward_money(u)
+            else:
+                forward=int(forward)
+                u_remain=get_remain(u)
+                if forward+u_remain<=budget:
+                    new_budget=forward+u_remain
+                    b_user_table[u][3] = new_budget
+                    json.dump(b_user_table,open(B_USER_PATH,'w'))
+                    print('您现在的额度为{0}').format(budget-get_remain(u))
+                    write_record(u, 'forward', forward)
+                    logger = logging.getLogger("forward")
+                    msg = 'User %s forward %d to %s!' % (u,forward,target_card)
+                    logger.info(msg)
+                else:
+                    print('金额不足，请重新输入')
+                    forward_money(u)
+        else:
+            print('您输入账户有错，请重新输入！')
+            forward_money(u)
     else:
         print('您输入账户有错，请重新输入！')
         forward_money(u)
@@ -115,7 +119,7 @@ def pay(amount):
         if amount + u_remain <= budget:
             new_budget = amount + u_remain
             b_user_table[u][3] = new_budget
-            json.dump(b_user_table, open(b_user_path, 'w'))
+            json.dump(b_user_table, open(B_USER_PATH, 'w'))
             write_record(b_current_user,'shopping', amount)
             logger = logging.getLogger("pay")
             msg = 'User %s pay %d in market!' % (u,amount)
@@ -137,14 +141,14 @@ def manager():
         card = raw_input('请输入你要新增的卡号：')
         user=raw_input('请输入姓名：')
         passwd=raw_input('请输入密码：')
-        if card not in b_user_table.keys():
+        if card not in b_user_table.keys() and card !='' and user !='' and passwd!='':
             b_user_table[card]=[passwd,user,0,0,'n',1]
-            json.dump(b_user_table, open(b_user_path, 'w'))
+            json.dump(b_user_table, open(B_USER_PATH, 'w'))
             logger = logging.getLogger("manager")
             msg = 'Card %s has been created!' % (card)
             logger.info(msg)
         else:
-            print('账号已存在！')
+            print('账号已存在或输入的账号有误！')
             manager()
     elif choose == '2':
         budget=raw_input('Enter new budget：')
@@ -152,7 +156,7 @@ def manager():
             manager()
         else:
             budget=int(budget)
-            with open(budget_path,'w') as f1:
+            with open(BUDGET_PATH,'w') as f1:
                 f1.write(budget)
             logger = logging.getLogger("manager")
             msg = 'Budget has been changed to %d!' % (budget)
@@ -161,7 +165,7 @@ def manager():
         card=raw_input('请输入你要冻结的卡号：')
         if card in b_user_table.keys():
             b_user_table[card][4]='y'
-            json.dump(b_user_table, open(b_user_path, 'w'))
+            json.dump(b_user_table, open(B_USER_PATH, 'w'))
             logger = logging.getLogger("manager")
             msg = 'Card %s has been locked!' % (card)
             logger.info(msg)
@@ -181,7 +185,7 @@ def back_money(u):
     else:
         back=int(back)
         b_user_table[u][3]-=back
-        json.dump(b_user_table, open(b_user_path, 'w'))
+        json.dump(b_user_table, open(B_USER_PATH, 'w'))
         print('您现在的额度为{0}').format(budget-get_remain(u))
         write_record(u,'back money',-back)
         logger = logging.getLogger("back_money")
@@ -194,12 +198,12 @@ def write_record(u,detail,money):
     timestamp = time.localtime()
     timestamp = time.strftime("%Y-%m-%d %H:%M:%S", timestamp)
     b_user_record[u].append(timestamp)
-    json.dump(b_user_record, open(b_record_path, 'w'))
+    json.dump(b_user_record, open(B_RECORD_PATH, 'w'))
 
 def b_main():
     global b_current_user
     while 1:
-        welcome = raw_input(b_welcome_msg)
+        welcome = raw_input(B_WELCOME_MSG)
         if welcome == '1':
             get_cash(b_current_user)
         elif welcome == '2':

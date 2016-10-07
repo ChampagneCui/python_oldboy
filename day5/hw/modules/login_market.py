@@ -3,7 +3,7 @@
 import json
 from sys import path
 path.append('..\conf')
-from env import *
+from settings import *
 '''
 商城登录模块，负责登录、登出、注册
 登录函数登录成功会将登录用户写入login_user
@@ -31,18 +31,18 @@ def login(u,p):
                 print('Welcome Login!')
                 if user_table[u][1]!=0:
                     user_table[u][1] = 0
-                    json.dump(user_table,open(user_path,'w'))
-                a=json.load(open(login_user_path))
+                    json.dump(user_table,open(USER_PATH,'w'))
+                a=json.load(open(LOGIN_USER_PATH))
                 if u not in a:
                     a.append(u)
-                    json.dump(a,open(login_user_path,'w'))
+                    json.dump(a,open(LOGIN_USER_PATH,'w'))
                 return 0
             else:
                 print('账号或密码错误!')
                 user_table[u][1] +=1
                 if user_table[u][1] >= 3:
                     user_table[u][2] = 'y'
-                json.dump(user_table, open(user_path, 'w'))
+                json.dump(user_table, open(USER_PATH, 'w'))
                 return 1
         else:
             print('没有这个用户!')
@@ -58,12 +58,12 @@ def register():
         print('账户已存在.')
     else:
         user_table[u] = [p, 0, 'n']
-    json.dump(user_table, open(user_path, 'w'))
+    json.dump(user_table, open(USER_PATH, 'w'))
     print('Successful!')
 
 def logout(u):
-    a = json.load(open(login_user_path))
+    a = json.load(open(LOGIN_USER_PATH))
     if u in a:
         a.remove(u)
-        json.dump(a, open(login_user_path, 'w'))
+        json.dump(a, open(LOGIN_USER_PATH, 'w'))
 

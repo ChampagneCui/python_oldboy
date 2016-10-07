@@ -5,7 +5,7 @@ import time
 import json
 from sys import path
 path.append('..\conf')
-from env import *
+from settings import *
 from login_market import login
 from login_market import register
 from login_market import logout
@@ -19,7 +19,7 @@ from atm import pay
 
 def outer(func):
     def inner(*args,**kwargs):
-        login_user = json.load(open(login_user_path))
+        login_user = json.load(open(LOGIN_USER_PATH))
         if current_user in login_user:
             r = func(*args, **kwargs)
             return r
@@ -51,7 +51,7 @@ def query_record_detail(u=''): #显示详细（带时间）
 @outer
 def init_shop_list():
     global p_sort
-    for i in enumerate(market):
+    for i in enumerate(MARKET):
         index = i[0]
         p_product = i[1]
         print(index, p_product)
@@ -87,7 +87,7 @@ def shop_list(choice):
     global p_sort1
     global market1
     if int(choice)<len(p_sort):
-        market1=market[p_sort[int(choice)]]
+        market1=MARKET[p_sort[int(choice)]]
         for i in enumerate(market1):
             index = i[0]
             p_product = i[1]
@@ -124,7 +124,7 @@ def clearing():
     result=pay(money)
     if result==0:   #付费交给银行
         user_record[current_user]+=car
-        json.dump(user_record,open(record_path,'w'))
+        json.dump(user_record,open(RECORD_PATH,'w'))
         logout(current_user)
         exit('see you next time!')
     elif result==1:
@@ -136,7 +136,7 @@ def clearing():
 def s_main():
     global current_user
     while 1:
-        welcome = raw_input(s_welcome_msg)
+        welcome = raw_input(S_WELCOME_MSG)
         if welcome == '1':
             init_shop_list()
         elif welcome == '2':

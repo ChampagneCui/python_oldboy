@@ -3,12 +3,12 @@
 from sys import path
 path.append(r'..\modules')
 path.append('..\conf')
-from env import *
+from settings import *
 from shopping_car import s_main
 from atm import b_main
 
 def main():
-    choose=raw_input(welcome_msg)
+    choose=raw_input(WELCOME_MSG)
     if choose=='1':
         s_main()
     elif choose=='2':
