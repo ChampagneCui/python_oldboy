@@ -123,7 +123,7 @@ def clearing():
     print('总金额为{0}').format(money)
     result=pay(money)
     if result==0:   #付费交给银行
-        user_record[current_user].append(car)
+        user_record[current_user]+=car
         json.dump(user_record,open(record_path,'w'))
         logout(current_user)
         exit('see you next time!')

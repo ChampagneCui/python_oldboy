@@ -36,3 +36,6 @@
 2016-10-07 10:34:29,203 - manager - INFO - Card 003 has been locked! - [atm.py:167]
 2016-10-07 10:34:59,377 - manager - INFO - Card 002 has been locked! - [atm.py:167]
 2016-10-07 10:35:17,436 - login - INFO - User 005 logout! - [login_bank.py:65]
+2016-10-07 11:44:16,053 - login - INFO - User 005 login success! - [login_bank.py:41]
+2016-10-07 11:44:16,092 - pay - INFO - User 005 pay 30 in market! - [atm.py:122]
+2016-10-07 11:44:16,092 - login - INFO - User 005 logout! - [login_bank.py:65]
