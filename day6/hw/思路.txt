@@ -1,0 +1,15 @@
+#!/usr/bin/env python2.7
+# -*- coding:utf-8 -*-
+# import re
+
+def cal(req):
+    #乘除加减
+    return 结果
+
+def deal():
+    string=raw_input('请输入表达式：')
+    string='('+string+')'
+    while 1:
+        req=re.split("\（(中间不包含括号)）\",string,1)
+        res=cal(req)
+        string=新表达式(刚刚抽离的req用res替换) #replace
