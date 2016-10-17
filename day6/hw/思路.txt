@@ -13,3 +13,4 @@ def deal():
         req=re.split("\（(中间不包含括号)）\",string,1)
         res=cal(req)
         string=新表达式(刚刚抽离的req用res替换) #replace
+
