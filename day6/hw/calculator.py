@@ -13,19 +13,20 @@ def deal_a(req):
         res = re.sub('\-', '\\-', res)
         res = re.sub('\*', '\\*', res)
         res = re.sub('\/', '\\/', res)
-        return res
+    return res
 
 def cal(req):
-    '''乘除加减'''
+    '''除乘减加顺序计算'''
     req=req.strip('(')
     req = req.strip(')')
     res=eval(req)
     return res
 
 def deal():
+    '''剥离括号函数，即寻找括号内不再包含括号的运算式，然后计算并替换，如此往复'''
     expression=raw_input('请输入表达式：')
     expression='('+expression+')'
-    while '('  in expression:
+    while ('('  in expression) or (')'  in expression):
         if ('(' in expression and ')' not in expression) or ('(' not in expression and ')' in expression):
             exit('Input error!')
         else:
@@ -37,6 +38,7 @@ def deal():
             #print expression
     print expression
 
+#处理异常没做
 
 if __name__ == '__main__':
     deal()
