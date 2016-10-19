@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.7
 # -*- coding:utf-8 -*-
-# from __future__ import division
+from __future__ import division
 #bug:目前有个很大的bug，不能精确到小数点，因为如果采用小数点计算，正则的\d没法识别
 import re
 
@@ -36,29 +36,31 @@ def cal(req):
     # req = req.strip(')')
     # res=eval(req)
     # return res
-    while re.findall('\d/\-*\d',req)!=[]:
-        a=re.findall('\d/\-*\d',req)
+    while re.findall('/',req)!=[]:
+        a=re.findall('\d+\.?\d*/\-*\d+\.?\d*',req)
         a=a[0]
-        num=re.findall('\d',a)
-        res=str(int(num[0])/int(num[1]))
+        num=re.findall('\d+\.?\d*',a)
+        res=str(float(num[0])/float(num[1]))
         if sign(a)==0:
             res=res
         else:
             res='-'+res
         a=deal_a(a)
         req=re.sub(a,res,req,1)
-    while re.findall('\d\*\-*\d', req) != []:
-        a = re.findall('\d\*-*\d', req)
+    print req #########3
+    while re.findall('\*', req) != []:
+        a = re.findall('\d+\.?\d*\*\-*\d+\.?\d*', req)
         a = a[0]
-        num = re.findall('\d', a)
-        res = str(int(num[0]) * int(num[1]))
+        num = re.findall('\d+\.?\d*', a)
+        res = str(float(num[0]) * float(num[1]))
         if sign(a) == 0:
             res = res
         else:
             res = '-' + res
         a = deal_a(a)
-        req = re.sub(a, res, req, 1)
-    num = re.findall('\+*\-*\+*\d', req)
+        req = re.sub(a,res,req,1)
+    #print req ########33
+    num = re.findall('\+*\-*\+*\d+\.?\d*', req)
     while len(num) > 1:
         a = eval(num[0])
         b = eval(num[1])
@@ -83,6 +85,7 @@ def deal():
                 b=str(cal(a))
                 a=deal_a(a)
                 expression=re.sub(a,b,expression,1)
+                #print expression ############
         print expression
 
 
