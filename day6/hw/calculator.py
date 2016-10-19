@@ -64,8 +64,7 @@ def cal(req):
         b = eval(num[1])
         num[0] = str(a + b)
         del (num[1])
-        print num
-    return num
+    return num[0]
 
 def deal():
     '''剥离括号函数，即寻找括号内不再包含括号的运算式，然后计算并替换，如此往复'''
