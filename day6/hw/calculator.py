@@ -32,10 +32,6 @@ def sign(req):
 
 def cal(req):
     '''除乘减加顺序计算,这样不用考虑位置'''
-    # req=req.strip('(')
-    # req = req.strip(')')
-    # res=eval(req)
-    # return res
     while re.findall('/',req)!=[]:
         a=re.findall('\d+\.?\d*/\-*\d+\.?\d*',req)
         a=a[0]
@@ -47,7 +43,6 @@ def cal(req):
             res='-'+res
         a=deal_a(a)
         req=re.sub(a,res,req,1)
-    print req #########3
     while re.findall('\*', req) != []:
         a = re.findall('\d+\.?\d*\*\-*\d+\.?\d*', req)
         a = a[0]
@@ -59,7 +54,6 @@ def cal(req):
             res = '-' + res
         a = deal_a(a)
         req = re.sub(a,res,req,1)
-    #print req ########33
     num = re.findall('\+*\-*\+*\d+\.?\d*', req)
     while len(num) > 1:
         a = eval(num[0])
@@ -85,7 +79,6 @@ def deal():
                 b=str(cal(a))
                 a=deal_a(a)
                 expression=re.sub(a,b,expression,1)
-                #print expression ############
         print expression
 
 
