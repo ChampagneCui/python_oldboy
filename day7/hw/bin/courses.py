@@ -57,11 +57,12 @@ class students:
 #
 a=teachers()
 a.print_info()
-f=file('1.txt','w')
+f=file('%s.txt','w') %(a.name)
 pickle.dump(a,f)
 f.close()
 
-f=file('1.txt')
-b=pickle.load(f)
-f.close()
-b.print_info()
+# f=file('1.txt')
+# b=pickle.load(f)
+# f.close()
+# print(b.name)
+# b.print_info()
