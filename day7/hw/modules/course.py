@@ -3,6 +3,9 @@
 import pickle
 from sys import path
 path.append('..\conf')
+from login_system import login
+from login_system import register
+from login_system import logout
 
 def outer(func):
     def inner(*args,**kwargs):
@@ -17,9 +20,11 @@ def outer(func):
 class teachers:
     def __init__(self):
         name = raw_input('name:')
+        passwd = raw_input('password:')
         age = raw_input('age:')
         favour = raw_input('favour:')
         self.name=name
+        self.password=passwd
         self.age=age
         self.asset=0
         self.favour = favour
@@ -47,8 +52,9 @@ class courses:
         students.st_add_experience(course,fee)
 
 class students:
-        def __init__(self,name, age):
+        def __init__(self,name,passwd,age):
             self.name=name
+            self.password=passwd
             self.age=age
             self.asset=0
             self.experience=[]
@@ -61,23 +67,31 @@ class students:
             self.asset-=fee
 
 
-def login(role):
+def welcome(role):
     global current_user
     while 1:
         username = raw_input('请输入账号：')
         password = raw_input('请输入密码')
-        if role='1':
-            if s_login(username,password) == 0:
+        if login(username,password,role) == 0:
                 current_user=username
+                if role=='1':
+                    s_main()
+                elif role=='2':
+                    t_main()
+                elif role=='3':
+                    m_main()
                 break
-        elif role='2':
-            if t_login(username,password) == 0:
-                current_user=username
-                break
-        elif role='3':
-            if m_login(username,password) == 0:
-                current_user=username
-                break
+
+def s_main():
+    pass
+
+def t_main():
+    pass
+
+def m_main():
+    pass
+
+
 
 
 

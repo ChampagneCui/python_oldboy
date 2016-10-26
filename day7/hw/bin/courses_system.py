@@ -4,13 +4,13 @@ from sys import path
 path.append(r'..\modules')
 path.append('..\conf')
 from settings import *
-from course import login
+from course import welcome
 
 
 def main():
     choose=raw_input(WELCOME_MSG)
     if choose in ['1','2','3']:
-        login(choose)
+        welcome(choose)
     else:
         print('请重新输入：')
         main()
