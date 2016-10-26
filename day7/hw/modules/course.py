@@ -83,7 +83,7 @@ def welcome(role):
                 break
 
 def s_main():
-    pass
+    choose=raw_input(S_WELCOME_MSG)
 
 def t_main():
     pass
