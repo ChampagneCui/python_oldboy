@@ -46,6 +46,7 @@ def s_main():
         money=raw_input('How much do you want to add?')
         #check_num(money)
         student.st_add_money(int(money))
+        pickle.dump(students,open(student_db_file,'w'))
 
 
 def m_main():

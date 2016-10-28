@@ -18,6 +18,7 @@ current_user='None'
 WELCOME_MSG='''
 1.学生登录
 2.管理员登录
+3.新学生注册
 请输入序号：'''
 
 
