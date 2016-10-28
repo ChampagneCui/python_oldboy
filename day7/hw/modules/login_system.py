@@ -37,5 +37,6 @@ def login(u,p,r):
 def register():
     pass
 
-
+def logout():
+    pass
 

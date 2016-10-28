@@ -3,6 +3,7 @@
 import pickle
 from sys import path
 path.append('..\conf')
+from settings import *
 from login_system import login
 from login_system import register
 from login_system import logout
@@ -39,12 +40,13 @@ class teachers:
         self.asset = self.asset + fee
 
 class courses:
-    def __init__(self,name,fee,teacher):
+    def __init__(self,name,fee):
         name = raw_input('Please enter a course you want create:')
         fee = raw_input('How much:')
-        teacher = raw_input('Which teacher?')
         self.name = name
         self.fee=fee
+
+    def course_bonding(self,teacher):
         self.teacher=teacher
 
     def lessons(self,experience,course,fee):
@@ -67,6 +69,7 @@ class students:
             self.asset-=fee
 
 
+
 def welcome(role):
     global current_user
     while 1:
@@ -77,23 +80,64 @@ def welcome(role):
                 if role=='1':
                     s_main()
                 elif role=='2':
-                    t_main()
-                elif role=='3':
                     m_main()
                 break
 
 def s_main():
     choose=raw_input(S_WELCOME_MSG)
+    student_db_file=STUDENTS_DB_PATH+current_user
+    student=pickle.load(student_db_file)
+    if choose == '1':#选课
 
-def t_main():
-    pass
+    elif choose == '2':#上课
+
+    elif choose == '3':#查看历史
+        print(student.experience)
+    elif choose == '4':#充值
+        money=raw_input('How much do you want to add?')
+        #check_num(money)
+        student.st_add_money(int(money))
+
 
 def m_main():
-    pass
+    choose = raw_input(S_WELCOME_MSG)
+    teachers_list = pickle.load(open(r'../db/teachers/teachers.txt'))
+    if choose=='1':
+        a=teachers()
+        teachers_list.append(a)
+        f=file(TEACHERS_DB_PATH,'w')
+        pickle.dump(teachers_list,f)
+        f.close()
+    elif choose=='2':
+        #创建课程
+        course=courses()
+        #绑定老师
+        i=0
+        while i < len(teachers_list):
+            teachers_name_list.append(teachers_list[i])
+            print(i,teachers_list[i])
+            i+=1
+        choose_t=raw_input('Press num to bonding teacher!')
+        #check_num(choose_t)
+        teacher=teachers_list[int(choose_t)]
+        course.course_bonding(teacher) #封装
+        COURSES_DB_FILE=COURSES_DB_PATH+course.name
+        f=file(COURSES_DB_FILE,'w')
+        pickle.dump(course,f)
+        f.close()
 
 
 
-
+# #读取老师列表
+# teachers_list=pickle.load(open(r'../db/teachers/teachers.txt'))
+# print(teachers_list[0].name)
+#
+# #添加老师
+# a=teachers()
+# teachers_list.append(a)
+# f=file(TEACHERS_DB_PATH,'w')
+# pickle.dump(teachers_list,f)
+# f.close()
 
 
 # a=teachers()

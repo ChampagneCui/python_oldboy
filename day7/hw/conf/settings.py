@@ -2,7 +2,7 @@
 # _*_ coding:utf-8 _*_
 
 DB_PATH=r'../db/'
-TEACHERS_PATH=r'teachers/'
+TEACHERS_PATH=r'teachers/teachers.txt'
 TEACHERS_DB_PATH=DB_PATH+TEACHERS_PATH
 COURSES_PATH=r'courses/'
 COURSES_DB_PATH=DB_PATH+COURSES_PATH
@@ -17,13 +17,9 @@ current_user='None'
 
 WELCOME_MSG='''
 1.学生登录
-2.老师登录
-3.管理员登录
+2.管理员登录
 请输入序号：'''
 
-T_WELCOME_MSG='''
-1.查看余额
-请输入序号：'''
 
 S_WELCOME_MSG='''
 1.选课
@@ -34,4 +30,7 @@ S_WELCOME_MSG='''
 
 M_WELCOME_MSG='''
 1.新建老师
+2.新建课程
 请输入序号：'''
+
+teachers_name_list=[]
