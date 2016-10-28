@@ -5,23 +5,35 @@ import os
 from sys import path
 path.append('..\conf')
 from settings import *
+from course import managers
+from course import students
+
 
 def login(u,p,r):
     if r=='1':
         user_db_path=STUDENTS_DB_PATH
     elif r=='2':
-        user_db_path = TEACHERS_DB_PATH
-    else:
         user_db_path = MANAGERS_DB_PATH
 
     if u in os.listdir(user_db_path):
-        user=pickle.load(open(u))
+        u_file=user_db_path+u
+        print(u_file) ###############
+        f=file(u_file)
+        print f.read() ##############
+        user=pickle.load(f)
+        print user ###########
+        f.close()
+        print(user.name,user.password) #########
         if user.password==p:
             print('welcome login!')
-            a = pickle.load(open(LOGIN_USER_PATH))
-            if u not in a:
-                a.append(u)
-                pickle.dump(a, open(LOGIN_USER_PATH, 'w'))
+            # f=file(LOGIN_USER_PATH)
+            # a = pickle.load(f)
+            # f.close()
+            # if u not in a:
+            #     a.append(u)
+            #     f=file(LOGIN_USER_PATH,'w')
+            #     pickle.dump(a,f)
+            #     f.close()
             return 0
         else:
             print('账号或密码错误!')
