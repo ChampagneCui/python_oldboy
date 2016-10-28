@@ -5,8 +5,7 @@ import os
 from sys import path
 path.append('..\conf')
 from settings import *
-from course import managers
-from course import students
+from lei import *
 
 
 def login(u,p,r):
@@ -17,13 +16,7 @@ def login(u,p,r):
 
     if u in os.listdir(user_db_path):
         u_file=user_db_path+u
-        print(u_file) ###############
-        f=file(u_file)
-        print f.read() ##############
-        user=pickle.load(f)
-        print user ###########
-        f.close()
-        print(user.name,user.password) #########
+        user=pickle.load(open(u_file))
         if user.password==p:
             print('welcome login!')
             # f=file(LOGIN_USER_PATH)
