@@ -40,8 +40,14 @@ def login(u,p,r):
         return 1
 
 def register():
-    pass
+    name=raw_input('Name:')
+    password=raw_input('passwd:')
+    age=raw_input('age:')
+    a=students(name,password,age)
+    f=STUDENTS_DB_PATH+name
+    pickle.dump(a,open(f,'w'))
 
 def logout():
     pass
+
 

@@ -5,12 +5,15 @@ path.append(r'..\modules')
 path.append('..\conf')
 from settings import *
 from course import welcome
+from login_system import register
 
 
 def main():
     choose=raw_input(WELCOME_MSG)
-    if choose in ['1','2','3']:
+    if choose in ['1','2']:
         welcome(choose)
+    elif choose=='3':
+        register()
     else:
         print('请重新输入：')
         main()
