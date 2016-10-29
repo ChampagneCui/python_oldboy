@@ -2,7 +2,7 @@
 # _*_ coding:utf-8 _*_
 
 DB_PATH=r'../db/'
-TEACHERS_PATH=r'teachers/teachers.txt'
+TEACHERS_PATH=r'teachers/'
 TEACHERS_DB_PATH=DB_PATH+TEACHERS_PATH
 COURSES_PATH=r'courses/'
 COURSES_DB_PATH=DB_PATH+COURSES_PATH

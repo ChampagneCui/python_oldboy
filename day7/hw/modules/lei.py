@@ -20,7 +20,7 @@ class teachers:
             self.asset=self.asset-5
 
     def gain(self,fee):
-        self.asset = self.asset + fee
+        self.asset = self.asset + int(fee)
 
 class courses:
     def __init__(self):
@@ -32,9 +32,9 @@ class courses:
     def course_bonding(self,teacher):
         self.teacher=teacher
 
-    def lessons(self,experience,course,fee):
-        teachers.gain(fee)
-        students.st_add_experience(course,fee)
+    def lessons(self,point):
+        self.teacher.gain(self.fee)
+        self.teacher.grade(point)
 
 class students:
         def __init__(self,name,passwd,age):
@@ -43,13 +43,20 @@ class students:
             self.age=age
             self.asset=0
             self.experience=[]
+            self.course=[]
+
+        def choose_course(self,course):
+            self.course.append(course)
 
         def st_add_money(self,money):
-            self.asset+=money
+            self.asset=int(self.asset)+int(money)
 
-        def st_add_experience(self,course,fee):
-            self.experience.append(course)
-            self.asset-=fee
+        def have_lesson(self,num):
+            num=int(num)
+            self.experience.append(self.course[num].name)
+            self.asset=self.asset-int(self.course[num].fee)
+            point=raw_input('Please input grade point to teacher[1-5]:')
+            self.course[num].lessons(point)
 
 class managers:
         def __init__(self,name,passwd):

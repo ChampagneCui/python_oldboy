@@ -19,14 +19,6 @@ def login(u,p,r):
         user=pickle.load(open(u_file))
         if user.password==p:
             print('welcome login!')
-            # f=file(LOGIN_USER_PATH)
-            # a = pickle.load(f)
-            # f.close()
-            # if u not in a:
-            #     a.append(u)
-            #     f=file(LOGIN_USER_PATH,'w')
-            #     pickle.dump(a,f)
-            #     f.close()
             return 0
         else:
             print('账号或密码错误!')
@@ -46,8 +38,5 @@ def register():
     a=students(name,password,age)
     f=STUDENTS_DB_PATH+name
     pickle.dump(a,open(f,'w'))
-
-def logout():
-    pass
 
 

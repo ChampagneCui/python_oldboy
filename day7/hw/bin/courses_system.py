@@ -14,6 +14,7 @@ def main():
         welcome(choose)
     elif choose=='3':
         register()
+        main()
     else:
         print('请重新输入：')
         main()
