@@ -12,6 +12,7 @@ class person:
         self.car=car
         self.asset=asset
         self.salary=salary
+        print("I am %s. I'm %s from %s. I'm a %s and I'm a %s!")%(self.name,self.sex,self.nationnality,self.work,self.role)
 
     def fall_in_love(self,mate):
         self.mate=mate
@@ -19,14 +20,20 @@ class person:
 
     def separate(self):
         self.mate=''
-        print('%s and %s are break up!') %(self.name,self.mate.name)
+        print('%s is alone!') %(self.name)
 
     def earn_money(self):
         self.asset+=self.salary
         print("%s earned %d! Now he/she has %d asset!") %(self.name,self.salary,self.asset)
 
     def talk(self):
-        
+        pass
+
+    def role_change(self):
+        if self.asset>=100000:
+            self.role='rich man'
+        else:
+            pass
 
 
 
