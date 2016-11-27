@@ -25,6 +25,7 @@ class person:
     def earn_money(self):
         self.asset+=self.salary
         print("%s earned %d! Now he/she has %d asset!") %(self.name,self.salary,self.asset)
+        self.role_change()
 
     def talk(self):
         pass
