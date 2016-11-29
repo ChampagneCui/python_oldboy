@@ -27,12 +27,20 @@ class person:
         print("%s earned %d! Now he/she has %d asset!") %(self.name,self.salary,self.asset)
         self.role_change()
 
-    def talk(self):
-        pass
+    def talk(self,msg,status='normal'):
+        if status=='normal':
+            print('%s said: %s')%(self.name,msg)
+        elif status=='happy':
+            print('%s said happily: %s')%(self.name,msg)
+        else:
+            print('%s said sadly: %s')%(self.name,msg)
 
     def role_change(self):
         if self.asset>=100000:
             self.role='rich man'
+            self.house='manor'
+            self.car='Ferrie'
+            self.nationnality='USA'
         else:
             pass
 
