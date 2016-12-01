@@ -8,9 +8,10 @@ def road():
     for x in job.keys():
         print ('%s,%s') % (x, job[x][0])
     choose = raw_input('Which choose?')
-    if choose.isdigit() == 'True' and choose in ['1','2','3']:
+    #if choose.isdigit() == 'True' and choose in ['1','2','3']:
+    if choose in ['1', '2', '3']:
         print('John will %s !') %(job[int(choose)][0])
-        John.salary = job[choose][1]
+        John.salary = job[int(choose)][1]
         John.earn_money()
         print('1 year away...')
     else:
