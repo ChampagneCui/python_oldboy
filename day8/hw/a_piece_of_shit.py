@@ -1,6 +1,20 @@
 #!/usr/bin/env python2.7
-# -*- coding:utf-8 -*-
+#_*_coding:utf-8_*_
 from classes import person
+
+job={1:['study',10000], 2:['go to company',30000], 3:['go abroad',50000]}
+
+def road():
+    for x in job.keys():
+        print ('%s,%s') % (x, job[x][0])
+    choose = raw_input('Which choose?')
+    if choose.isdigit() == 'True' and choose in ['1','2','3']:
+        print('John will %s !') %(job[int(choose)][0])
+        John.salary = job[choose][1]
+        John.earn_money()
+        print('1 year away...')
+    else:
+        road()
 
 John=person('John','Male','poor man','student')
 Liz=person('Liz','Female','female god','student')
@@ -21,6 +35,12 @@ Peter.fall_in_love(Liz)
 
 #John say he will be rich!
 John.talk("I wanner be rich!","Angry")
+
+#屌丝逆袭史
+i=0
+while i < 3 :
+        road()
+        i+=1
 
 print('5 years away...')
 #John rich
