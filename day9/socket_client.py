@@ -10,10 +10,10 @@ c=socket.socket()
 c.connect(ip_port)
 
 while 1:
-    msg=raw_input(">>:").strip()
-    c.send(bytes(msg.encode("utf-8")))
-    if (len(msg) == 0): break
     recv_data=c.recv(1024)
     print(recv_data.decode())
+    msg=raw_input(">>:").strip()
+    c.send(bytes(msg.encode("utf-8")))
+    if msg == 'exit': break
 
 c.close()

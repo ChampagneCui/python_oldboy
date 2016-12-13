@@ -2,7 +2,7 @@
 #_*_coding:utf-8_*_
 
 import socket
-import os,subprocess
+import os
 
 ip_port=('192.168.10.169',2222)
 
