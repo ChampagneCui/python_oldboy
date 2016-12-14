@@ -8,12 +8,12 @@ from sys import path
 path.append('..\conf')
 from settings import *
 
+
 class MyServer(SocketServer.BaseRequestHandler):
     def handle(self):
         conn=self.request
         u=base64.decodestring(conn.recv(1024).decode())
         p=base64.decodestring(conn.recv(1024).decode())
-        print(u,p)
         if u in dic.keys() and p==dic[u][0]:
             conn.sendall(bytes("True"))
             conn.sendall(bytes(welcome_msg))
