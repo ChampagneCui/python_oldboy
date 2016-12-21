@@ -43,10 +43,18 @@ def main(ip='192.168.10.106',port='2222'):
                     abs_filepath=cmd_list[1]
                     if os.path.isfile(abs_filepath):
                         file_size=os.stat(abs_filepath).st_size
-                        filename=abs_filepath.split('/')[-1]
+                        filename=abs_filepath.split('\\')[-1]
                         print('file:%s size:%s') %(abs_filepath,file_size)
                         msg_data={'action':'put','filename':filename,'filesize':file_size}
                         c.send(bytes(json.dumps(msg_data)))
+                        c.recv(1024)
+
+                        print('start sending file', filename)
+                        f=open(abs_filepath,'rb')
+                        for line in f:
+                            c.send(line)
+
+                        print('send file done')
                     else:
                         print("file %s is not exist") %(abs_filepath)
                         continue
