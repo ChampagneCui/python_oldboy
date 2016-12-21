@@ -32,8 +32,8 @@ class MyServer(SocketServer.BaseRequestHandler):
             else:
                 print("task action is not supported", action)
 
-    else:
-    conn.sendall(bytes("False"))
+        else:
+            conn.sendall(bytes("False"))
 
 
 def put(self, *args, **kwargs):
