@@ -21,7 +21,6 @@ def main(ip='192.168.10.106',port='2222'):
     if IsOpen(ip,int(port))==True:
         c = socket.socket()
         c.connect(ip_port)
-
         username = raw_input('请输入账号：')
         password = raw_input('请输入密码：')
 
@@ -71,4 +70,5 @@ if __name__=='__main__':
     port = raw_input('Please enter server port:')
     #main(ip,port)
     main()
+
 
