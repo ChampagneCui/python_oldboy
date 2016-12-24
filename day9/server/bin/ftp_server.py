@@ -26,7 +26,7 @@ class MyServer(SocketServer.BaseRequestHandler):
                 data=json.loads(recv_data.decode())
                 action=data.get("action")
                 conn.send(bytes("start"))
-                if hasattr(self, action):
+                if hasattr(self,action):
                     func = getattr(self, action)
                     func(data)
             else:
@@ -36,20 +36,20 @@ class MyServer(SocketServer.BaseRequestHandler):
             conn.sendall(bytes("False"))
 
 
-def put(self, *args, **kwargs):
-    print("put", args, kwargs)
-    filesize = args[0].get("filesize")
-    filename = args[0].get("filename")
-    print(filename, filesize)
-    f = open(filename, 'wb')
-    recv_size = 0
-    while recv_size < filesize:
-        data = self.request.recv(4096)
-        f.write(data)
-        recv_size += len(data)
-    print('file recv success')
-    f.close()
-
+    def put(self, *args, **kwargs):
+        print("put", args, kwargs)
+        filesize = args[0].get("filesize")
+        filename = args[0].get("filename")
+        print(filename, filesize)
+        f = open(filename, 'wb')
+        recv_size = 0
+        while recv_size < filesize:
+            data = self.request.recv(4096)
+            f.write(data)
+            recv_size += len(data)
+            print(recv_size, 'of',filesize)###
+        print('file recv success')
+        f.close()
 
 if __name__ == '__main__':
     server = SocketServer.ThreadingTCPServer((ip_port), MyServer)
