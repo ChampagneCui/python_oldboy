@@ -15,7 +15,7 @@ def IsOpen(ip,port):
     except:
         return False
 
-def main(ip='192.168.10.106',port='2222'):
+def main(ip='127.0.0.1',port='2222'):
     port=int(port) ###lambda
     ip_port = (ip, port)
     if IsOpen(ip,int(port))==True:
