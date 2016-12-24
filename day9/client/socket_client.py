@@ -25,20 +25,33 @@ class feature:
             print('file:%s size:%s') % (abs_filepath, file_size)
             msg_data = {'action': 'put', 'filename': filename, 'filesize': file_size}
             c.send(bytes(json.dumps(msg_data)))
-            c.recv(1024)
+            c.recv(1024) #start
 
             print('start sending file', filename)
             f = open(abs_filepath, 'rb')
             for line in f:
                 c.send(line)
             print('send file done')
-            return 1
         else:
             print("file %s is not exist") % (abs_filepath)
-            return 0
 
-    def get(cmd_list):
-        print('get')
+    @staticmethod
+    def fget(cmd_list):
+        abs_filepath = cmd_list[1]
+        msg_data={'action':'fget','file':abs_filepath}
+        c.send(bytes(json.dumps(msg_data)))
+        c.recv(1024)  # start
+        filesize=c.recv(1024)
+        filename=abs_filepath.split('\\')[-1]
+        f = open(filename, 'wb')
+        recv_size = 0
+        while recv_size < filesize:
+            data = c.recv(4096)
+            f.write(data)
+            recv_size += len(data)
+            print(recv_size, 'of', filesize)  ###
+        print('file recv success')
+        f.close()
 
 
 def main(ip='192.168.10.106',port='2222'):
@@ -67,11 +80,10 @@ def main(ip='192.168.10.106',port='2222'):
                 task_type=cmd_list[0]
                 if hasattr(feature, task_type):
                     func=getattr(feature, task_type)
-                    a=func(cmd_list)
-                    #a=feature.put(cmd_list)
-                    if a==0:continue
+                    func(cmd_list)
                 else:
                     print("doesn't support type.")
+                continue
         else:
             print('Wrong username or password!')
         c.close()
