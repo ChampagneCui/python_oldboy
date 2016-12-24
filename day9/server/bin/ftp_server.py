@@ -5,6 +5,7 @@ import SocketServer
 import base64
 import json
 import time
+import os
 from sys import path
 path.append(r'../conf')
 from settings import *
@@ -25,17 +26,15 @@ class MyServer(SocketServer.BaseRequestHandler):
                 print("[%s] says:%s" %(self.client_address,recv_data.decode()))
                 data=json.loads(recv_data.decode())
                 action=data.get("action")
-                conn.send(bytes("start"))
                 if hasattr(self,action):
+                    conn.send(bytes("start"))
                     func = getattr(self, action)
                     func(data)
-            else:
-                print("task action is not supported", action)
-
+                else:
+                    print("task action is not supported", action)
+                conn.send(bytes('done'))
         else:
             conn.sendall(bytes("False"))
-
-
 
     def put(self, *args, **kwargs):
         print("put", args, kwargs)
@@ -51,6 +50,21 @@ class MyServer(SocketServer.BaseRequestHandler):
             print(recv_size, 'of',filesize)###
         print('file recv success')
         f.close()
+
+    def fget(self, *args,**kwargs):
+        print("fget", args,kwargs)
+        file=args[0].get("file")
+        if os.path.isfile(file):
+            filesize=os.stat(file).st_size
+            self.sendall(filesize)
+            self.recv(1024)
+            print('start sending file', filename)
+            f = open(file, 'rb')
+            for line in f:
+                self.send(line)
+            print('send file done')
+        else:
+            self.send('No such file!')
 
 
 if __name__ == '__main__':
