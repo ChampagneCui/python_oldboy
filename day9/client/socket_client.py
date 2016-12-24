@@ -41,10 +41,11 @@ class feature:
         msg_data={'action':'fget','file':abs_filepath}
         c.send(bytes(json.dumps(msg_data)))
         c.recv(1024)  # start
-        filesize=c.recv(1024)
+        filesize=int(c.recv(1024).decode())
         filename=abs_filepath.split('\\')[-1]
         f = open(filename, 'wb')
         recv_size = 0
+        c.send(bytes('start'))###start
         while recv_size < filesize:
             data = c.recv(4096)
             f.write(data)
