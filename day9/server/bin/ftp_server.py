@@ -9,6 +9,7 @@ import os
 from sys import path
 path.append(r'../conf')
 from settings import *
+import hashlib
 
 
 class MyServer(SocketServer.BaseRequestHandler):
@@ -32,6 +33,7 @@ class MyServer(SocketServer.BaseRequestHandler):
                     func(data)
                 else:
                     print("task action is not supported", action)
+                time.sleep(1)
                 conn.send(bytes('done'))
         else:
             conn.sendall(bytes("False"))
@@ -40,6 +42,7 @@ class MyServer(SocketServer.BaseRequestHandler):
         print("put", args, kwargs)
         filesize = args[0].get("filesize")
         filename = args[0].get("filename")
+        filemd5 = args[0].get("md5")
         print(filename, filesize)
         f = open(filename, 'wb')
         recv_size = 0
@@ -50,13 +53,19 @@ class MyServer(SocketServer.BaseRequestHandler):
             print(recv_size, 'of',filesize)###
         print('file recv success')
         f.close()
+        if MyServer.md5(filename)==filemd5:
+            print('md5sum ok')
+        else:
+            print('md5sum fail')
 
     def fget(self, *args,**kwargs):
         print("fget", args,kwargs)
         file=args[0].get("file")
         if os.path.isfile(file):
+            filemd5=MyServer.md5(file)
             filesize=os.stat(file).st_size
-            self.request.send(bytes(filesize))
+            msg_data=json.dumps({'filesize':filesize,'md5':filemd5})
+            self.request.send(bytes(msg_data))
             self.request.recv(1024)
             print('start sending file', file)
             f = open(file, 'rb')
@@ -67,6 +76,14 @@ class MyServer(SocketServer.BaseRequestHandler):
         else:
             self.request.send(bytes('No such file!'))
 
+    @classmethod
+    def md5(self, filepath):
+        f = open(filepath, 'rb')
+        md5obj = hashlib.md5()
+        md5obj.update(f.read())
+        hash = md5obj.hexdigest()
+        f.close()
+        return str(hash).upper()
 
 if __name__ == '__main__':
     server = SocketServer.ThreadingTCPServer((ip_port), MyServer)
