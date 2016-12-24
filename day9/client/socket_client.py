@@ -5,6 +5,8 @@ import socket
 import base64
 import os
 import json
+import hashlib
+
 
 def IsOpen(ip,port):
     c = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -22,8 +24,9 @@ class feature:
         if os.path.isfile(abs_filepath):
             file_size = os.stat(abs_filepath).st_size
             filename = abs_filepath.split('\\')[-1]
+            md5sum=feature.md5(abs_filepath)
             print('file:%s size:%s') % (abs_filepath, file_size)
-            msg_data = {'action': 'put', 'filename': filename, 'filesize': file_size}
+            msg_data = {'action': 'put', 'filename': filename, 'filesize': file_size,'md5':md5sum}
             c.send(bytes(json.dumps(msg_data)))
             c.recv(1024) #start
 
@@ -41,7 +44,9 @@ class feature:
         msg_data={'action':'fget','file':abs_filepath}
         c.send(bytes(json.dumps(msg_data)))
         c.recv(1024)  # start
-        filesize=int(c.recv(1024).decode())
+        msg_data=json.loads(c.recv(1024).decode())
+        filesize=int(msg_data.get('filesize'))
+        filemd5=msg_data.get('md5')
         filename=abs_filepath.split('\\')[-1]
         f = open(filename, 'wb')
         recv_size = 0
@@ -53,6 +58,21 @@ class feature:
             print(recv_size, 'of', filesize)  ###
         print('file recv success')
         f.close()
+        if feature.md5(filename)==filemd5:
+            print('md5sum ok')
+        else:
+            print(feature.md5(filename))
+            print(filemd5)
+            print('md5sum fail')
+
+    @classmethod
+    def md5(self, filepath):
+        f = open(filepath, 'rb')
+        md5obj = hashlib.md5()
+        md5obj.update(f.read())
+        hash = md5obj.hexdigest()
+        f.close()
+        return str(hash).upper()
 
 
 def main(ip='192.168.10.106',port='2222'):
