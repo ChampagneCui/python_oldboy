@@ -16,7 +16,8 @@ def IsOpen(ip,port):
         return False
 
 class feature:
-    def put(self,cmd_list):
+    @staticmethod
+    def put(cmd_list):
         abs_filepath = cmd_list[1]
         if os.path.isfile(abs_filepath):
             file_size = os.stat(abs_filepath).st_size
@@ -30,15 +31,14 @@ class feature:
             f = open(abs_filepath, 'rb')
             for line in f:
                 c.send(line)
-
             print('send file done')
             return 1
         else:
             print("file %s is not exist") % (abs_filepath)
             return 0
 
-    def get(self,cmd_list):
-        pass
+    def get(cmd_list):
+        print('get')
 
 
 def main(ip='192.168.10.106',port='2222'):
@@ -69,6 +69,7 @@ def main(ip='192.168.10.106',port='2222'):
                 if hasattr(feature, task_type):
                     func=getattr(feature, task_type)
                     a=func(cmd_list)
+                    #a=feature.put(cmd_list)
                     if a==0:continue
                 else:
                     print("doesn't support type.")
