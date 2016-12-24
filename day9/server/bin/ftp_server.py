@@ -56,15 +56,16 @@ class MyServer(SocketServer.BaseRequestHandler):
         file=args[0].get("file")
         if os.path.isfile(file):
             filesize=os.stat(file).st_size
-            self.sendall(filesize)
-            self.recv(1024)
-            print('start sending file', filename)
+            self.request.send(bytes(filesize))
+            self.request.recv(1024)
+            print('start sending file', file)
             f = open(file, 'rb')
             for line in f:
-                self.send(line)
+               self.request.send(line)
             print('send file done')
+            f.close()
         else:
-            self.send('No such file!')
+            self.request.send(bytes('No such file!'))
 
 
 if __name__ == '__main__':
