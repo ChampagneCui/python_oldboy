@@ -34,7 +34,7 @@ class MyServer(SocketServer.BaseRequestHandler):
                 else:
                     print("task action is not supported", action)
                 time.sleep(1)
-                conn.send(bytes('done'))
+                conn.send(bytes('Command done!'))
         else:
             conn.sendall(bytes("False"))
 
@@ -84,6 +84,11 @@ class MyServer(SocketServer.BaseRequestHandler):
         hash = md5obj.hexdigest()
         f.close()
         return str(hash).upper()
+
+    def ls(self, *args,**kwargs):
+        list=os.listdir('./')
+        self.request.send(bytes(list))
+
 
 if __name__ == '__main__':
     server = SocketServer.ThreadingTCPServer((ip_port), MyServer)
