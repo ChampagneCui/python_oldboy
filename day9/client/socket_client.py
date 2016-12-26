@@ -3,7 +3,7 @@
 
 import socket
 import base64
-import os
+import os,sys
 import json
 import hashlib
 
@@ -52,10 +52,12 @@ class feature:
         recv_size = 0
         c.send(bytes('start'))###start
         while recv_size < filesize:
-            data = c.recv(4096)
+            data = c.recv(1024)
             f.write(data)
             recv_size += len(data)
-            print(recv_size, 'of', filesize)  ###
+            done = int(50 * recv_size / filesize)
+            sys.stdout.write("\r[%s%s]" % ('=' * done, ' ' * (50 - done)))
+            sys.stdout.flush()
         print('file recv success')
         f.close()
         if feature.md5(filename)==filemd5:
