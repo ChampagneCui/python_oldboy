@@ -74,6 +74,20 @@ class feature:
         f.close()
         return str(hash).upper()
 
+    @staticmethod
+    def ls( *args,**kwargs):
+        msg_data = {'action': 'ls'}
+        c.send(bytes(json.dumps(msg_data)))
+        c.recv(1024)
+        list=eval(c.recv(4096).decode())
+        i=0
+        try:
+            while i < len(list):
+                print(list[i])
+                i+=1
+        except:
+            print('nothing！')
+
 
 def main(ip='192.168.10.106',port='2222'):
     global c
@@ -97,7 +111,6 @@ def main(ip='192.168.10.106',port='2222'):
                 send_data=raw_input(">>:").strip()
                 if len(send_data)==0:continue
                 cmd_list=send_data.split()
-                if len(cmd_list)<2:continue
                 task_type=cmd_list[0]
                 if hasattr(feature, task_type):
                     func=getattr(feature, task_type)
