@@ -10,7 +10,7 @@ from sys import path
 path.append(r'../conf')
 from settings import *
 import hashlib
-import re
+import subprocess
 
 
 class MyServer(SocketServer.BaseRequestHandler):
@@ -23,7 +23,7 @@ class MyServer(SocketServer.BaseRequestHandler):
             conn.sendall(bytes('True'))
             time.sleep(0.5)
             conn.sendall(bytes('welcome FTP : Hello %s' %(u)))
-            self.home=("/home/%s") %(u)
+            self.home=dic[u][1]
             os.chdir(self.home)
             while True:
                 recv_data=conn.recv(1024)
@@ -85,6 +85,10 @@ class MyServer(SocketServer.BaseRequestHandler):
         hash = md5obj.hexdigest()
         f.close()
         return str(hash).upper()
+
+    @classmethod
+    def du(self,filepath):
+        return subprocess.check_output(['du', '-s', path]).split()[0].decode('utf-8')
 
     def ls(self, *args,**kwargs):
         list=os.listdir('./')
