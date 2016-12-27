@@ -20,6 +20,7 @@ class MyServer(SocketServer.BaseRequestHandler):
         print(u,p)
         if u in dic.keys() and p==dic[u][0]:
             conn.sendall(bytes("True"))
+            time.sleep(0.5)
             conn.sendall(bytes('welcome FTP : Hello %s' %(u)))
             while True:
                 recv_data=conn.recv(1024)
@@ -28,7 +29,7 @@ class MyServer(SocketServer.BaseRequestHandler):
                 data=json.loads(recv_data.decode())
                 action=data.get("action")
                 if hasattr(self,action):
-                    conn.send(bytes("start"))
+                    time.sleep(0.5)
                     func = getattr(self, action)
                     func(data)
                 else:
@@ -64,7 +65,6 @@ class MyServer(SocketServer.BaseRequestHandler):
             filesize=os.stat(file).st_size
             msg_data=json.dumps({'filesize':filesize,'md5':filemd5})
             self.request.send(bytes(msg_data))
-            self.request.recv(1024)
             print('start sending file', file)
             f = open(file, 'rb')
             for line in f:

@@ -6,7 +6,11 @@ import base64
 import os,sys
 import json
 import hashlib
+import time
+import platform
 
+def isWindowsSystem():
+    return 'Windows' in platform.system()
 
 def IsOpen(ip,port):
     c = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
@@ -23,12 +27,12 @@ class feature:
         abs_filepath = cmd_list[1]
         if os.path.isfile(abs_filepath):
             file_size = os.stat(abs_filepath).st_size
-            filename = abs_filepath.split('\\')[-1]
+            filename = abs_filepath.split(separator)[-1]
             md5sum=feature.md5(abs_filepath)
             print('file:%s size:%s') % (abs_filepath, file_size)
             msg_data = {'action': 'put', 'filename': filename, 'filesize': file_size,'md5':md5sum}
             c.send(bytes(json.dumps(msg_data)))
-            c.recv(1024) #start
+            time.sleep(0.5)
 
             print('start sending file', filename)
             f = open(abs_filepath, 'rb')
@@ -43,14 +47,13 @@ class feature:
         abs_filepath = cmd_list[1]
         msg_data={'action':'fget','file':abs_filepath}
         c.send(bytes(json.dumps(msg_data)))
-        c.recv(1024)  # start
         msg_data=json.loads(c.recv(1024).decode())
         filesize=int(msg_data.get('filesize'))
         filemd5=msg_data.get('md5')
         filename=abs_filepath.split('\\')[-1]
         f = open(filename, 'wb')
         recv_size = 0
-        c.send(bytes('start'))###start
+        time.sleep(0.5)
         while recv_size < filesize:
             data = c.recv(1024)
             f.write(data)
@@ -80,7 +83,6 @@ class feature:
     def ls( *args,**kwargs):
         msg_data = {'action': 'ls'}
         c.send(bytes(json.dumps(msg_data)))
-        c.recv(1024)
         list=eval(c.recv(4096).decode())
         i=0
         try:
@@ -91,9 +93,9 @@ class feature:
             print('nothing！')
 
 
-def main(ip='192.168.10.106',port='2222'):
+def main( ip='127.0.0.1', port=2222 ):
     global c
-    port=int(port) ###lambda
+    port=int(port)
     ip_port = (ip, port)
     if IsOpen(ip,int(port))==True:
         c = socket.socket()
@@ -102,6 +104,7 @@ def main(ip='192.168.10.106',port='2222'):
         password = raw_input('请输入密码：')
 
         c.send(bytes(base64.encodestring(username)))
+        time.sleep(0.5)
         c.send(bytes(base64.encodestring(password)))
         print('Send to server......')
 
@@ -127,9 +130,15 @@ def main(ip='192.168.10.106',port='2222'):
         print('Remote server does not exist!')
 
 if __name__=='__main__':
+    if isWindowsSystem==True:
+        separator='\\'
+    else:
+        separator='/'
+
     ip = raw_input('Please enter server IP:')
     port = raw_input('Please enter server port:')
     #main(ip,port)
     main()
+
 
 
