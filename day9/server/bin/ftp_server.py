@@ -10,6 +10,7 @@ from sys import path
 path.append(r'../conf')
 from settings import *
 import hashlib
+import re
 
 
 class MyServer(SocketServer.BaseRequestHandler):
@@ -19,9 +20,11 @@ class MyServer(SocketServer.BaseRequestHandler):
         p=base64.decodestring(conn.recv(1024).decode())
         print(u,p)
         if u in dic.keys() and p==dic[u][0]:
-            conn.sendall(bytes("True"))
+            conn.sendall(bytes('True'))
             time.sleep(0.5)
             conn.sendall(bytes('welcome FTP : Hello %s' %(u)))
+            self.home=("/home/%s") %(u)
+            os.chdir(self.home)
             while True:
                 recv_data=conn.recv(1024)
                 if len(recv_data)==0:break
@@ -35,7 +38,7 @@ class MyServer(SocketServer.BaseRequestHandler):
                 else:
                     print("task action is not supported", action)
         else:
-            conn.sendall(bytes("False"))
+            conn.sendall(bytes('False'))
 
     def put(self, *args, **kwargs):
         print("put", args, kwargs)
@@ -95,6 +98,8 @@ class MyServer(SocketServer.BaseRequestHandler):
         except:
             self.request.send(bytes(False))
 
+    def check_path(self,*args,**kwargs):
+        pass
 
 
 if __name__ == '__main__':
