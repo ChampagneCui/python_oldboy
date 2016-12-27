@@ -33,8 +33,6 @@ class MyServer(SocketServer.BaseRequestHandler):
                     func(data)
                 else:
                     print("task action is not supported", action)
-                time.sleep(1)
-                conn.send(bytes('Command done!'))
         else:
             conn.sendall(bytes("False"))
 

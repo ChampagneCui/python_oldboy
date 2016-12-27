@@ -107,9 +107,9 @@ def main(ip='192.168.10.106',port='2222'):
 
         res = c.recv(1024).decode()
         if res == 'True':
+            recv_data = c.recv(1024)
+            print(recv_data.decode())
             while True:
-                recv_data = c.recv(1024)
-                print(recv_data.decode())
                 send_data=raw_input(">>:").strip()
                 if len(send_data)==0:continue
                 cmd_list=send_data.split()
