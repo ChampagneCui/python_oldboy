@@ -87,6 +87,15 @@ class MyServer(SocketServer.BaseRequestHandler):
         list=os.listdir('./')
         self.request.send(bytes(list))
 
+    def cd(self, *args,**kwargs):
+        print("cd",args[0].get("path"))
+        try:
+            os.chdir(args[0].get("path"))
+            self.request.send(bytes(True))
+        except:
+            self.request.send(bytes(False))
+
+
 
 if __name__ == '__main__':
     server = SocketServer.ThreadingTCPServer((ip_port), MyServer)

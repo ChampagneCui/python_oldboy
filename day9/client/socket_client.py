@@ -92,6 +92,15 @@ class feature:
         except:
             print('nothing！')
 
+    @staticmethod
+    def cd(cmd_list):
+        abs_filepath = cmd_list[1]
+        msg_data = {'action': 'cd','path': abs_filepath}
+        c.send(bytes(json.dumps(msg_data)))
+        if c.recv(1024)==False:
+            print('No such directory!')
+
+
 
 def main( ip='127.0.0.1', port=2222 ):
     global c
