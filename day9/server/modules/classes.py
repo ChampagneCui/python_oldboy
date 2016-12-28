@@ -104,7 +104,31 @@ class MyServer(SocketServer.BaseRequestHandler):
         print("cd",args[0].get("path"))
         try:
             os.chdir(args[0].get("path"))
-            self.request.send(bytes(True))
+            self.request.send(bytes('True'))
         except:
-            self.request.send(bytes(False))
+            self.request.send(bytes('False'))
+
+    def rm(self,*args,**kwargs):
+        files=args[0].get("path")
+        print("rm",files)
+        try:
+            if os.path.isfile(files):
+                os.remove(files)
+            elif os.path.isdir(files):
+                os.removedirs(files)
+            self.request.send(bytes('True'))
+        except:
+            self.request.send(bytes('False'))
+
+    def mkdir(self,*args,**kwargs):
+        files=args[0].get("path")
+        print("mkdir",files)
+        try:
+            if os.path.exists(files):
+                self.request.send(bytes('exists'))
+            else:
+                os.mkdir(files)
+                self.request.send(bytes('done'))
+        except:
+            self.request.send(bytes('False'))
 

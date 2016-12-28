@@ -99,8 +99,29 @@ class feature:
         abs_filepath = cmd_list[1]
         msg_data = {'action': 'cd','path': abs_filepath}
         c.send(bytes(json.dumps(msg_data)))
-        if c.recv(1024)==False:
+        if c.recv(1024)=='False':
             print('No such directory!')
+
+    @staticmethod
+    def rm(cmd_list):
+        abs_filepath = cmd_list[1]
+        msg_data = {'action': 'rm','path': abs_filepath}
+        c.send(bytes(json.dumps(msg_data)))
+        a=c.recv(1024)
+        if a!='True':
+            print('Directory is not null or no such file or directory!')
+
+    @staticmethod
+    def mkdir(cmd_list):
+        abs_filepath = cmd_list[1]
+        msg_data = {'action': 'mkdir','path': abs_filepath}
+        c.send(bytes(json.dumps(msg_data)))
+        a=c.recv(1024)
+        if a=='False':
+            print('Permission denied or some wrong!')
+        elif a=='exists':
+            print('Already exist!')
+
 
 
 
