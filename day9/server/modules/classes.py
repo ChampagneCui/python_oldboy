@@ -14,8 +14,7 @@ import subprocess
 
 
 def du(filepath):
-    return subprocess.check_output(['du', '-s', filepath]).split()[0].decode('utf-8')
-
+    return subprocess.check_output(['du', '-sb', filepath]).split()[0].decode('utf-8')
 
 class MyServer(SocketServer.BaseRequestHandler):
     def handle(self):
@@ -46,35 +45,30 @@ class MyServer(SocketServer.BaseRequestHandler):
         else:
             conn.sendall(bytes('False'))
 
-    def outer(func):
-        def inner(*args, **kwargs):
-            if du(dic[u][1]) <= dic[u][2]:
-                r = func(*args, **kwargs)
-                return r
-            else:
-                print('Please clean someone!')
-        return inner
-
-    @outer
     def put(self, *args, **kwargs):
         print("put", args, kwargs)
-        filesize = args[0].get("filesize")
-        filename = args[0].get("filename")
-        filemd5 = args[0].get("md5")
-        print(filename, filesize)
-        f = open(filename, 'wb')
-        recv_size = 0
-        while recv_size < filesize:
-            data = self.request.recv(4096)
-            f.write(data)
-            recv_size += len(data)
-            print(recv_size, 'of',filesize)###
-        print('file recv success')
-        f.close()
-        if MyServer.md5(filename)==filemd5:
-            print('md5sum ok')
+        print(int(du(dic[u][1])))
+        print(dic[u][2])
+        if int(du(dic[u][1])) < dic[u][2]:
+            self.request.send(bytes('True')) #quota
+            filesize = args[0].get("filesize")
+            filename = args[0].get("filename")
+            filemd5 = args[0].get("md5")
+            print(filename, filesize)
+            f = open(filename, 'wb')
+            recv_size = 0
+            while recv_size < filesize:
+                data = self.request.recv(4096)
+                f.write(data)
+                recv_size += len(data)
+            print('file recv success')
+            f.close()
+            if MyServer.md5(filename)==filemd5:
+                print('md5sum ok')
+            else:
+                print('md5sum fail')
         else:
-            print('md5sum fail')
+            self.request.send(bytes('False'))
 
     def fget(self, *args,**kwargs):
         print("fget", args,kwargs)

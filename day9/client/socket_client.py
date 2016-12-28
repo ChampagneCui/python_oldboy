@@ -32,13 +32,15 @@ class feature:
             print('file:%s size:%s') % (abs_filepath, file_size)
             msg_data = {'action': 'put', 'filename': filename, 'filesize': file_size,'md5':md5sum}
             c.send(bytes(json.dumps(msg_data)))
-            time.sleep(0.5)
 
-            print('start sending file', filename)
-            f = open(abs_filepath, 'rb')
-            for line in f:
-                c.send(line)
-            print('send file done')
+            if c.recv(1024).decode()=='True':
+                print('start sending file', filename)
+                f = open(abs_filepath, 'rb')
+                for line in f:
+                    c.send(line)
+                print('send file done')
+            else:
+                print('Your quota is full! Please rm someone!')
         else:
             print("file %s is not exist") % (abs_filepath)
 
