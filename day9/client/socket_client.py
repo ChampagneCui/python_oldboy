@@ -149,6 +149,10 @@ def main( ip='127.0.0.1', port=2222 ):
                 if len(send_data)==0:continue
                 cmd_list=send_data.split()
                 task_type=cmd_list[0]
+                if task_type=='exit':
+                    c.close()
+                    exit()
+                if len(cmd_list)<2 and task_type !='ls':continue
                 if hasattr(feature, task_type):
                     func=getattr(feature, task_type)
                     func(cmd_list)

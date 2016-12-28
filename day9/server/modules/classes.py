@@ -36,12 +36,14 @@ class MyServer(SocketServer.BaseRequestHandler):
                 print("[%s] says:%s" %(self.client_address,recv_data.decode()))
                 data=json.loads(recv_data.decode())
                 action=data.get("action")
+                if action=='exit':break
                 if hasattr(self,action):
                     time.sleep(0.5)
                     func = getattr(self, action)
                     func(data)
                 else:
                     print("task action is not supported", action)
+            conn.close()
         else:
             conn.sendall(bytes('False'))
 
