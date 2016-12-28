@@ -12,8 +12,14 @@ from settings import *
 import hashlib
 import subprocess
 
+
+def du(filepath):
+    return subprocess.check_output(['du', '-s', filepath]).split()[0].decode('utf-8')
+
+
 class MyServer(SocketServer.BaseRequestHandler):
     def handle(self):
+        global u
         conn=self.request
         u=base64.decodestring(conn.recv(1024).decode())
         p=base64.decodestring(conn.recv(1024).decode())
@@ -22,7 +28,8 @@ class MyServer(SocketServer.BaseRequestHandler):
             conn.sendall(bytes('True'))
             time.sleep(0.5)
             conn.sendall(bytes('welcome FTP : Hello %s' %(u)))
-            self.home=dic[u][1]
+            self.user=u
+            self.home=dic[self.user][1]
             os.chdir(self.home)
             while True:
                 recv_data=conn.recv(1024)
@@ -39,6 +46,16 @@ class MyServer(SocketServer.BaseRequestHandler):
         else:
             conn.sendall(bytes('False'))
 
+    def outer(func):
+        def inner(*args, **kwargs):
+            if du(dic[u][1]) <= dic[u][2]:
+                r = func(*args, **kwargs)
+                return r
+            else:
+                print('Please clean someone!')
+        return inner
+
+    @outer
     def put(self, *args, **kwargs):
         print("put", args, kwargs)
         filesize = args[0].get("filesize")
@@ -85,10 +102,6 @@ class MyServer(SocketServer.BaseRequestHandler):
         f.close()
         return str(hash).upper()
 
-    @classmethod
-    def du(self,filepath):
-        return subprocess.check_output(['du', '-s', path]).split()[0].decode('utf-8')
-
     def ls(self, *args,**kwargs):
         list=os.listdir('./')
         self.request.send(bytes(list))
@@ -101,5 +114,3 @@ class MyServer(SocketServer.BaseRequestHandler):
         except:
             self.request.send(bytes(False))
 
-    def check_path(self,*args,**kwargs):
-        pass
