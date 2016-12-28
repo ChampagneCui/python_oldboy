@@ -171,10 +171,11 @@ if __name__=='__main__':
     else:
         separator='/'
 
-    ip = raw_input('Please enter server IP:')
-    port = raw_input('Please enter server port:')
-    #main(ip,port)
-    main()
+    port=''
+    while port.isdigit() == False:
+        ip = raw_input('Please enter server IP:')
+        port = raw_input('Please enter server port:')
+    main(ip,port)
 
 
 
