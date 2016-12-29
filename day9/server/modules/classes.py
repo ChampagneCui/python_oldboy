@@ -29,6 +29,7 @@ class MyServer(SocketServer.BaseRequestHandler):
             conn.sendall(bytes('welcome FTP : Hello %s' %(u)))
             self.user=u
             self.home=dic[self.user][1]
+            if os.path.exists(self.home) == False: os.mkdir(self.home)
             os.chdir(self.home)
             while True:
                 recv_data=conn.recv(1024)
