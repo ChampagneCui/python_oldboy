@@ -1,18 +1,21 @@
 #!/usr/bin/env python2.7
 #_*_coding:utf-8_*_
 
+
+from sys import path
 path.append(r'../conf')
 from settings import *
 import paramiko
 
 
-transport = paramiko.Transport(('10.25.23.219', 22))
-transport.connect(username='root', password='Pass1234')
+def ssh_command(host,command):
+    transport = paramiko.Transport((dic[host][0], dic[host][1]))
+    transport.connect(username=dic[host][2], password=dic[host][3])
 
-ssh = paramiko.SSHClient()
-ssh._transport = transport
+    ssh = paramiko.SSHClient()
+    ssh._transport = transport
 
-stdin, stdout, stderr = ssh.exec_command('df -H')
-print stdout.read()
+    stdin, stdout, stderr = ssh.exec_command(command)
+    print stdout.read()
 
-transport.close()
+    transport.close()
