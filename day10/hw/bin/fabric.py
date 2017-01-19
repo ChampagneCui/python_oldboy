@@ -5,40 +5,36 @@ from sys import path
 path.append(r'../conf')
 path.append(r'../modules')
 from settings import *
-from features import *
+from features import feature
 import sys
 import getopt
 
+def usage():
+    pass
+
 if __name__ == '__main__':
-    #fab --host=leo@192.168.1.1:2299 --command="shell"
-    #fab --host=192.168.1.1. --command="put" --src="/tmp" --dest="/tmp"
-    opts, args = getopt.getopt(sys.argv[1:],longopts =["help","host=","mode=","src=","dest=","command="])
-    for op, value in opts:'
-            if (op == "--host"):
-                '''用正则匹配@：等，没有则给予默认'''
-                if value.find('@'):
-                    username,value=value.split('@')
-                if value.find(':')
-                    hostname,port=value.split(':')
-                    continue
-                hostname=value
+    #fab --group=testgroup --mode="shell" --command="ls -al"
+    #fab --host=1.1.1.1 --mode="put" --src="/tmp" --dest="/tmp"
+    opts, args = getopt.getopt(sys.argv[1:],longopts =["help","group=","host=","mode=","src=","dest=","command="])
+    for op, value in opts:
+            if (op == "--group"):
+                operation[group]=value
+            elif (op == "--host"):
+                operation[host]=value
             elif (op == "--mode"):
-                mode=value
+                operation[mode]=value
             elif (op == "--src"):
-                src=value
+                operation[src]=value
             elif (op == "--dest"):
-                dest= value
+                operation[dest]= value
             elif (op == "--command"):
-                command=value
+                operation[command]=value
             else:
                 usage() #help说明
 
-    if mode=='do':
-        ssh_command(hostname,command)
-    elif mode=='get':
-        get(hostname,src)
-    elif mode=='put':
-        put(hostname,src,dest)
-    elif mode=='show':
-        ####
+    if hasattr(feature,operation[mode]):
+        func = getattr(feature, operation[mode])
+        func(operation)
+    else:
+        print("doesn't support type.")
 

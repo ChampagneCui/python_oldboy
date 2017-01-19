@@ -3,5 +3,7 @@
 
 
 db_file=r'../db/passwd'
+operation={}
+
 
 dic=eval(open(db_file).read())
