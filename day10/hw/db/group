@@ -1,6 +1,6 @@
 [group1]
-host=(host1,host2)
+host=host1,host2
 
 [group2]
-host=(host3)
+host=host3
 

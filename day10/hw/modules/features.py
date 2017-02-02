@@ -1,6 +1,6 @@
 #!/usr/bin/env python2.7
 #_*_coding:utf-8_*_
-
+import os
 from sys import path
 path.append(r'../conf')
 from settings import *
@@ -19,6 +19,7 @@ def get_host_info(operation):
     if "group" in operation.keys():
         group_name = operation["group"]
         host_list = gconf.get(group_name, "host")
+        host_list=host_list.split(',')
         return host_list
     elif "host" in operation.keys():
         host_list = []
@@ -43,8 +44,9 @@ class feature:
             ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
             ssh.connect(hostname=ip, port=port, username=username, password=password)
             stdin, stdout, stderr = ssh.exec_command(operation["command"])
-            if (stdout.read() ==''):stdout=stderr
-            print(stdout.read())
+            print('''%s
+                %s''') %(host_list[i],stdout.read())
+            print(stderr.read())
             ssh.close()
         else:
             print('No command!')
@@ -57,7 +59,8 @@ class feature:
             transport = paramiko.Transport((ip,int(port)))
             transport.connect(username=username, password=password)
             sftp = paramiko.SFTPClient.from_transport(transport)
-            sftp.get(operation["src"],operation["dest"])
+            dest_file=operation["dest"]+'.'+ip ##防止重复后覆盖
+            sftp.get(operation["src"],dest_file)
             transport.close()
         else:
             print('Lack of src or dest!')

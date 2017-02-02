@@ -51,5 +51,5 @@ if __name__ == '__main__':
         else:
             print("doesn't support type.")
     else:
-        print('No target!')
+        print('No target or no mode!')
 
