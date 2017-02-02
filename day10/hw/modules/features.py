@@ -56,7 +56,6 @@ class feature:
             ip, port, username, password = get_info(host_list[i])
             transport = paramiko.Transport((ip,int(port)))
             transport.connect(username=username, password=password)
-
             sftp = paramiko.SFTPClient.from_transport(transport)
             sftp.get(operation["src"],operation["dest"])
             transport.close()
@@ -70,7 +69,6 @@ class feature:
             ip, port, username, password = get_info(host_list[i])
             transport = paramiko.Transport((ip, int(port)))
             transport.connect(username=username, password=password)
-
             sftp = paramiko.SFTPClient.from_transport(transport)
             sftp.put(operation["src"], operation["dest"])
             transport.close()
