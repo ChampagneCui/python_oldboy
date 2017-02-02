@@ -1,17 +1,17 @@
 [host1]
-ip=1.1.1.1
+ip=192.168.10.106
 port=22
-username=root
-password=root
+username=pi
+password=raspberry
 
 [host2]
-ip=1.1.1.2
+ip=127.0.0.1
 port=2299
-username=root
+username=aaa
 password=123456
 
 [host3]
-ip=1.1.1.3
+ip=127.0.0.1
 port=22
 username=root
 password=root
