@@ -4,6 +4,8 @@ import ConfigParser
 
 #db_file=r'../db/passwd'
 operation={}
+example='''Example: fabric --group="testgroup" --mode="shell" --command="ls -al"
+        "fabric --host=1.1.1.1 --mode="put" --src="/tmp" --dest="/tmp"'''
 
 group_file='../db/group'
 host_file='../db/host'

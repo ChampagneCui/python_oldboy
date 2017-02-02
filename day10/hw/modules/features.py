@@ -1,11 +1,19 @@
 #!/usr/bin/env python2.7
 #_*_coding:utf-8_*_
 
-
 from sys import path
 path.append(r'../conf')
 from settings import *
 import paramiko
+
+def show_group():
+    print(gsections)
+
+def show_host():
+    print(hsections)
+
+def usage():
+    print(example)
 
 def get_host_info(operation):
     if "group" in operation.keys():
@@ -22,7 +30,7 @@ def get_host_info(operation):
 
 def get_info(host):
     ip = hconf.get(host, "ip")
-    port = hconf.get(host, "port")
+    port = int(hconf.get(host, "port"))
     username = hconf.get(host, "username")
     password = hconf.get(host, "password")
     return ip,port,username,password
@@ -47,7 +55,7 @@ class feature:
         transport.connect(username=username, password=password)
 
         sftp = paramiko.SFTPClient.from_transport(transport)
-        sftp.get(operation["src"])
+        sftp.get(operation["src"],operation["dest"])
         transport.close()
 
     @staticmethod
