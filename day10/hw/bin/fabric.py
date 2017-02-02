@@ -39,14 +39,17 @@ if __name__ == '__main__':
                 usage() #help说明
                 exit()
 
-    if hasattr(feature,operation["mode"]):
-        func = getattr(feature, operation["mode"])
-        i = 0
-        host_list = get_host_info(operation)
-        while i < len(host_list):
-            S= threading.Thread(target=func,args=(operation,i,))
-            S.start()
-            i+=1
+    if (("group" in operation.keys() or "host" in operation.keys()) and "mode" in operation.keys()):
+        if hasattr(feature,operation["mode"]):
+            func = getattr(feature, operation["mode"])
+            i = 0
+            host_list = get_host_info(operation)
+            while i < len(host_list):
+                S= threading.Thread(target=func,args=(operation,i,))
+                S.start()
+                i+=1
+        else:
+            print("doesn't support type.")
     else:
-        print("doesn't support type.")
+        print('No target!')
 

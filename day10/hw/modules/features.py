@@ -25,8 +25,6 @@ def get_host_info(operation):
         host = operation["host"]
         host_list.append(host)
         return host_list
-    else:
-        return 1 ##报错
 
 def get_info(host):
     ip = hconf.get(host, "ip")
@@ -38,33 +36,43 @@ def get_info(host):
 class feature:
     @staticmethod
     def shell(operation,i):
-        host_list = get_host_info(operation)
-        ip,port,username,password=get_info(host_list[i])
-        ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh.connect(hostname=ip, port=port, username=username, password=password)
-        stdin, stdout, stderr = ssh.exec_command(operation["command"])
-        print(stdout.read())
-        ssh.close()
+        if ("command" in operation.keys()):
+            host_list = get_host_info(operation)
+            ip,port,username,password=get_info(host_list[i])
+            ssh = paramiko.SSHClient()
+            ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+            ssh.connect(hostname=ip, port=port, username=username, password=password)
+            stdin, stdout, stderr = ssh.exec_command(operation["command"])
+            if (stdout.read() ==''):stdout=stderr
+            print(stdout.read())
+            ssh.close()
+        else:
+            print('No command!')
 
     @staticmethod
     def get(operation,i):
-        host_list = get_host_info(operation)
-        ip, port, username, password = get_info(host_list[i])
-        transport = paramiko.Transport((ip,int(port)))
-        transport.connect(username=username, password=password)
+        if ("src" in operation.keys() and "dest" in operation.keys()):
+            host_list = get_host_info(operation)
+            ip, port, username, password = get_info(host_list[i])
+            transport = paramiko.Transport((ip,int(port)))
+            transport.connect(username=username, password=password)
 
-        sftp = paramiko.SFTPClient.from_transport(transport)
-        sftp.get(operation["src"],operation["dest"])
-        transport.close()
+            sftp = paramiko.SFTPClient.from_transport(transport)
+            sftp.get(operation["src"],operation["dest"])
+            transport.close()
+        else:
+            print('Lack of src or dest!')
 
     @staticmethod
     def put(operation,i):
-        host_list = get_host_info(operation)
-        ip, port, username, password = get_info(host_list[i])
-        transport = paramiko.Transport((ip, int(port)))
-        transport.connect(username=username, password=password)
+        if ("src" in operation.keys() and "dest" in operation.keys()):
+            host_list = get_host_info(operation)
+            ip, port, username, password = get_info(host_list[i])
+            transport = paramiko.Transport((ip, int(port)))
+            transport.connect(username=username, password=password)
 
-        sftp = paramiko.SFTPClient.from_transport(transport)
-        sftp.put(operation["src"], operation["dest"])
-        transport.close()
+            sftp = paramiko.SFTPClient.from_transport(transport)
+            sftp.put(operation["src"], operation["dest"])
+            transport.close()
+        else:
+            print('Lack of src or dest!')
