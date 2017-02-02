@@ -9,3 +9,8 @@
 1.本题采用getopt的模块来获取参数名和对应的值，每次都存入字典
 2.存完后先判断有没有host或group，以及mode，根据mode名做反射hasattr(字典):
 3.写一个类，类中存放了mode对应的操作
+
+配置文件读取模块：
+1.总体使用ConfigParser模块
+2.使用两个文件，一个为group，一个为host
+3.group文件只存放记录有哪些host，然后再去host文件中查对应的数据，优先级，先查group再host

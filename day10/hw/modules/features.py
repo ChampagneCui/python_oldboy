@@ -6,40 +6,38 @@ from sys import path
 path.append(r'../conf')
 from settings import *
 import paramiko
+import ConfigParser
+
+
+
+
 
 class feature:
-    def ssh_command(username,hostname,port,command):
-        if username == '':
-            username=default_user
-        if port=='':
-            port=default_port
-        transport = paramiko.Transport((hostname, port))
-        transport.connect(username=username, password=dic[host][3])
+    @staticmethod
+    def ssh_command(operation,ip,port,username,password):
+        transport = paramiko.Transport((ip,port ))
+        transport.connect(username=username,password=password )
         ssh = paramiko.SSHClient()
         ssh._transport = transport
-        stdin, stdout, stderr = ssh.exec_command(command)
+        stdin, stdout, stderr = ssh.exec_command(operation[command])
         print stdout.read()
         transport.close()
 
-    def get(username,hostname,port,src_path):
-        if username == '':
-            username = default_user
-        if port == '':
-            port = default_port
-        transport = paramiko.Transport((hostname, port))
-        transport.connect(username=username, password=dic[host][3])
+    @staticmethod
+    def get(operation,ip,port,username,password):
+        transport = paramiko.Transport((ip,port))
+        transport.connect(username=username, password=password)
 
         sftp = paramiko.SFTPClient.from_transport(transport)
-        sftp.put(src_path)
+        sftp.put(operation[src])
 
         transport.close()
 
-
-
-    def put(username,hostname,port,src_path, target_path):
-        transport = paramiko.Transport((hostname, port))
-        transport.connect(username=username, password=dic[host][3])
+    @staticmethod
+    def put(operation,ip,port,username,password):
+        transport = paramiko.Transport((ip, port))
+        transport.connect(username=username, password=password)
 
         sftp = paramiko.SFTPClient.from_transport(transport)
-        sftp.put(src_path, target_path)
+        sftp.put(operation[src], operation[dest])
         transport.close()
