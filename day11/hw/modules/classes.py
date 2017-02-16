@@ -7,7 +7,7 @@ import json
 
 
 class feature:
-    	@staticmethod
+	@staticmethod
 	def ls(data,conn):
 		list=os.listdir('./')
 		conn.send(list)
@@ -17,5 +17,5 @@ class feature:
 		pass
 
 	@staticmethod
-    	def put(operation,i):
+	def put(operation,i):
 		pass
