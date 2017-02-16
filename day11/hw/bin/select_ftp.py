@@ -24,19 +24,19 @@ def accept(sock, mask):
 
 def read(conn, mask):
     recv_data = conn.recv(1000)  # Should be ready
-        if data:
-                print('echoing', repr(recv_data), 'to', conn)
-                data=json.loads(recv_data.decode())
-                action=data.get("action")
-                if hasattr(feature,action):
-                        func = getattr(feature, action)
-                        func(data,conn)
-                else:
-                        print("task action is not supported", action)
-        else:
-                print('closing', conn)
-                sel.unregister(conn)
-                conn.close()
+    if data:
+            print('echoing', repr(recv_data), 'to', conn)
+            data=json.loads(recv_data.decode())
+            action=data.get("action")
+            if hasattr(feature,action):
+                    func = getattr(feature, action)
+                    func(data,conn)
+            else:
+                    print("task action is not supported", action)
+    else:
+            print('closing', conn)
+            sel.unregister(conn)
+            conn.close()
 
 
 while True:
