@@ -10,11 +10,6 @@ import selectors
 import socket
 
 sel = selectors.DefaultSelector()
-sock = socket.socket()
-sock.bind(('localhost', 10000))
-sock.listen(100)
-sock.setblocking(False)
-sel.register(sock, selectors.EVENT_READ, accept)
 
 def accept(sock, mask):
     conn, addr = sock.accept()  # Should be ready
@@ -24,7 +19,7 @@ def accept(sock, mask):
 
 def read(conn, mask):
     recv_data = conn.recv(1000)  # Should be ready
-    if data:
+    if recv_data:
             print('echoing', repr(recv_data), 'to', conn)
             data=json.loads(recv_data.decode())
             action=data.get("action")
@@ -37,6 +32,12 @@ def read(conn, mask):
             print('closing', conn)
             sel.unregister(conn)
             conn.close()
+
+sock = socket.socket()
+sock.bind(('localhost', 10000))
+sock.listen(100)
+sock.setblocking(False)
+sel.register(sock, selectors.EVENT_READ, accept)
 
 
 while True:

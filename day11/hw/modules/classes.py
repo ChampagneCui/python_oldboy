@@ -10,7 +10,7 @@ class feature:
 	@staticmethod
 	def ls(data,conn):
 		list=os.listdir('./')
-		conn.send(list)
+		conn.send(bytes(json.dumps(list),encoding='utf-8'))
 
 	@staticmethod
 	def get(data,conn):
