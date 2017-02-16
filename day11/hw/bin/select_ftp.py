@@ -2,9 +2,7 @@
 #_*_coding:utf-8_*_
 
 from sys import path
-path.append(r'../conf')
 path.append(r'../modules')
-from settings import *
 from classes import *
 import selectors
 import socket

@@ -18,7 +18,7 @@ class feature:
 
 	@staticmethod
 	def put(data,conn):
-		conn.send(bytes('True'))
+		conn.send(bytes('True',encoding='utf-8'))
 		filesize = data["filesize"]
 		filename = data["filename"]
 		print(filename, filesize)

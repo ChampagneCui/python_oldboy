@@ -35,7 +35,8 @@ class feature:
 		if os.path.isfile(abs_filepath):
 			file_size = os.stat(abs_filepath).st_size
 			filename = abs_filepath.split(separator)[-1]
-			print('file:%s size:%s') % (abs_filepath, file_size)
+			print(type(abs_filepath), type(file_size))
+			print('file:',abs_filepath, 'size:',file_size)
 			msg_data = {'action': 'put', 'filename': filename, 'filesize': file_size}
 			s.send(bytes(json.dumps(msg_data),encoding='utf-8'))
 
