@@ -17,5 +17,17 @@ class feature:
 		pass
 
 	@staticmethod
-	def put(operation,i):
-		pass
+	def put(data,conn):
+		conn.send(bytes('True'))
+		filesize = data["filesize"]
+		filename = data["filename"]
+		print(filename, filesize)
+		f = open(filename, 'wb')
+		recv_size = 0
+		while recv_size < filesize:
+			data = conn.recv(4096)
+			f.write(data)
+			recv_size += len(data)
+		print('file recv success')
+		f.close()
+

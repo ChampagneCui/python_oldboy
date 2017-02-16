@@ -2,8 +2,12 @@
 #_*_coding:utf-8_*_
 
 import socket
-import sys
+import os,sys
 import json
+import platform
+
+def isWindowsSystem():
+    return 'Windows' in platform.system()
 
 server_address = ('localhost', 10000)
 
@@ -25,6 +29,30 @@ class feature:
 		except:
 			print('nothing!')
 
+	@staticmethod
+	def put(cmd_list):
+		abs_filepath = cmd_list[1]
+		if os.path.isfile(abs_filepath):
+			file_size = os.stat(abs_filepath).st_size
+			filename = abs_filepath.split(separator)[-1]
+			print('file:%s size:%s') % (abs_filepath, file_size)
+			msg_data = {'action': 'put', 'filename': filename, 'filesize': file_size}
+			s.send(bytes(json.dumps(msg_data),encoding='utf-8'))
+
+			if s.recv(1024).decode() == 'True':
+				print('start sending file', filename)
+				f = open(abs_filepath, 'rb')
+				for line in f:
+					s.send(line)
+				print('send file done')
+		else:
+			print("file %s is not exist") % (abs_filepath)
+
+	@staticmethod
+	def fget():
+		pass
+
+
 def main():
 	while True:
 		send_data=input(">>:")
@@ -44,6 +72,10 @@ def main():
 	s.close()
 
 if __name__=='__main__':
+	if isWindowsSystem == True:
+		separator = '\\'
+	else:
+		separator = '/'
 	server_address = ('localhost', 10000)
 	s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	s.connect(server_address)
