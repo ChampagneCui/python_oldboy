@@ -40,10 +40,10 @@ class feature:
 				size=0
 				#f = open(abs_filepath, 'rb')
 				with open(abs_filepath, 'rb') as f:
-					while file_size >size:
-						send_data=f.read(1024)
+					while file_size >size :
+						send_data = f.read(4096)
 						s.send(send_data)
-						size +=len(send_data)
+						size += 4096
 
 				print('send file done')
 		else:
