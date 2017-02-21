@@ -16,7 +16,7 @@ def accept(sock, mask):
     sel.register(conn, selectors.EVENT_READ, read)
 
 def read(conn, mask):
-    recv_data = conn.recv(1000)  # Should be ready
+    recv_data = conn.recv(1024)  # Should be ready
     if recv_data:
             print('echoing', repr(recv_data), 'to', conn)
             data=json.loads(recv_data.decode())

@@ -9,11 +9,6 @@ import platform
 def isWindowsSystem():
     return 'Windows' in platform.system()
 
-server_address = ('localhost', 10000)
-
-# Create a TCP/IP socket
-s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.connect(server_address)
 
 class feature:
 	@staticmethod
@@ -42,9 +37,14 @@ class feature:
 
 			if s.recv(1024).decode() == 'True':
 				print('start sending file', filename)
-				f = open(abs_filepath, 'rb')
-				for line in f:
-					s.send(line)
+				size=0
+				#f = open(abs_filepath, 'rb')
+				with open(abs_filepath, 'rb') as f:
+					while file_size >size:
+						send_data=f.read(1024)
+						s.send(send_data)
+						size +=len(send_data)
+
 				print('send file done')
 		else:
 			print("file %s is not exist") % (abs_filepath)
