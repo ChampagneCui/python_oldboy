@@ -14,21 +14,21 @@ class feature:
 
 	@staticmethod
 	def fget(data,conn):
-		file = data["filename"]
+		file = data["file"]
 		if os.path.isfile(file):
 			filesize = os.stat(file).st_size
 			msg_data = json.dumps({'filesize': filesize})
 			conn.send(bytes(msg_data,encoding='utf-8'))
 			print('start sending file', file)
-			size = 0
-			# f = open(abs_filepath, 'rb')
-			with open(file, 'rb') as f:
-				while filesize > size:
-					send_data = f.read(4096)
-					conn.send(send_data)
-					size += 4096
-			print('send file done')
-			f.close()
+			if conn.recv(1024).decode() == 'True':
+				size = 0
+				# f = open(abs_filepath, 'rb')
+				with open(file, 'rb') as f:
+					while filesize > size:
+						send_data = f.read(4096)
+						conn.send(send_data)
+						size += 4096
+				print('send file done')
 		else:
 			conn.send(bytes('No such file!'))
 

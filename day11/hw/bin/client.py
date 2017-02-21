@@ -51,13 +51,15 @@ class feature:
 
 	@staticmethod
 	def fget(cmd_list):
-		abs_filepath = cmd_list[1]
-		msg_data = {'action': 'fget', 'file': abs_filepath}
-		s.send(bytes(json.dumps(msg_data)))
-		msg_data = json.loads(s.recv(1024).decode())
+		file = cmd_list[1]
+		msg_data = {'action': 'fget', 'file': file}
+		s.send(bytes(json.dumps(msg_data),encoding='utf-8'))
+		msg=s.recv(1024).decode()
+		print(msg)
+		msg_data = json.loads(msg)
 		filesize = int(msg_data.get('filesize'))
-		filename = abs_filepath.split(separator)[-1]
-		f = open(filename, 'wb')
+		s.send(bytes('True',encoding='utf-8'))
+		f = open(file, 'wb')
 		recv_size = 0
 		while filesize > recv_size :
 			data = s.recv(4096)
