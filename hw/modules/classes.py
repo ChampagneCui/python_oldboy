@@ -24,11 +24,16 @@ class feature:
 		print(filename, filesize)
 		f = open(filename, 'wb')
 		recv_size = 0
-		while recv_size < filesize:
-			data = conn.recv(1024)
-			print(data)
+		while filesize - recv_size > 4096:
+			data = conn.recv(4096)
 			f.write(data)
-			recv_size += len(data)
+			recv_size += 4096
+			print(recv_size)
+		else:
+			print("else....")
+			data = conn.recv(filesize - recv_size)
+			f.write(data)
+
 		print('file recv success')
 		f.close()
 
