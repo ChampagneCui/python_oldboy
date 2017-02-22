@@ -58,7 +58,6 @@ class feature:
 		print(msg)
 		msg_data = json.loads(msg)
 		filesize = int(msg_data.get('filesize'))
-		s.send(bytes('True',encoding='utf-8'))
 		f = open(file, 'wb')
 		recv_size = 0
 		while filesize > recv_size :
