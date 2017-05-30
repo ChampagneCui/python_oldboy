@@ -1,20 +1,28 @@
-#!/usr/bin/env python3
-#_*_coding:utf-8_*_
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
 
-from sys import path
-path.append(r'../modules')
-from classes import *
+"""
+@version: 1.0
+@author: ChenWei
+"""
 import selectors
 import socket
+# from conf import settings
+import os
 
 sel = selectors.DefaultSelector()
-filename_queue = {}
 
-def accept(sock, fd, mask):
+
+def accept(sock,fd, mask):
     conn, addr = sock.accept()  # Should be ready
     print('accepted', conn, 'from', addr)
     conn.setblocking(False)
-    sel.register(conn, selectors.EVENT_READ, read)
+    sel.register(conn, selectors.EVENT_READ, read)  # 如果数据来了,就调用read
+
+
+
+filename_queue = {}
+
 
 def read(conn, fd, mask):
     try:
@@ -26,7 +34,7 @@ def read(conn, fd, mask):
                 cmd, file_name, file_size = con_str_list
                 print('Begin Recv Data From {0}', conn)
                 # 记录当前连接客户端要发送的文件信息
-                filename_queue.update({fd: {"filename": file_name, "filesize": int(file_size)}})
+                filename_queue.update({fd:{"filename": file_name, "filesize": int(file_size)}})
                 # 回传消息
                 conn.send(bytes(file_name, encoding='utf8'))
         else:
@@ -68,27 +76,17 @@ def read(conn, fd, mask):
         conn.close()
 
 
-    recv_data = conn.recv(1024)  # Should be ready
-    if recv_data:
-            print('echoing', repr(recv_data), 'to', conn)
-            data=json.loads(recv_data.decode())
-            action=data.get("action")
-            if hasattr(feature,action):
-                    func = getattr(feature, action)
-                    func(data,conn)
-            else:
-                    print("task action is not supported", action)
-
-
 sock = socket.socket()
-sock.bind(('localhost', 10000))
+sock.bind(('localhost', 9999))
 sock.listen(100)
 sock.setblocking(False)
-sel.register(sock, selectors.EVENT_READ, accept)
 
+# 如果有新的请求过来了,就调用accept
+sel.register(sock, selectors.EVENT_READ, accept)  # select.select(inputs,outputs ...)来了新连接调用accept
 
 while True:
-    events = sel.select()
+    events = sel.select()  # 如果没有事件，就卡在这里
     for key, mask in events:
+        # print('key', key)
         callback = key.data
-        callback(key.fileobj, mask)
+        callback(key.fileobj, key.fd, mask)
