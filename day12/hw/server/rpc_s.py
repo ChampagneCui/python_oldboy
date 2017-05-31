@@ -20,9 +20,9 @@ def fib(n):
 def on_request(ch, method, props, body):
     operation = json.loads(body)
 
-    #print(operation["command"])
+    print(operation["command"])
 
-    response = operation
+    response = operation["command"]
 
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
