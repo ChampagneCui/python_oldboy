@@ -1,9 +1,9 @@
 #_*_coding:utf-8_*_
 import pika
 import uuid
-import json
 import getopt
 import sys
+import json
 
 operation={}
 
@@ -20,7 +20,7 @@ class FibonacciRpcClient(object):
 
     def on_response(self, ch, method, props, body):
         if self.corr_id == props.correlation_id:
-            self.response = body
+            self.response = json.loads(body)
 
     def call(self, n):
         self.response = None
@@ -34,7 +34,7 @@ class FibonacciRpcClient(object):
                                    body=str(n))
         while self.response is None:
             self.connection.process_data_events()
-        return int(self.response)
+        return self.response
 
 
 
@@ -54,5 +54,5 @@ if __name__ == '__main__':
     fibonacci_rpc = FibonacciRpcClient()
 
     print(" [x] Requesting operation")
-    response = fibonacci_rpc.call(operation)
+    response = fibonacci_rpc.call(json.dumps(operation))
     print(" [.] Got %r" % response)
