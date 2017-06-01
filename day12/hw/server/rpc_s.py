@@ -1,6 +1,7 @@
 #_*_coding:utf-8_*_
 import pika
 import json
+import os
 
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
@@ -9,20 +10,17 @@ channel = connection.channel()
 
 channel.queue_declare(queue='rpc_queue')
 
-def fib(n):
-    if n == 0:
-        return 0
-    elif n == 1:
-        return 1
-    else:
-        return fib(n-1) + fib(n-2)
+def doing(operation):
+    output== os.popen(operation["command"])
+    print(output)
+    return output
 
 def on_request(ch, method, props, body):
     operation = json.loads(body)
 
     print(operation["command"])
 
-    response = operation["command"]
+    response = doing(operation)
 
     ch.basic_publish(exchange='',
                      routing_key=props.reply_to,
