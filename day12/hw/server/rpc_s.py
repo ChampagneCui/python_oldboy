@@ -3,7 +3,7 @@ import pika
 import json
 import subprocess
 import socket
-import gevent
+import time
 
 
 def get_ip():
@@ -33,8 +33,11 @@ if __name__=='__main__':
     ip=get_ip()
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()
-    channel.queue_declare(queue='rpc_queue')
-    channel.basic_consume(on_request, queue='rpc_queue')
+    channel.exchange_declare(exchange='rpc_ex', type='fanout')
+    result = channel.queue_declare(exclusive=True)
+    queue_name = result.method.queue
+    channel.queue_bind(exchange='rpc_ex',queue=queue_name)
+    channel.basic_consume(on_request, queue=queue_name)
 
     print(" [x] Awaiting RPC requests")
     channel.start_consuming()
