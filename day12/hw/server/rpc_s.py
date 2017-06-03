@@ -3,6 +3,7 @@ import pika
 import json
 import subprocess
 import socket
+import gevent
 
 
 def get_ip():
