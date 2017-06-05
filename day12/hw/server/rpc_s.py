@@ -6,13 +6,20 @@ import socket
 import time
 import random
 import uuid
+import socket
+import fcntl
+import struct
 
 response_dict={}
 
-def get_ip():
-    hostname = socket.gethostname()
-    ip = socket.gethostbyname(hostname)
-    return ip
+def get_ip(ifname):
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    return socket.inet_ntoa(fcntl.ioctl(
+        s.fileno(),
+        0x8915,  # SIOCGIFADDR
+        struct.pack('256s', ifname[:15])
+    )[20:24])
+
 
 def doing(operation):
     try:
@@ -52,7 +59,8 @@ def on_request(ch, method, props, body):
 
 
 if __name__ == '__main__':
-    ip=get_ip()
+    ifname=raw_input('Pls enter the ifname? && eth0 : ')
+    ip=get_ip(ifname)
     connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
     channel = connection.channel()
     channel.exchange_declare(exchange='rpc_ex', type='fanout')
