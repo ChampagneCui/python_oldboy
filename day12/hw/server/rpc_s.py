@@ -26,23 +26,24 @@ def on_request(ch, method, props, body):
     if operation.has_key("host") and operation.has_key("command"):
         if ip in operation["host"]:
             new_corr_id = str(random.randint(0,99999))
-            result = ch.queue_declare(exclusive=True)
-            res_queue = result.method.queue
+            #result = ch.queue_declare(exclusive=True)
+            #res_queue = result.method.queue
+	    ch.queue_declare(new_corr_id)
 
             ch.basic_publish(exchange='',
                              routing_key=props.reply_to,
-                             properties=pika.BasicProperties(correlation_id=props.correlation_id, reply_to=res_queue),
+                             properties=pika.BasicProperties(correlation_id=props.correlation_id),
                              body=json.dumps(new_corr_id)
                              )
 
             response = doing(operation)
             response_dict[new_corr_id] = response
             print(response)
-            print(res_queue)
+            #print(res_queue)
             time.sleep(1)
 
             ch.basic_publish(exchange='',
-                             routing_key=res_queue,
+                             routing_key=new_corr_id,
                              properties=pika.BasicProperties(correlation_id=new_corr_id,),
                              body=json.dumps(response_dict[new_corr_id])
                              )
