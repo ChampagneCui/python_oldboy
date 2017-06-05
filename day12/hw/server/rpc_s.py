@@ -35,7 +35,7 @@ def on_request(ch, method, props, body):
             new_corr_id = str(random.randint(0,99999))
             #result = ch.queue_declare(exclusive=True)
             #res_queue = result.method.queue
-	    ch.queue_declare(new_corr_id)
+	        ch.queue_declare(new_corr_id)
 
             ch.basic_publish(exchange='',
                              routing_key=props.reply_to,
