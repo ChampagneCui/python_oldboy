@@ -5,9 +5,9 @@ import getopt
 import sys
 import json
 import time
+import pickle
 
 operation={}
-res_dict={}
 
 class RpcClient(object):
     def __init__(self):
@@ -15,6 +15,7 @@ class RpcClient(object):
 
         self.channel = self.connection.channel()
         self.channel.exchange_declare(exchange='rpc_ex',type='fanout')
+	self.res_dict={}
 
         result = self.channel.queue_declare(exclusive=True)
         self.callback_queue = result.method.queue
@@ -24,6 +25,8 @@ class RpcClient(object):
     def on_response(self, ch, method, props, body):
         if self.corr_id == props.correlation_id:
             self.response=json.loads(body)
+            res_queue=props.reply_to
+            self.res_dict[json.loads(body)]=res_queue
             ch.basic_ack(delivery_tag=method.delivery_tag)
 
     def call(self, n):
@@ -40,35 +43,44 @@ class RpcClient(object):
             self.connection.process_data_events()
         return self.response
 
-    def on_res(self, num,ch, method, props, body):
+    def on_res(self, ch, method, props, body):
         if num == props.correlation_id:
             self.res_response=json.loads(body)
 
 
     def get(self,n):
         self.res_response= None
-        self.channel.basic_consume(self.on_res(num=n), queue=self.callback_queue, no_ack=True,)
+        res_queue=self.res_dict[n]
+        self.channel.basic_consume(self.on_res, queue=res_queue, no_ack=True,)
         while self.res_response is None:
             self.connection.process_data_events()
         return self.res_response
 
 if __name__ == '__main__':
-    rpc = RpcClient()
+    #rpc = RpcClient()
     opts, args = getopt.getopt(sys.argv[1:],"h",["help","host=","command=","check="])
     for op, value in opts:
-            if (op == "--host"):
-                value=value.split()
-                operation["host"]=value
-            elif (op == "--command"):
-                operation["command"]=value
-            elif (op == "--check"):
-                a=rpc.get(value)
-                print(a)
-            else:
-                print("run --command='df -h' --hosts=192.168.3.55 10.4.3.4") #help说明
-                exit()
+        if (op == "--host"):
+            value=value.split()
+            operation["host"]=value
+        elif (op == "--command"):
+            operation["command"]=value
+        elif (op == "--check"):
+	    file = open("data+%s.tmp" %(response), 'rb')
+	    rpc=pickle.load(file)
+	    num=value
+            a=rpc.get(value)
+            print(a)
+	    file.close()
+	    exit()
+        else:
+            print("run --command='df -h' --hosts=192.168.3.55 10.4.3.4") #help说明
+            exit()
 
-    #print(" [x] Requesting operation")
+    rpc = RpcClient()
     response = rpc.call(json.dumps(operation))
+    output = open("data+%s.tmp" %(response), 'wb')
+    pickle.dump(rpc, output)
     print(" [.] task num: %r" % response)
+    output.close()
 

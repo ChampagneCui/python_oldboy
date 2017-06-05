@@ -25,21 +25,24 @@ def on_request(ch, method, props, body):
     operation = json.loads(body)
     if operation.has_key("host") and operation.has_key("command"):
         if ip in operation["host"]:
-            new_corr_id = random.randint(0,99999)
+            new_corr_id = str(random.randint(0,99999))
+            result = ch.queue_declare(exclusive=True)
+            res_queue = result.method.queue
 
             ch.basic_publish(exchange='',
                              routing_key=props.reply_to,
-                             properties=pika.BasicProperties(correlation_id=props.correlation_id,),
+                             properties=pika.BasicProperties(correlation_id=props.correlation_id, reply_to=res_queue),
                              body=json.dumps(new_corr_id)
                              )
 
             response = doing(operation)
             response_dict[new_corr_id] = response
             print(response)
+            print(res_queue)
             time.sleep(1)
 
             ch.basic_publish(exchange='',
-                             routing_key=props.reply_to,
+                             routing_key=res_queue,
                              properties=pika.BasicProperties(correlation_id=new_corr_id,),
                              body=json.dumps(response_dict[new_corr_id])
                              )
@@ -60,3 +63,4 @@ if __name__ == '__main__':
 
     print(" [x] Awaiting RPC requests")
     channel.start_consuming()
+
