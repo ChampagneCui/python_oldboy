@@ -16,5 +16,29 @@ class User(Base):
 
 class Couse(Base):
 	__tablename__ = 'course'  # 表名
-        id = Column(Integer,primary_key=True)
-        name = Column(String(32))
+	id = Column(Integer,primary_key=True)
+	name = Column(String(32))
+
+
+class Student(Base):
+	__tablename__ = 'student'
+	id = Column(Integer,primary_key=True)
+	name = Column(String(32))
+	password = Column(String(64))
+	qq = Column(Integer)
+
+class Classroom(Base):
+	__tablename__ = 'classroom'
+	id = Column(Integer, primary_key=True)
+	name = Column(String(32))
+	teacher_id = Column(Integer)
+	couse_id = Column(Integer)
+
+
+class Status(Base):
+	__tablename__ = 'status'
+	id = Column(Integer,primary_key=True)
+	course_id = Column(Integer)
+	student_id = Column(Integer)
+	attendance = Column(Integer)
+	score = Column(Integer)
