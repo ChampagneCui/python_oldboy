@@ -19,12 +19,24 @@ def add_teacher(name,password):
 	Session.add(user_obj)
 	Session.commit()
 
-#add_teacher('leo','1234')
-
-def add_course(name):
-	course_obj = Course(name=name)
+def add_course(name，detail):
+	course_obj = Course(name=name,detail=detail)
 	Session.add(course_obj)
 	Session.commit()
+
+def add_classroom(name,course):
+	#teacher_id=
+	classroom_obj = Classroom(name=name,teacher_id='xxx',course_id='xxx')
+	Session.add(classroom_obj)
+	Session.commit()
+
+def	add_student_to_class(student,classroom):
+	#student_id=
+	#classroom_id=
+
+
+add_teacher('alex','1234')
+
 
 
 

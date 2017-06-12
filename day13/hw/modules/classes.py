@@ -2,7 +2,7 @@
 import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String,VARCHAR
 from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
@@ -18,7 +18,7 @@ class Couse(Base):
 	__tablename__ = 'course'  # 表名
 	id = Column(Integer,primary_key=True)
 	name = Column(String(32))
-
+	detail = Column(VARCHAR)
 
 class Student(Base):
 	__tablename__ = 'student'
@@ -32,7 +32,6 @@ class Classroom(Base):
 	id = Column(Integer, primary_key=True)
 	name = Column(String(32))
 	teacher_id = Column(Integer)
-	couse_id = Column(Integer)
 
 
 class Status(Base):
@@ -42,3 +41,9 @@ class Status(Base):
 	student_id = Column(Integer)
 	attendance = Column(Integer)
 	score = Column(Integer)
+
+class StudentInClassroom(Base):
+	__tablename__ = 'student_in_classroom'
+	id = Column(Integer,primary_key=True)
+	classroom_id = Column(Integer)
+	student_id = Column(Integer)

@@ -38,21 +38,20 @@
 课程
     id
     name
-
-    例 id name
-        1 python
-        2 linux
+    detail
+    例 id    name       detail
+        1   python1     python基础1
+        2   linux       linux介绍
+        3   python2     python基础2
 
 班级
     id
     name
     teacher_id
-    course_id
 
-    例 id name  teacher_id   course_id
-       1  python1 1         1
-       2  linux1  2         2
-       3  python2 1         1
+    例 id name  teacher_id
+       1  python 1
+       2  linux1  2
 
 情况表
     course_id
@@ -64,3 +63,8 @@
         1           1           1           80
         1           2           0           0
 
+缺少班级对应学生情况
+班级学生表
+    id
+    classroom_id
+    student_id
