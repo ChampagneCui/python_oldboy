@@ -10,7 +10,6 @@ engine = create_engine("mysql+pymysql://root:Pass1234@127.0.0.1/course",
 
 Base = declarative_base()  # 生成orm基类
 
-
 class User(Base):
 	__tablename__ = 'user'  # 表名
 	id = Column(Integer,primary_key=True)
@@ -22,6 +21,7 @@ class Couse(Base):
 	__tablename__ = 'course'  # 表名
         id = Column(Integer,primary_key=True)
         name = Column(String(32))
+
 
 Base.metadata.create_all(engine)  # 创建表结构
 
