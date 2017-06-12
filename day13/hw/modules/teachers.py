@@ -31,9 +31,11 @@ def add_classroom(name,course):
 	Session.commit()
 
 def	add_student_to_class(student,classroom):
-	#student_id=
-	#classroom_id=
-
+	#student= Session.query(Student).filter_by(name=student).first()
+	#student.id
+	#classroom=  Session.query(Classroom).filter_by(name=student).first()
+	#classroom_id
+	#多对多
 
 add_teacher('alex','1234')
 
