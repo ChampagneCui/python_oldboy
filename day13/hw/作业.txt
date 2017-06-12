@@ -60,7 +60,7 @@
     attendance
     score
 
-course_id   student_id  attendance score
-1           1           1           80
-1           2           0           0
+    例course_id   student_id  attendance score
+        1           1           1           80
+        1           2           0           0
 
