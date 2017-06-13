@@ -30,16 +30,18 @@ def add_classroom(name):
 	Session.add(classroom_obj)
 	Session.commit()
 
-def	add_student_to_class(student,classroom):
-	student= Session.query(Student).filter_by(name=student).first()
-	#student.id
-	classroom=  Session.query(Classroom).filter_by(name=student).first()
-	#classroom_id
-	#多对多
+def	add_student_to_class(student_qq,classroom):
+	student= Session.query(Student).filter_by(qq=student_qq).first()
+	classroom=  Session.query(Classroom).filter_by(name=classroom).first()
+	add_student_to_classroom_obj = StudentInClassroom(student_id=student.id,classroom_id=classroom.id)
+	Session.add(add_student_to_classroom_obj)
+	Session.commit()
+
+def show_student(classroom):
+	classroom=Session.query(Classroom).filter_by(name=classroom).first()
+	student=Session.query(StudentInClassroom).filter_by(classroom_id=classroom.id).all()
+	print(student)
+	#print(Session.query(Student.id,Student.name,Student.qq).all())
 
 
-add_teacher('alex','1234')
-
-
-
-
+show_student('python')

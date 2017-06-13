@@ -39,10 +39,11 @@
     id
     name
     detail
-    例 id    name       detail
-        1   python1     python基础1
-        2   linux       linux介绍
-        3   python2     python基础2
+    classroom_id
+    例 id    name       detail       classroom_id
+        1   python1     python基础1   1
+        2   linux       linux介绍     2
+        3   python2     python基础2   1
 
 班级
     id

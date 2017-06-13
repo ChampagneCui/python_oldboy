@@ -22,6 +22,8 @@ class Course(Base):
 	id = Column(Integer,primary_key=True)
 	name = Column(String(32))
 	detail = Column(VARCHAR(128))
+	classroom_id = Column(Integer,ForeignKey('classroom.id'))
+	classroom = relationship("Classroom",backref="course")
 
 class Student(Base):
 	__tablename__ = 'student'
