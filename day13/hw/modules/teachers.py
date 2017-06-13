@@ -15,27 +15,28 @@ Session_class = sessionmaker(bind=engine)
 Session = Session_class()
 
 def add_teacher(name,password):
-	user_obj = User(name=name, password=password)
-	Session.add(user_obj)
+	teacher_obj = Teacher(name=name, password=password)
+	Session.add(teacher_obj)
 	Session.commit()
 
-def add_course(name，detail):
-	course_obj = Course(name=name,detail=detail)
+def add_course(name,detail):
+	course_obj = Course(name=name, detail=detail)
 	Session.add(course_obj)
 	Session.commit()
 
-def add_classroom(name,course):
+def add_classroom(name):
 	#teacher_id=
-	classroom_obj = Classroom(name=name,teacher_id='xxx',course_id='xxx')
+	classroom_obj = Classroom(name=name,teacher_id='xxx')
 	Session.add(classroom_obj)
 	Session.commit()
 
 def	add_student_to_class(student,classroom):
-	#student= Session.query(Student).filter_by(name=student).first()
+	student= Session.query(Student).filter_by(name=student).first()
 	#student.id
-	#classroom=  Session.query(Classroom).filter_by(name=student).first()
+	classroom=  Session.query(Classroom).filter_by(name=student).first()
 	#classroom_id
 	#多对多
+
 
 add_teacher('alex','1234')
 
