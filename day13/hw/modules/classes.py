@@ -17,7 +17,7 @@ class Teacher(Base):
 	password = Column(String(64))
 
 
-class Couse(Base):
+class Course(Base):
 	__tablename__ = 'course'  # 表名
 	id = Column(Integer,primary_key=True)
 	name = Column(String(32))
