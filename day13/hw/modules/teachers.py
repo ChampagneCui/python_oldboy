@@ -30,7 +30,7 @@ def add_classroom(name):
 	Session.add(classroom_obj)
 	Session.commit()
 
-def	add_student_to_class(student_qq,classroom):
+def add_student_to_class(student_qq,classroom):
 	student= Session.query(Student).filter_by(qq=student_qq).first()
 	classroom=  Session.query(Classroom).filter_by(name=classroom).first()
 	add_student_to_classroom_obj = StudentInClassroom(student_id=student.id,classroom_id=classroom.id)
@@ -39,9 +39,18 @@ def	add_student_to_class(student_qq,classroom):
 
 def show_student(classroom):
 	classroom=Session.query(Classroom).filter_by(name=classroom).first()
-	student=Session.query(StudentInClassroom).filter_by(classroom_id=classroom.id).all()
-	print(student)
-	#print(Session.query(Student.id,Student.name,Student.qq).all())
+	#student=Session.query(StudentInClassroom).join(Student).filter(StudentInClassroom.classroom_id==classroom.id).all()
+	student=Session.query(Student).join(StudentInClassroom).filter(StudentInClassroom.classroom_id==classroom.id).all()
+	i=0
+	while i < len(student):
+		print(student[i])
+		i+=1
 
+def show_classroom():
+	i=0
+	classroom=Session.query(Classroom).all()
+        while i < len(classroom):
+                print(classroom[i])
+                i+=1
 
-show_student('python')
+show_classroom()

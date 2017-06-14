@@ -32,12 +32,18 @@ class Student(Base):
 	password = Column(String(64))
 	qq = Column(Integer)
 
+	def __repr__(self):
+    		return "<Student(id='%s',name='%s',qq='%s')>" % (self.id,self.name,self.qq)
+
 class Classroom(Base):
 	__tablename__ = 'classroom'
 	id = Column(Integer, primary_key=True)
 	name = Column(String(32))
 	teacher_id = Column(Integer,ForeignKey('teacher.id'))
 	teacher = relationship("Teacher",backref="classroom")
+
+	def __repr__(self):
+                return "<Student(id='%s',name='%s')>" % (self.id,self.name)
 
 
 class Status(Base):
