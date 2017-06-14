@@ -53,4 +53,17 @@ def show_classroom():
                 print(classroom[i])
                 i+=1
 
-show_classroom()
+def add_student_to_course():
+	#采用反向方式,即写在student列表中的同学为没出勤的同学
+	b1 = Course(name="Python222")
+ 
+	a1 = Student(name='leo')
+	a2 = Student(name='aaa')
+	a3 = Student(qq=111111)
+ 
+	b1.student = [a1,a2,a3]
+ 
+	Session.add_all([b1,a1,a2,a3])
+	Session.commit()
+	
+add_student_to_course()
