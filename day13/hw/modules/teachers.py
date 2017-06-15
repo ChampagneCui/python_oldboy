@@ -53,17 +53,26 @@ def show_classroom():
                 print(classroom[i])
                 i+=1
 
-def add_student_to_course():
-	#采用反向方式,即写在student列表中的同学为没出勤的同学
-	b1 = Course(name="Python222")
+def add_student_to_course(course,students_qq):
+	b1 = Session.query(Course).filter_by(name=course).first()
+	student_list=[]
+ 	for qq in students_qq:
+		a = Session.query(Student).filter_by(qq=qq).first()
+		student_list.append(a)
  
-	a1 = Student(name='leo')
-	a2 = Student(name='aaa')
-	a3 = Student(qq=111111)
+	b1.student = student_list
  
-	b1.student = [a1,a2,a3]
- 
-	Session.add_all([b1,a1,a2,a3])
+	#Session.add_all([b1])
+	Session.commit()
+
+def add_score(course_id,student_id,score):
+	status = Session.query(student_attendance_score).filter(course_id==course_id).filter(student_id==student_id).first()
+	print(status.score)
+	status.score = score
 	Session.commit()
 	
-add_student_to_course()
+	
+add_score(7,1,88)
+	
+#s=[111111,222222,333333]
+#add_student_to_course('python222',s)
