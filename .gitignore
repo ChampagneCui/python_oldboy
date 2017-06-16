@@ -1,3 +1,4 @@
 #ignore .metadata
 .idea
 test.py
+*.pyc
