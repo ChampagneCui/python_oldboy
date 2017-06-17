@@ -56,6 +56,7 @@ class student_class(object):
 
 	def show_score(self, course):
 		self.course = Session.query(Course).filter(Course.name == course).first()
+		aa= Session.query(Status).all()
 		self.status = Session.query(Status).filter(Status.student_id == 2).\
 			filter(Status.course_id==2).first()
 		print('Your %s score is %d' %(course, self.status.score))
@@ -68,4 +69,5 @@ class student_class(object):
 					i+=1
 
 	def submit(self):
-		pass
+		self.show_classroom()
+		print('提交作业')

@@ -23,7 +23,6 @@ Status = Table('status', Base.metadata,
 						Column('score',Integer),
 						)
 
-
 '''
 class Status(Base):
 	__tablename__ = 'status'
