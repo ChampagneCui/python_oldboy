@@ -3,13 +3,9 @@ from sys import path
 path.append(r'..\modules')
 path.append('..\conf')
 from settings import *
-from students import t_login
-from teachers import s_login
-import sqlalchemy
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String
-from sqlalchemy.orm import sessionmaker
+from students import s_main
+from teachers import t_main
+
 
 
 def main():

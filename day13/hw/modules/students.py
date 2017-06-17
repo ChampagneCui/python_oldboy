@@ -23,44 +23,48 @@ def s_login():
 	global s
 	username = raw_input('请输入账号:')
 	password = raw_input('请输入密码')
-	if login(username, password,'s') == 0: #login函数公用
+	if login(username, password,'s') == 0:
 		s=student_class(username)
-		print('%s, welcome login!' %(s.current_student))
+		print('%s, welcome login!' %(s.current_student.name))
 	else:
 		print('Wrong username or password!')
 
 def s_main():
-    while 1:
-        welcome = raw_input(S_WELCOME_MSG) #上传、登陆、查看
-        if welcome == '1':
+	while 1:
+		welcome = raw_input(S_WELCOME_MSG) #上传、登陆、查看
+		if welcome == '1':
 			try:
-            	s.submit()
+				s.submit()
 			except:
 				print('Please login')
-        elif welcome == '2':
-            s_login()
-        elif welcome == '3':
+		elif welcome == '2':
+			s_login()
+		elif welcome == '3':
 			try:
-            	s.show_score()
+				course_name=raw_input('Please input the course:')
+				s.show_score(course_name)
 			except:
 				print('Please login')
-        else:
-            print('错误选项，请重新选择!')
+		elif welcome == '4':
+			s.show_classroom()
+		else:
+			print('错误选项，请重新选择!')
 
 class student_class(object):
 	def __init__(self, name):
-		self.current_student = name
+		self.current_student = Session.query(Student).filter(Student.name==name).first()
 
-	def show_score(self,student_id,course):
-		self.course=Session.query(Course).filter(name==course).first()
-		self.status=Session.query(student_attendance_score).filter(student_id==student_id).filter(course_id==self.course.id).first()
-		print('Your %s score is %d' %(course,status.score))
+	def show_score(self, course):
+		self.course = Session.query(Course).filter(Course.name == course).first()
+		self.status = Session.query(Status).filter(Status.student_id == 2).\
+			filter(Status.course_id==2).first()
+		print('Your %s score is %d' %(course, self.status.score))
 
 	def show_classroom(self):
 		i=0
-		self.classroom=Session.query(Classroom).all()
+		self.classroom = Session.query(Classroom).all()
 		while i < len(self.classroom):
-					print(self.classroom[i])
+					print(self.classroom[i].name)
 					i+=1
 
 	def submit(self):
