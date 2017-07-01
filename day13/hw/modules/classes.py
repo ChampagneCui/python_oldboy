@@ -16,23 +16,23 @@ class Teacher(Base):
 	name = Column(String(32))
 	password = Column(String(64))
 
-
+'''
 Status = Table('status', Base.metadata,
 						Column('course_id',Integer,ForeignKey('course.id'),primary_key=True),
 						Column('student_id',Integer,ForeignKey('student.id'),primary_key=True),
 						Column('score',Integer),
 						)
-
 '''
+
 class Status(Base):
 	__tablename__ = 'status'
-	__table_args__ = (PrimaryKeyConstraint('course_id', 'student_id'),Base.metadata,)
+	__table_args__ = (PrimaryKeyConstraint('course_id', 'student_id'),)
 	course_id = Column(Integer,ForeignKey('course.id'))
 	course = relationship("Course",backref="status")
 	student_id = Column(Integer,ForeignKey('student.id'))
 	student = relationship("Student",backref="status")
 	score = Column(Integer)
-'''
+
 
 class Course(Base):
 	__tablename__ = 'course'  # 表名
@@ -41,7 +41,7 @@ class Course(Base):
 	detail = Column(String(128))
 	classroom_id = Column(Integer,ForeignKey('classroom.id'))
 	classroom = relationship("Classroom",backref="course")
-	student = relationship('Student',secondary=Status,backref='course')
+	#student = relationship('Student',secondary=Status,backref='course')
 
 class Student(Base):
 	__tablename__ = 'student'

@@ -26,7 +26,7 @@ def t_login():
 	password = raw_input('请输入密码')
 	if login(username, password, 't') == 0:  # login函数公用
 		t = teacher_class(username)
-		print('%s, welcome login!' % (t.current_student))
+		print('%s, welcome login!' % (t.current_teacher))
 	else:
 		print('Wrong username or password!')
 
@@ -36,7 +36,7 @@ def t_main():
 		welcome = raw_input(T_WELCOME_MSG)  # 上传、登陆、查看
 		if welcome == '1':
 			try:
-				t.submit()
+				t.add_teacher()
 			except:
 				print('Please login')
 		elif welcome == '2':
@@ -54,7 +54,9 @@ class teacher_class(object):
 	def __init__(self, name):
 		self.current_teacher = name
 
-	def add_teacher(self,name, password):
+	def add_teacher(self):
+		name = raw_input('请输入新教师账号:')
+		password = raw_input('请输入新教师密码')
 		self.teacher_obj = Teacher(name=name, password=password)
 		Session.add(self.teacher_obj)
 		Session.commit()
@@ -96,7 +98,7 @@ class teacher_class(object):
 
 	def add_student_to_course(self,course, students_qq):
 		'''默认是全出勤了，这里选择的是没有出勤的个别同学'''
-		self.b1 = Session.query(Course).filter_by(name=course).first()
+		self.c1 = Session.query(Course).filter_by(name=course).first()
 		absence_list = []
 		for qq in students_qq:
 			a = Session.query(Student).filter_by(qq=qq).first()
@@ -105,7 +107,9 @@ class teacher_class(object):
 		self.total_student = Session.query(Student).join(StudentInClassroom).filter(StudentInClassroom.classroom_id == self.b1.classroom_id).all()
 		student_list = list(set(self.total_student) - set(absence_list))
 
-		self.b1.student = student_list
+		#self.b1.student = student_list
+		for x in student_list:
+			print x
 
 		# Session.add_all([b1])
 		Session.commit()
