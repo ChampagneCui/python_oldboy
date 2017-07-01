@@ -20,6 +20,16 @@ Session_class = sessionmaker(bind=engine)
 Session = Session_class()
 
 
+def outer(func):
+	def inner(*args,**kwargs):
+		try:
+			t.hi()
+			r = func(*args, **kwargs)
+			return r
+		except:
+			print('请登陆！')
+	return inner
+
 def t_login():
 	global t
 	username = raw_input('请输入账号:')
@@ -46,7 +56,8 @@ def t_main():
 				t.add_course()
 			except:
 				print('Please login')
-
+		elif welcome == '4':
+			t.add_classroom()
 		else:
 			print('错误选项，请重新选择!')
 
@@ -122,3 +133,6 @@ class teacher_class(object):
 		self.status = Session.query(Status).filter(course_id == course_id).filter(student_id == student_id).first()
 		self.status.score = score
 		Session.commit()
+
+	def hi(self): #用来给装饰器验证登陆与否
+		print('Hi %s') %(self.current_teacher.name)

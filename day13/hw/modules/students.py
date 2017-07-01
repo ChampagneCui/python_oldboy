@@ -18,6 +18,15 @@ Base.metadata.create_all(engine)
 Session_class = sessionmaker(bind=engine)
 Session = Session_class()
 
+def outer(func):
+	def inner(*args,**kwargs):
+		try:
+			s.hi()
+			r = func(*args, **kwargs)
+			return r
+		except:
+			print('请登陆！')
+	return inner
 
 def s_login():
 	global s
@@ -33,18 +42,11 @@ def s_main():
 	while 1:
 		welcome = raw_input(S_WELCOME_MSG) #上传、登陆、查看
 		if welcome == '1':
-			try:
-				s.submit()
-			except:
-				print('Please login')
+			s.submit()
 		elif welcome == '2':
 			s_login()
 		elif welcome == '3':
-			try:
-				course_name=raw_input('Please input the course:')
-				s.show_score(course_name)
-			except:
-				print('Please login')
+			s.show_score()
 		elif welcome == '4':
 			s.show_classroom()
 		else:
@@ -54,7 +56,9 @@ class student_class(object):
 	def __init__(self, name):
 		self.current_student = Session.query(Student).filter(Student.name==name).first()
 
-	def show_score(self, course):
+	@outer
+	def show_score(self):
+		course = raw_input('Please input the course:')
 		self.course = Session.query(Course).filter(Course.name == course).first()
 		print("s",self.current_student.id)
 		print("c",self.course.id)
@@ -62,6 +66,7 @@ class student_class(object):
 			filter(Status.course_id==self.course.id).first()
 		print('Your %s score is %d' %(course, self.status.score))
 
+	@outer
 	def show_classroom(self):
 		i=0
 		self.classroom = Session.query(Classroom).all()
@@ -69,6 +74,10 @@ class student_class(object):
 					print(self.classroom[i].name)
 					i+=1
 
+	@outer
 	def submit(self):
 		self.show_classroom()
 		print('提交作业')
+
+	def hi(self): #用来给装饰器验证登陆与否
+		print('Hi %s') %(self.current_student.name)
