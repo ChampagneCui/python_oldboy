@@ -43,9 +43,10 @@ def t_main():
 			t_login()
 		elif welcome == '3':
 			try:
-				t.show_score()
+				t.add_course()
 			except:
 				print('Please login')
+
 		else:
 			print('错误选项，请重新选择!')
 
@@ -61,7 +62,9 @@ class teacher_class(object):
 		Session.add(self.teacher_obj)
 		Session.commit()
 
-	def add_course(self,name, detail):
+	def add_course(self):
+		name = raw_input('请输入新课程名:')
+		detail = raw_input('请输入注释')
 		self.course_obj = Course(name=name, detail=detail)
 		Session.add(self.course_obj)
 		Session.commit()

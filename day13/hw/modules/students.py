@@ -56,9 +56,10 @@ class student_class(object):
 
 	def show_score(self, course):
 		self.course = Session.query(Course).filter(Course.name == course).first()
-		aa= Session.query(Status).all()
-		self.status = Session.query(Status).filter(Status.student_id == 2).\
-			filter(Status.course_id==2).first()
+		print("s",self.current_student.id)
+		print("c",self.course.id)
+		self.status = Session.query(Status).filter(Status.student_id == self.current_student.id).\
+			filter(Status.course_id==self.course.id).first()
 		print('Your %s score is %d' %(course, self.status.score))
 
 	def show_classroom(self):
