@@ -69,14 +69,14 @@ def t_main():
         elif welcome == '9':
             t.add_score()
         else:
-            print('错误选项，请重新选择!')
+			print('错误选项，请重新选择!')
 
 
 class teacher_class(object):
 	def __init__(self, name):
 		self.current_teacher = name
 
-    @outer
+	@outer
 	def add_teacher(self):
 		name = raw_input('请输入新教师账号:')
 		password = raw_input('请输入新教师密码')
@@ -84,7 +84,7 @@ class teacher_class(object):
 		Session.add(self.teacher_obj)
 		Session.commit()
 
-    @outer
+	@outer
 	def add_course(self):
 		name = raw_input('请输入新课程名:')
 		detail = raw_input('请输入注释')
@@ -92,23 +92,27 @@ class teacher_class(object):
 		Session.add(self.course_obj)
 		Session.commit()
 
-    @outer
-	def add_classroom(self,name):
-		# teacher_id=
-		self.classroom_obj = Classroom(name=name, teacher_id='xxx')
+	@outer
+	def add_classroom(self):
+		name = raw_input('请输入新班级名:')
+		teacher=Session.query(Teacher).filter_by(name=self.current_teacher).first()
+		self.classroom_obj = Classroom(name=name, teacher_id=teacher.id)
 		Session.add(self.classroom_obj)
 		Session.commit()
 
-    @outer
-	def add_student_to_class(self,student_qq, classroom):
-		self.student = Session.query(Student).filter_by(qq=student_qq).first()
+	@outer
+	def add_student_to_class(self):
+		student_qq=raw_input('请输入学员qq号:')
+		classroom = raw_input('请输入班级名:')
+		self.student = Session.query(Student).filter_by(qq=int(student_qq)).first()
 		self.classroom = Session.query(Classroom).filter_by(name=classroom).first()
 		self.add_student_to_classroom_obj = StudentInClassroom(student_id=self.student.id, classroom_id=self.classroom.id)
 		Session.add(self.add_student_to_classroom_obj)
 		Session.commit()
 
-    @outer
-	def show_student(self,classroom):
+	@outer
+	def show_student(self):
+		classroom = raw_input('请输入班级名:')
 		self.classroom = Session.query(Classroom).filter_by(name=classroom).first()
 		# student=Session.query(StudentInClassroom).join(Student).filter(StudentInClassroom.classroom_id==classroom.id).all()
 		self.student = Session.query(Student).join(StudentInClassroom).filter(StudentInClassroom.classroom_id == self.classroom.id).all()
@@ -117,7 +121,7 @@ class teacher_class(object):
 			print(self.student[i])
 			i += 1
 
-    @outer
+	@outer
 	def show_classroom(self):
 		i = 0
 		self.classroom = Session.query(Classroom).all()
@@ -125,9 +129,11 @@ class teacher_class(object):
 			print(self.classroom[i])
 			i += 1
 
-    @outer
-	def add_student_to_course(self,course, students_qq):
+	@outer
+	def add_student_to_course(self):
 		'''默认是全出勤了，这里选择的是没有出勤的个别同学'''
+		course = raw_input('请输入课程名:')
+		students_qq = raw_input('请输入未出席的学员qq号,以逗号分隔:')
 		self.c1 = Session.query(Course).filter_by(name=course).first()
 		absence_list = []
 		for qq in students_qq:
@@ -144,13 +150,16 @@ class teacher_class(object):
 		# Session.add_all([b1])
 		Session.commit()
 
-    @outer
+	@outer
 	def add_score(self,course_id, student_id, score):
+		course = raw_input('请输入课程名:')
+		student = raw_input('请输入学员名:')
+		score = raw_input('请输入分数:')
 		self.status = Session.query(Status).filter(course_id == course_id).filter(student_id == student_id).first()
 		self.status.score = score
 		Session.commit()
 
 
-    @outer
+	@outer
 	def hi(self): #用来给装饰器验证登陆与否
 		print('Hi %s') %(self.current_teacher.name)
