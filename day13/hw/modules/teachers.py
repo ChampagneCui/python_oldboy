@@ -58,6 +58,16 @@ def t_main():
 				print('Please login')
 		elif welcome == '4':
 			t.add_classroom()
+        elif welcome == '5':
+            t.add_student_to_class()
+        elif welcome == '6':
+            t.show_student()
+        elif welcome == '7':
+            t.show_classroom()
+        elif welcome == '8':
+            t.add_student_to_class()
+        elif welcome == '9':
+            t.add_score()
 		else:
 			print('错误选项，请重新选择!')
 
