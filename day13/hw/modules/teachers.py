@@ -68,14 +68,15 @@ def t_main():
             t.add_student_to_class()
         elif welcome == '9':
             t.add_score()
-		else:
-			print('错误选项，请重新选择!')
+        else:
+            print('错误选项，请重新选择!')
 
 
 class teacher_class(object):
 	def __init__(self, name):
 		self.current_teacher = name
 
+    @outer
 	def add_teacher(self):
 		name = raw_input('请输入新教师账号:')
 		password = raw_input('请输入新教师密码')
@@ -83,6 +84,7 @@ class teacher_class(object):
 		Session.add(self.teacher_obj)
 		Session.commit()
 
+    @outer
 	def add_course(self):
 		name = raw_input('请输入新课程名:')
 		detail = raw_input('请输入注释')
@@ -90,19 +92,22 @@ class teacher_class(object):
 		Session.add(self.course_obj)
 		Session.commit()
 
+    @outer
 	def add_classroom(self,name):
 		# teacher_id=
 		self.classroom_obj = Classroom(name=name, teacher_id='xxx')
 		Session.add(self.classroom_obj)
 		Session.commit()
 
+    @outer
 	def add_student_to_class(self,student_qq, classroom):
 		self.student = Session.query(Student).filter_by(qq=student_qq).first()
 		self.classroom = Session.query(Classroom).filter_by(name=classroom).first()
 		self.add_student_to_classroom_obj = StudentInClassroom(student_id=self.student.id, classroom_id=self.classroom.id)
-		Session.add(add_student_to_classroom_obj)
+		Session.add(self.add_student_to_classroom_obj)
 		Session.commit()
 
+    @outer
 	def show_student(self,classroom):
 		self.classroom = Session.query(Classroom).filter_by(name=classroom).first()
 		# student=Session.query(StudentInClassroom).join(Student).filter(StudentInClassroom.classroom_id==classroom.id).all()
@@ -112,6 +117,7 @@ class teacher_class(object):
 			print(self.student[i])
 			i += 1
 
+    @outer
 	def show_classroom(self):
 		i = 0
 		self.classroom = Session.query(Classroom).all()
@@ -119,7 +125,7 @@ class teacher_class(object):
 			print(self.classroom[i])
 			i += 1
 
-
+    @outer
 	def add_student_to_course(self,course, students_qq):
 		'''默认是全出勤了，这里选择的是没有出勤的个别同学'''
 		self.c1 = Session.query(Course).filter_by(name=course).first()
@@ -138,11 +144,13 @@ class teacher_class(object):
 		# Session.add_all([b1])
 		Session.commit()
 
-
+    @outer
 	def add_score(self,course_id, student_id, score):
 		self.status = Session.query(Status).filter(course_id == course_id).filter(student_id == student_id).first()
 		self.status.score = score
 		Session.commit()
 
+
+    @outer
 	def hi(self): #用来给装饰器验证登陆与否
 		print('Hi %s') %(self.current_teacher.name)
