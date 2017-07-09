@@ -49,6 +49,8 @@ def s_main():
 			s.show_score()
 		elif welcome == '4':
 			s.show_classroom()
+		elif welcome == 'exit':
+			exit()
 		else:
 			print('错误选项，请重新选择!')
 

@@ -45,36 +45,32 @@ def t_main():
 	while 1:
 		welcome = raw_input(T_WELCOME_MSG)  # 上传、登陆、查看
 		if welcome == '1':
-			try:
-				t.add_teacher()
-			except:
-				print('Please login')
+			t.add_teacher()
 		elif welcome == '2':
 			t_login()
 		elif welcome == '3':
-			try:
-				t.add_course()
-			except:
-				print('Please login')
+			t.add_course()
 		elif welcome == '4':
 			t.add_classroom()
-        elif welcome == '5':
-            t.add_student_to_class()
-        elif welcome == '6':
-            t.show_student()
-        elif welcome == '7':
-            t.show_classroom()
-        elif welcome == '8':
-            t.add_student_to_class()
-        elif welcome == '9':
-            t.add_score()
-        else:
+		elif welcome == '5':
+			t.add_student_to_class()
+		elif welcome == '6':
+			t.show_student()
+		elif welcome == '7':
+			t.show_classroom()
+		elif welcome == '8':
+			t.add_student_to_class()
+		elif welcome == '9':
+			t.add_score()
+		elif welcome == 'exit':
+			exit()
+		else:
 			print('错误选项，请重新选择!')
 
 
 class teacher_class(object):
-	def __init__(self, name):
-		self.current_teacher = name
+	def __init__(self,name):
+		self.current_teacher = Session.query(Teacher).filter(Teacher.name==name).first()
 
 	@outer
 	def add_teacher(self):
@@ -151,15 +147,13 @@ class teacher_class(object):
 		Session.commit()
 
 	@outer
-	def add_score(self,course_id, student_id, score):
+	def add_score(self):
 		course = raw_input('请输入课程名:')
 		student = raw_input('请输入学员名:')
 		score = raw_input('请输入分数:')
-		self.status = Session.query(Status).filter(course_id == course_id).filter(student_id == student_id).first()
-		self.status.score = score
+		self.status = Session.query(Status).filter(Status.course_id == course_id).filter(Status.student_id == student_id).first()
+		self.status.id = score
 		Session.commit()
 
-
-	@outer
 	def hi(self): #用来给装饰器验证登陆与否
 		print('Hi %s') %(self.current_teacher.name)

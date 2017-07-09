@@ -19,16 +19,18 @@ Session = Session_class()
 
 def login(u,p,role):
 	if role=='s':
-		student=Session.query(Student).filter(Student.name==u).first()
-		if student.password == p:
-			return 0
-		else:
+		try:
+			student=Session.query(Student).filter(Student.name==u).first()
+			if student.password == p:
+				return 0
+		except:
 			print('Wrong password!')
 			return 1
 	elif role=='t':
-		teacher = Session.query(Teacher).filter(Teacher.name == u).first()
-		if teacher.password == p:
-			return 0
-		else:
+		try:
+			teacher = Session.query(Teacher).filter(Teacher.name == u).first()
+			if teacher.password == p:
+				return 0
+		except:
 			print('Wrong password!')
 			return 1

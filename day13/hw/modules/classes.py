@@ -18,19 +18,31 @@ class Teacher(Base):
 
 '''
 Status = Table('status', Base.metadata,
+						id = Column(Integer,primary_key=True),
 						Column('course_id',Integer,ForeignKey('course.id'),primary_key=True),
 						Column('student_id',Integer,ForeignKey('student.id'),primary_key=True),
-						Column('score',Integer),
-						)
+				)
 '''
 
 class Status(Base):
 	__tablename__ = 'status'
 	__table_args__ = (PrimaryKeyConstraint('course_id', 'student_id'),)
+	id = Column(Integer, autoincrement=True)
 	course_id = Column(Integer,ForeignKey('course.id'))
 	course = relationship("Course",backref="status")
 	student_id = Column(Integer,ForeignKey('student.id'))
 	student = relationship("Student",backref="status")
+
+class Absence(Base):
+	__tablename__ = 'absence' # 表名
+	status_id =Column(Integer,ForeignKey('status.id'),primary_key=True)
+	status = relationship("Status", backref='absense')
+	absence = Column(Integer)
+
+class Score(Base):
+	__tablename__ = 'score'  # 表名
+	status_id = Column(Integer, ForeignKey('status.id'),primary_key=True)
+	status = relationship("Status", backref='score')
 	score = Column(Integer)
 
 
