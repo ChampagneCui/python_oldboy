@@ -66,7 +66,8 @@ class student_class(object):
 		print("c",self.course.id)
 		self.status = Session.query(Status).filter(Status.student_id == self.current_student.id).\
 			filter(Status.course_id==self.course.id).first()
-		print('Your %s score is %d' %(course, self.status.score))
+		self.score = Session.query(Absense).filter(status_id=self.status.id).first()
+		print('Your %s score is %d' %(course, self.score.score))
 
 	@outer
 	def show_classroom(self):

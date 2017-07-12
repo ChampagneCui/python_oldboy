@@ -151,9 +151,11 @@ class teacher_class(object):
 		course = raw_input('请输入课程名:')
 		student = raw_input('请输入学员名:')
 		score = raw_input('请输入分数:')
-		self.status = Session.query(Status).filter(Status.course_id == course_id).filter(Status.student_id == student_id).first()
-		self.status.id = score
-		Session.commit()
+		course= Session.query(Course).filter(Course.name==course).first()
+		student = Session.query(Student).filter(Student.name==student).first()
+		self.status = Session.query(Status).filter(Status.course_id == course.id).filter(Status.student_id == student.id).first()
+		self.score= Absense(status_id=self.status.id,score=score)
+		Session.commit(self.score)
 
 	def hi(self): #用来给装饰器验证登陆与否
 		print('Hi %s') %(self.current_teacher.name)
