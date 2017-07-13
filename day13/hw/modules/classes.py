@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Table,Column, Integer, String,VARCHAR
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey,UniqueConstraint
 from sqlalchemy.orm import relationship
 from sqlalchemy import PrimaryKeyConstraint
 
@@ -26,8 +26,8 @@ Status = Table('status', Base.metadata,
 
 class Status(Base):
 	__tablename__ = 'status'
-	__table_args__ = (PrimaryKeyConstraint('course_id', 'student_id'),)
-	id = Column(Integer, autoincrement=True)
+	__table_args__ = (UniqueConstraint('course_id', 'student_id',name='uix_1'),)
+	id = Column(Integer, autoincrement=True,primary_key=True)
 	course_id = Column(Integer, ForeignKey('course.id'))
 	course = relationship("Course",backref="status")
 	student_id = Column(Integer, ForeignKey('student.id'))

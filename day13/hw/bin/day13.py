@@ -1,7 +1,7 @@
 #_*_coding:utf-8_*_
 from sys import path
-path.append(r'..\modules')
-path.append('..\conf')
+path.append(r'../modules')
+path.append('../conf')
 from settings import *
 from students import s_main
 from teachers import t_main

@@ -1,6 +1,6 @@
 #_*_coding:utf-8_*_
 from sys import path
-path.append('..\conf')
+path.append('../conf')
 from settings import *
 import sqlalchemy
 from sqlalchemy import create_engine
