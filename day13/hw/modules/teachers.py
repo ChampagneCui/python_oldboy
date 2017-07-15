@@ -44,7 +44,9 @@ def t_login():
 def t_main():
 	while 1:
 		welcome = raw_input(T_WELCOME_MSG)  # 上传、登陆、查看
-		if welcome == '1':
+		if welcome=='0':
+			t.add_student()
+		elif welcome == '1':
 			t.add_teacher()
 		elif welcome == '2':
 			t_login()
@@ -71,6 +73,15 @@ def t_main():
 class teacher_class(object):
 	def __init__(self,name):
 		self.current_teacher = Session.query(Teacher).filter(Teacher.name==name).first()
+
+	@outer
+	def add_student(self):
+		name = raw_input('请输入新学生账号:')
+		password = raw_input('请输入新学生密码')
+		qq= raw_input('请输入该学员qq号：')
+		self.student_obj = Student(name=name, password=password, qq=qq)
+		Session.add(self.student_obj)
+		Session.commit()
 
 	@outer
 	def add_teacher(self):
