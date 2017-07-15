@@ -36,7 +36,7 @@ def t_login():
 	password = raw_input('请输入密码')
 	if login(username, password, 't') == 0:  # login函数公用
 		t = teacher_class(username)
-		print('%s, welcome login!' % (t.current_teacher))
+		print('%s, welcome login!' % (t.current_teacher.name))
 	else:
 		print('Wrong username or password!')
 
@@ -59,7 +59,7 @@ def t_main():
 		elif welcome == '7':
 			t.show_classroom()
 		elif welcome == '8':
-			t.add_student_to_class()
+			t.add_student_to_course()
 		elif welcome == '9':
 			t.add_score()
 		elif welcome == 'exit':
@@ -127,24 +127,20 @@ class teacher_class(object):
 
 	@outer
 	def add_student_to_course(self):
-		'''默认是全出勤了，这里选择的是没有出勤的个别同学'''
-		course = raw_input('请输入课程名:')
-		students_qq = raw_input('请输入未出席的学员qq号,以逗号分隔:')
-		self.c1 = Session.query(Course).filter_by(name=course).first()
-		absence_list = []
-		for qq in students_qq:
-			a = Session.query(Student).filter_by(qq=qq).first()
-			absence_list.append(a)
-
-		self.total_student = Session.query(Student).join(StudentInClassroom).filter(StudentInClassroom.classroom_id == self.b1.classroom_id).all()
-		student_list = list(set(self.total_student) - set(absence_list))
-
-		#self.b1.student = student_list
-		for x in student_list:
-			print x
-
-		# Session.add_all([b1])
-		Session.commit()
+			course = raw_input('请输入课程名:')
+			student = raw_input('请输入出席的学员列表，以逗号分隔:')
+			student = student.split(',')
+			self.course = Session.query(Course).filter(Course.name == course).first()
+			for i in student:
+				self.student = Session.query(Student).filter(Student.name == i).first()
+				self.status = Status(course_id=self.course.id,student_id=self.student.id)
+				Session.add(self.status)
+				Session.commit()
+				self.status1 = Session.query(Status).filter(Status.course_id == self.course.id).filter(Status.student_id == self.student.id).first()
+				self.absense = Absense(status_id=self.status1.id, absense=1)
+				Session.add(self.absense)
+				print('done')
+			Session.commit()
 
 	@outer
 	def add_score(self):
@@ -154,8 +150,8 @@ class teacher_class(object):
 		course= Session.query(Course).filter(Course.name==course).first()
 		student = Session.query(Student).filter(Student.name==student).first()
 		self.status = Session.query(Status).filter(Status.course_id == course.id).filter(Status.student_id == student.id).first()
-		self.score= Absense(status_id=self.status.id,score=score)
-		Session.commit(self.score)
+		self.score= Session.query(Absense).filter(Absense.status_id==self.status.id).update({Absense.score:score})
+		Session.commit()
 
 	def hi(self): #用来给装饰器验证登陆与否
 		print('Hi %s') %(self.current_teacher.name)
