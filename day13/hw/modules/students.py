@@ -62,11 +62,9 @@ class student_class(object):
 	def show_score(self):
 		course = raw_input('Please input the course:')
 		self.course = Session.query(Course).filter(Course.name == course).first()
-		print("s",self.current_student.id)
-		print("c",self.course.id)
 		self.status = Session.query(Status).filter(Status.student_id == self.current_student.id).\
 			filter(Status.course_id==self.course.id).first()
-		self.score = Session.query(Absense).filter(status_id=self.status.id).first()
+		self.score = Session.query(Absense).filter(Absense.status_id==self.status.id).first()
 		print('Your %s score is %d' %(course, self.score.score))
 
 	@outer

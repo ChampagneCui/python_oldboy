@@ -12,7 +12,7 @@ Base = declarative_base()
 
 class Teacher(Base):
 	__tablename__ = 'teacher'  # 表名
-	id = Column(Integer,primary_key=True)
+	id = Column(Integer,autoincrement=True,primary_key=True)
 	name = Column(String(32))
 	password = Column(String(64))
 
@@ -26,7 +26,7 @@ Status = Table('status', Base.metadata,
 
 class Status(Base):
 	__tablename__ = 'status'
-	__table_args__ = (UniqueConstraint('course_id', 'student_id',name='uix_1'),)
+	__table_args__ = (UniqueConstraint('course_id', 'student_id'),)
 	id = Column(Integer, autoincrement=True,primary_key=True)
 	course_id = Column(Integer, ForeignKey('course.id'))
 	course = relationship("Course",backref="status")
@@ -40,10 +40,9 @@ class Absense(Base):
 	absense = Column(Integer)
 	score = Column(Integer)
 
-
 class Course(Base):
 	__tablename__ = 'course'  # 表名
-	id = Column(Integer,primary_key=True)
+	id = Column(Integer,autoincrement=True,primary_key=True)
 	name = Column(String(32))
 	detail = Column(String(128))
 	classroom_id = Column(Integer,ForeignKey('classroom.id'))
@@ -52,7 +51,7 @@ class Course(Base):
 
 class Student(Base):
 	__tablename__ = 'student'
-	id = Column(Integer,primary_key=True)
+	id = Column(Integer,autoincrement=True,primary_key=True)
 	name = Column(String(32))
 	password = Column(String(64))
 	qq = Column(Integer)
@@ -62,15 +61,13 @@ class Student(Base):
 
 class Classroom(Base):
 	__tablename__ = 'classroom'
-	id = Column(Integer, primary_key=True)
+	id = Column(Integer, autoincrement=True,primary_key=True)
 	name = Column(String(32))
 	teacher_id = Column(Integer,ForeignKey('teacher.id'))
 	teacher = relationship("Teacher",backref="classroom")
 
 	def __repr__(self):
 				return "<Student(id='%s',name='%s')>" % (self.id,self.name)
-
-
 
 class StudentInClassroom(Base):
 	__tablename__ = 'student_in_classroom'
