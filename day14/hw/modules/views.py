@@ -62,10 +62,11 @@ def start_session(argvs):
             for index,group in enumerate(user.groups):
                 print('\033[32;1m%s.\t%s (%s)\033[0m' %(index,group.name,  len(group.bind_hosts)) )
 
-            choice = input("[%s]:" % user.username).strip()#？？？
+            choice = input("[%s]:" % user.username).strip()#选择单独的主机数量或者是所处组
             if len(choice) == 0:continue
             if choice == 'z':
                 print("------ Group: ungroupped hosts ------" )
+                '''如果选择z，则打印出该用户关联的且未分组的主机'''
                 for index,bind_host in enumerate(user.bind_hosts):
                     print("  %s.\t%s@%s(%s)"%(index,
                                               bind_host.remoteuser.username,
@@ -77,6 +78,7 @@ def start_session(argvs):
                 choice = int(choice)
                 if choice < len(user.groups):
                     print("------ Group: %s ------"  % user.groups[choice].name )
+					'''如果直接打数字，则显示对应的分组下所在的机器'''
                     for index,bind_host in enumerate(user.groups[choice].bind_hosts):
                         print("  %s.\t%s@%s(%s)"%(index,
                                                   bind_host.remoteuser.username,
@@ -96,11 +98,11 @@ def start_session(argvs):
                             user_option = int(user_option)
                             if user_option < len(user.groups[choice].bind_hosts) :
                                 print('host:',user.groups[choice].bind_hosts[user_option])
-                                print('audit log:',user.groups[choice].bind_hosts[user_option].audit_logs)
+                                print('audit log:',user.groups[choice].bind_hosts[user_option].audit_logs) #audit_logs登记下
                                 ssh_login.ssh_login(user,
                                                     user.groups[choice].bind_hosts[user_option],
                                                     session,
-                                                    log_recording)
+                                                    log_recording) #这里还有点模糊
                 else:
                     print("no this option..")
 
