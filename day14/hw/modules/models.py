@@ -15,7 +15,7 @@ Base = declarative_base() #生成一个ORM 基类
 
 
 
-
+#中间表
 BindHost2Group = Table('bindhost_2_group',Base.metadata,
     Column('bindhost_id',ForeignKey('bind_host.id'),primary_key=True),
     Column('group_id',ForeignKey('group.id'),primary_key=True),
@@ -31,14 +31,14 @@ Group2UserProfile = Table('group_2_userprofile',Base.metadata,
     Column('group_id',ForeignKey('group.id'),primary_key=True),
 )
 
-
+#用户表
 class UserProfile(Base):
     __tablename__ = 'user_profile'
     id = Column(Integer,primary_key=True,autoincrement=True)
     username = Column(String(32),unique=True,nullable=False)
     password = Column(String(128),unique=True,nullable=False)
-    groups = relationship('Group',secondary=Group2UserProfile)
-    bind_hosts = relationship('BindHost',secondary=BindHost2UserProfile)
+    groups = relationship('Group',secondary=Group2UserProfile) #和group做映射（主键）
+    bind_hosts = relationship('BindHost',secondary=BindHost2UserProfile) #和bindhost做映射（主键）
     audit_logs = relationship('AuditLog')
 
     def __repr__(self):

@@ -5,7 +5,9 @@ import os,sys
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 print(BASE_DIR)
-sys.path.append(BASE_DIR)
+sys.path.append(BASE_DIR) #将脚本所在路径也加入系统变量中
+
+print(sys.path)
 
 if __name__ == '__main__':
     from modules.actions import excute_from_command_line

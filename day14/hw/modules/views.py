@@ -12,14 +12,14 @@ def auth():
     :return:
     '''
     count = 0
-    while count <3:
+    while count <3: #3次以内
         username = input("\033[32;1mUsername:\033[0m").strip()
         if len(username) ==0:continue
         password = input("\033[32;1mPassword:\033[0m").strip()
         if len(password) ==0:continue
         user_obj = session.query(models.UserProfile).filter(models.UserProfile.username==username,
                                                             models.UserProfile.password==password).first()
-        if user_obj:
+        if user_obj: #如果上面能查询出用户实例，则返回，反之则继续尝试，直到3次后跳出
             return user_obj
         else:
             print("wrong username or password, you have %s more chances." %(3-count-1))
@@ -43,7 +43,7 @@ def log_recording(user_obj,bind_host_obj,logs):
     :param logs: list format [logItem1,logItem2,...]
     :return:
     '''
-    print("\033[41;1m--logs:\033[0m",logs)
+    print("\033[41;1m--logs:\033[0m",logs) #？？？
 
     session.add_all(logs)
     session.commit()
@@ -62,7 +62,7 @@ def start_session(argvs):
             for index,group in enumerate(user.groups):
                 print('\033[32;1m%s.\t%s (%s)\033[0m' %(index,group.name,  len(group.bind_hosts)) )
 
-            choice = input("[%s]:" % user.username).strip()
+            choice = input("[%s]:" % user.username).strip()#？？？
             if len(choice) == 0:continue
             if choice == 'z':
                 print("------ Group: ungroupped hosts ------" )
