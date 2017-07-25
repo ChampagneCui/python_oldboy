@@ -63,12 +63,12 @@ if __name__ == '__main__':
         elif (op == "--command"):
             operation["command"]=value
         elif (op == "--check"):
-	        #file = open("data+%s.tmp" %(response), 'rb')
+            #file = open("data+%s.tmp" %(response), 'rb')
 	        #rpc=pickle.load(file)
 	        num=value
             a=rpc.get(value)
             print(a)
-	        #file.close()
+            #file.close()
 	    exit()
         else:
             print("run --command='df -h' --hosts=192.168.3.55 10.4.3.4") #help说明
