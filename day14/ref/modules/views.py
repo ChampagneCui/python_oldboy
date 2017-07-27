@@ -138,11 +138,7 @@ def create_users(argvs):
 		session.commit()
 
 def create_groups(argvs):
-	'''
-	create groups
-	:param argvs:
-	:return:
-	'''
+	'''添加group和user一样'''
 	if '-f' in argvs:
 		group_file  = argvs[argvs.index("-f") +1 ]
 	else:
@@ -161,12 +157,9 @@ def create_groups(argvs):
 				obj.user_profiles = user_profiles
 			session.add(obj)
 		session.commit()
+
 def create_hosts(argvs):
-	'''
-	create hosts
-	:param argvs:
-	:return:
-	'''
+	'''添加host和user一样'''
 	if '-f' in argvs:
 		hosts_file  = argvs[argvs.index("-f") +1 ]
 	else:
@@ -178,6 +171,7 @@ def create_hosts(argvs):
 			obj = models.Host(hostname=key,ip_addr=val.get('ip_addr'), port=val.get('port') or 22)
 			session.add(obj)
 		session.commit()
+
 def create_bindhosts(argvs):
 	'''
 	create bind hosts
@@ -193,7 +187,7 @@ def create_bindhosts(argvs):
 		for key,val in source.items():
 			#print(key,val)
 			host_obj = session.query(models.Host).filter(models.Host.hostname==val.get('hostname')).first()
-			assert host_obj
+			assert host_obj#断言assert必须存在
 			for item in val['remote_users']:
 				print(item )
 				assert item.get('auth_type')
@@ -215,6 +209,7 @@ def create_bindhosts(argvs):
 				if source[key].get('groups'):
 					group_objs = session.query(models.Group).filter(models.Group.name.in_(source[key].get('groups') )).all()
 					assert group_objs
+					'''此处有bug，bindhost导入依赖group，而group导入依赖bindhost'''
 					print('groups:', group_objs)
 					bindhost_obj.groups = group_objs
 				#for user_profiles this host binds to
@@ -229,11 +224,7 @@ def create_bindhosts(argvs):
 		session.commit()
 
 def create_remoteusers(argvs):
-	'''
-	create remoteusers
-	:param argvs:
-	:return:
-	'''
+	'''添加服务器上的用户和user一样'''
 	if '-f' in argvs:
 		remoteusers_file  = argvs[argvs.index("-f") +1 ]
 	else:

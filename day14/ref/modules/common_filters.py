@@ -4,6 +4,8 @@ from  modules import models
 from modules.db_conn import engine,session
 from modules.utils import print_err
 
+'''都是判断有没有的'''
+
 def bind_hosts_filter(vals):
     print('**>',vals.get('bind_hosts') )
     bind_hosts = session.query(models.BindHost).filter(models.Host.hostname.in_(vals.get('bind_hosts'))).all()
