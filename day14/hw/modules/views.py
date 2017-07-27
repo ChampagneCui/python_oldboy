@@ -112,12 +112,8 @@ def stop_server(argvs):
 	pass
 
 def create_users(argvs):
-	'''
-	create little_finger access user
-	:param argvs:
-	:return:
-	'''
 	if '-f' in argvs:
+		'''首先判断输入是否存在-f选项，将-f后的文件赋予user_file'''
 		user_file  = argvs[argvs.index("-f") +1 ]
 	else:
 		print_err("invalid usage, should be:\ncreateusers -f <the new users file>",quit=True)
@@ -128,16 +124,19 @@ def create_users(argvs):
 			print(key,val)
 			obj = models.UserProfile(username=key,password=val.get('password'))
 			if val.get('groups'):
+				'''如果val中含有group，且该group存在，则同时讲该用户加入对应group'''
 				groups = session.query(models.Group).filter(models.Group.name.in_(val.get('groups'))).all()
 				if not groups:
 					print_err("none of [%s] exist in group table." % val.get('groups'),quit=True)
 				obj.groups = groups
 			if val.get('bind_hosts'):
+				'''如果val有bind_hosts，则同时绑定hosts'''
 				bind_hosts = common_filters.bind_hosts_filter(val)
 				obj.bind_hosts = bind_hosts
 			#print(obj)
 			session.add(obj)
 		session.commit()
+
 def create_groups(argvs):
 	'''
 	create groups
