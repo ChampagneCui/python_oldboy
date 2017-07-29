@@ -5,6 +5,7 @@ from modules.utils import print_err,yaml_parser
 class feature:
 	def create_users(self,user_file):
 		source = yaml_parser(user_file)
+		print(source)
 		if source:
 			pass
 
