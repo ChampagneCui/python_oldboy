@@ -8,8 +8,9 @@ from conf.settings import init_msg
 
 
 def wisdom():
-	wisdom_obj=session.query(models.Wisdom).order_by(func.random()).limit(1).all()
-	if wisdom_obj:
-		print(wisdom_obj.sentence)
-	else:
+	try:
+		wisdom_obj=session.query(models.Wisdom).order_by(func.random()).limit(1).all()
+		if wisdom_obj:
+			print(wisdom_obj[0].sentence)
+	except:
 		print(init_msg)

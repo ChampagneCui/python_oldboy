@@ -3,7 +3,7 @@
 
 from sqlalchemy import create_engine,Table
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String,ForeignKey,UniqueConstraint,UnicodeText,DateTime
+from sqlalchemy import Column, Integer,VARCHAR ,String,ForeignKey,UniqueConstraint,UnicodeText,DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy import or_,and_
 from sqlalchemy import func
@@ -30,11 +30,11 @@ Group2UserProfile = Table('group_2_userprofile',Base.metadata,
     Column('group_id',ForeignKey('group.id'),primary_key=True),
 )
 
-#废话表
+#废话表,但是逼格高,alex估计好这口
 class Wisdom(Base):
     __tablename__ = 'wisdom'
     id = Column(Integer,primary_key=True,autoincrement=True)
-    sentence = Column(String(9999),unique=True,nullable=False)
+    sentence = Column(VARCHAR(100),unique=True,nullable=False)
 
 #用户表
 class UserProfile(Base):

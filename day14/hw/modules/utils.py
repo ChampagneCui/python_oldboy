@@ -18,7 +18,7 @@ def print_err(msg, quit=False):
 
 def yaml_parser(yml_filename):
 	try:
-		yaml_file = open(yml_filename, 'r')
+		yaml_file = open(yml_filename, 'r',encoding='utf-8')
 		data = yaml.load(yaml_file)
 		return data
 	except Exception as e:
