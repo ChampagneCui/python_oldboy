@@ -7,11 +7,12 @@ from modules.utils import print_err,yaml_parser
 from conf.settings import help_msg,wisdom_file
 
 class feature:
-	def create_users(self,user_file):
+	@staticmethod
+	def create_users(user_file):
 		source = yaml_parser(user_file)
-		print(source)
 		if source:
-			pass
+			for key, val in source.items():
+				pass
 
 	@staticmethod
 	def syncdb():
