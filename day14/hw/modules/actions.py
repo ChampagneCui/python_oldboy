@@ -14,7 +14,7 @@ class feature:
 		if source:
 			for key, val in source.items():
 				print(key, val)
-				obj = models.UserProfile(username=key, password=val.get('password'))
+				obj = models.UserProfile(username=key, password=val['password'])
 				if val.get('groups'):
 					'''如果val中含有group，且该group存在，则同时讲该用户加入对应group'''
 					groups= common.bind_group_filter(val)
@@ -48,16 +48,33 @@ class feature:
 		if source:
 			for key, val in source.items():
 				print(key, val)
-				obj = models.Host(hostname=key,ip_addr=val.get('ip_addr'), port=val.get('port') or 22)
+				obj = models.Host(hostname=key,ip_addr=val['ip_addr'], port=val['port'] or 22)
 				session.add(obj)
 			session.commit()
 
 	@staticmethod
 	def create_bindhosts(bindhost_file):
-		source = yaml_parser(bindhost_file) #.......
+		source = yaml_parser(bindhost_file)
 		if source:
 			for key,val in source.items():
-				pass
+				host_obj=session.query(models.Host).filter(models.Host.hostname==val['hostname']).first()
+				print(host_obj.hostname)
+				for item in val['remote_users']:
+					if item['auth_type'] == 'ssh-key':
+						remoteuser_obj=session.query(models.RemoteUser).filter(models.RemoteUser.username==item['username'],models.RemoteUser.auth_type=='ssh-key')
+					elif item['auth_type'] == 'ssh-pass':
+						remoteuser_obj=session.query(models.RemoteUser).filter(models.RemoteUser.username==item['username'],models.RemoteUser.password==item['password'])
+					bindhost_obj = models.BindHost(host_id=host_obj.id,remoteuser_id=remoteuser_obj.id)
+					session.add(bindhost_obj)
+				if (not host_obj) or (not remoteuser_obj):
+					print('There is something error between hostname or remote_user.')
+					continue
+
+
+				if val.get('groups'):
+					group_obj = session.query(models.Group).filter(models.Group.name.in_(source[key].get('groups') )).all()
+					bindhost_obj.groups = group_obj
+				'''
 
 	@staticmethod
 	def create_remoteusers(remoteuser_file):
@@ -65,8 +82,8 @@ class feature:
 		if source:
 			for key, val in source.items():
 				print(key, val)
-				obj = models.RemoteUser(username=val.get('username'), auth_type=val.get('auth_type'),
-										password=val.get('password'))
+				obj = models.RemoteUser(username=val['username'], auth_type=val['auth_type'],
+										password=val['password'])
 				session.add(obj)
 			session.commit()
 
@@ -85,6 +102,8 @@ class feature:
 	@staticmethod
 	def stop():
 		pass
+
+
 
 
 def usage():
