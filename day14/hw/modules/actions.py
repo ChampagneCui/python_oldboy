@@ -27,6 +27,22 @@ class feature:
 			session.commit()
 
 	@staticmethod
+	def create_groups(group_file):
+		source = yaml_parser(group_file)
+		if source:
+			for key, val in source.items():
+				print(key, val)
+				obj = models.Group(name=key)
+				if val.get('user_profiles'):
+					user_profiles = common_filters.user_profiles_filter(val)
+					obj.user_profiles = user_profiles
+				if val.get('bind_hosts'):
+					bind_hosts = common_filters.bind_hosts_filter(val)
+					obj.bind_hosts = bind_hosts
+				session.add(obj)
+			session.commit()
+
+	@staticmethod
 	def syncdb():
 		print("Syncing DB....")
 		models.Base.metadata.create_all(engine)

@@ -19,3 +19,9 @@ def user_profiles_filter(vals):
     if not user_profiles:
         print_err("none of [%s] exist in user_profile table." % vals.get('user_profiles'),quit=True)
     return  user_profiles
+
+def bind_group_filter(vals):
+	groups = session.query(models.Group).filter(models.Group.in_(vals.get('groups'))).all()
+	if not groups:
+		print_err("none of [%s] exist in groups table." % vals.get('groups'),quit=True)
+	return groups
