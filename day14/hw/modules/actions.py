@@ -43,6 +43,35 @@ class feature:
 			session.commit()
 
 	@staticmethod
+	def create_hosts(host_file):
+		source = yaml_parser(host_file)
+		if source:
+			for key, val in source.items():
+				print(key, val)
+				obj = models.Host(name=key,ip_addr=val.get('ip_addr'), port=val.get('port') or 22)
+				session.add(obj)
+			session.commit()
+
+	@staticmethod
+	def create_bindhosts(bindhost_file):
+		source = yaml_parser(bindhost_file) #.......
+		if source:
+			for key,val in source.items():
+				pass
+
+	@staticmethod
+	def create_remoteuser(remoteuser_file):
+		source = yaml_parser(remoteuser_file)
+		if source:
+			for key, val in source.items():
+				print(key, val)
+				obj = models.RemoteUser(username=val.get('username'), auth_type=val.get('auth_type'),
+										password=val.get('password'))
+				session.add(obj)
+			session.commit()
+
+
+	@staticmethod
 	def syncdb():
 		print("Syncing DB....")
 		models.Base.metadata.create_all(engine)
