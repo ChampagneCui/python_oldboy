@@ -25,7 +25,7 @@ if __name__ == '__main__':
 			func=getattr(actions.feature,op)
 			func()
 			exit()
-		elif (op in ["--create_users","--create_groups","--create_hosts","--create_bindhosts","--create_remoteuser"]):
+		elif (op in ["--create_users","--create_groups","--create_hosts","--create_bindhosts","--create_remoteusers"]):
 			op=op.strip('-')
 			func=getattr(actions.feature,op)
 			func(value)

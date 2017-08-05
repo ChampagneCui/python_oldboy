@@ -5,7 +5,7 @@ from modules import models
 from modules.db_conn import engine,session
 from modules.utils import print_err,yaml_parser
 from conf.settings import help_msg,wisdom_file
-from modules.common import common_filters
+from modules import common
 
 class feature:
 	@staticmethod
@@ -17,11 +17,11 @@ class feature:
 				obj = models.UserProfile(username=key, password=val.get('password'))
 				if val.get('groups'):
 					'''如果val中含有group，且该group存在，则同时讲该用户加入对应group'''
-					groups= common_filters.bind_group_filter(val)
+					groups= common.bind_group_filter(val)
 					obj.groups = groups
 				if val.get('bind_hosts'):
 					'''如果val有bind_hosts，则同时绑定hosts'''
-					bind_hosts = common_filters.bind_hosts_filter(val)
+					bind_hosts = common.bind_hosts_filter(val)
 					obj.bind_hosts = bind_hosts
 				session.add(obj)
 			session.commit()
@@ -34,10 +34,10 @@ class feature:
 				print(key, val)
 				obj = models.Group(name=key)
 				if val.get('user_profiles'):
-					user_profiles = common_filters.user_profiles_filter(val)
+					user_profiles = common.user_profiles_filter(val)
 					obj.user_profiles = user_profiles
 				if val.get('bind_hosts'):
-					bind_hosts = common_filters.bind_hosts_filter(val)
+					bind_hosts = common.bind_hosts_filter(val)
 					obj.bind_hosts = bind_hosts
 				session.add(obj)
 			session.commit()
@@ -48,7 +48,7 @@ class feature:
 		if source:
 			for key, val in source.items():
 				print(key, val)
-				obj = models.Host(name=key,ip_addr=val.get('ip_addr'), port=val.get('port') or 22)
+				obj = models.Host(hostname=key,ip_addr=val.get('ip_addr'), port=val.get('port') or 22)
 				session.add(obj)
 			session.commit()
 
@@ -60,7 +60,7 @@ class feature:
 				pass
 
 	@staticmethod
-	def create_remoteuser(remoteuser_file):
+	def create_remoteusers(remoteuser_file):
 		source = yaml_parser(remoteuser_file)
 		if source:
 			for key, val in source.items():
