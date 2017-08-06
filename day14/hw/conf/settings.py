@@ -8,6 +8,7 @@ DB_CONN ="mysql+pymysql://root:Pass1234@localhost:3306/jpserver?charset=utf8"
 
 init_msg='''I guess this is the first time you start JumpServer. Now what you should to do is syncdb then create_user...'''
 
+
 help_msg='''
 Available commands:
 	 create_groups

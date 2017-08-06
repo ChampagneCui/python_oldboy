@@ -7,6 +7,19 @@ from modules.utils import print_err,yaml_parser
 from conf.settings import help_msg,wisdom_file
 from modules import common
 
+def auth():
+	while 1:
+		user=input('Please enter your username:')
+		if user=='exit':
+			exit()
+		passwd=input('passwd:')
+		user_obj = session.query(models.UserProfile).filter(models.UserProfile.username == user,
+															models.UserProfile.password == passwd).first()
+		if user_obj:
+			return user_obj
+		else:
+			print("Wrong username or password."
+
 class feature:
 	@staticmethod
 	def create_users(user_file):
@@ -62,10 +75,8 @@ class feature:
 				for item in val['remote_users']:
 					print(item)
 					if item['auth_type'] == 'ssh-key':
-						print('ssh-key')
 						remoteuser_obj=session.query(models.RemoteUser).filter(models.RemoteUser.username==item['username'],models.RemoteUser.auth_type=='ssh-key').first()
 					elif item['auth_type'] == 'ssh-passwd':
-						print('ssh-passwd')
 						remoteuser_obj=session.query(models.RemoteUser).filter(models.RemoteUser.username==item['username'],models.RemoteUser.password==item['password']).first()
 					print(remoteuser_obj.id)
 					if (not host_obj) or (not remoteuser_obj):
@@ -111,6 +122,11 @@ class feature:
 	def stop():
 		pass
 
+	@staticmethod
+	def start_session(argvs):
+		user = auth()
+		if user:
+			pass
 
 
 def usage():
