@@ -58,23 +58,31 @@ class feature:
 		if source:
 			for key,val in source.items():
 				host_obj=session.query(models.Host).filter(models.Host.hostname==val['hostname']).first()
-				print(host_obj.hostname)
+				print(host_obj.id)
 				for item in val['remote_users']:
+					print(item)
 					if item['auth_type'] == 'ssh-key':
-						remoteuser_obj=session.query(models.RemoteUser).filter(models.RemoteUser.username==item['username'],models.RemoteUser.auth_type=='ssh-key')
-					elif item['auth_type'] == 'ssh-pass':
-						remoteuser_obj=session.query(models.RemoteUser).filter(models.RemoteUser.username==item['username'],models.RemoteUser.password==item['password'])
-					bindhost_obj = models.BindHost(host_id=host_obj.id,remoteuser_id=remoteuser_obj.id)
+						print('ssh-key')
+						remoteuser_obj=session.query(models.RemoteUser).filter(models.RemoteUser.username==item['username'],models.RemoteUser.auth_type=='ssh-key').first()
+					elif item['auth_type'] == 'ssh-passwd':
+						print('ssh-passwd')
+						remoteuser_obj=session.query(models.RemoteUser).filter(models.RemoteUser.username==item['username'],models.RemoteUser.password==item['password']).first()
+					print(remoteuser_obj.id)
+					if (not host_obj) or (not remoteuser_obj):
+						print('There is something error between hostname or remote_user.')
+						continue
+					bindhost_obj = models.BindHost(host_id=host_obj.id, remoteuser_id=remoteuser_obj.id)
 					session.add(bindhost_obj)
-				if (not host_obj) or (not remoteuser_obj):
-					print('There is something error between hostname or remote_user.')
-					continue
+				if val['groups']:
+					for item in val['groups']:
+						group_obj = session.query(models.Group).filter(models.Group.name.in_(item )).all()
+						bindhost_obj.groups = group_obj
+				if val['user_profiles']:
+					for item in val['user_profiles']:
+						userprofile_obj=session.query(models.UserProfile).filter(models.UserProfile.username.in_(item)).all()
+						bindhost_obj.user_profiles = userprofile_obj
 
-
-				if val.get('groups'):
-					group_obj = session.query(models.Group).filter(models.Group.name.in_(source[key].get('groups') )).all()
-					bindhost_obj.groups = group_obj
-				'''
+			session.commit()
 
 	@staticmethod
 	def create_remoteusers(remoteuser_file):
@@ -102,7 +110,6 @@ class feature:
 	@staticmethod
 	def stop():
 		pass
-
 
 
 

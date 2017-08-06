@@ -102,7 +102,7 @@ class BindHost(Base):
     host = relationship("Host")
     remoteuser = relationship("RemoteUser")
     groups = relationship("Group",secondary=BindHost2Group,back_populates='bind_hosts')
-    #user_profiles = relationship("UserProfile",secondary=BindHost2UserProfile)
+    user_profiles = relationship("UserProfile",secondary=BindHost2UserProfile)
     audit_logs = relationship('AuditLog')
 
     __table_args__ = (UniqueConstraint('host_id', 'remoteuser_id', name='_bindhost_and_user_uc'),)
