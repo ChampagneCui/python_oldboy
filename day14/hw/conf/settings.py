@@ -22,3 +22,7 @@ Available commands:
 '''
 
 wisdom_file=r'./YAML/sentence.yml'
+
+user_choice='''
+Do you want list ungrouped hosts(H) or groups(G)?
+'''

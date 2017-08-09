@@ -123,10 +123,22 @@ class feature:
 		pass
 
 	@staticmethod
-	def start_session(argvs):
+	def start_session():
 		user = auth()
 		if user:
-			pass
+			print('Hello %s!' %(user.username))
+			#print(user.bind_hosts)
+			#print(user.groups)
+			exit_flag = False
+			while not exit_flag:
+				choice=input(user_choice)
+				if choice=='H':
+					pass
+				elif choice=='G':
+					pass
+				else:
+					continue
+
 
 
 def usage():
