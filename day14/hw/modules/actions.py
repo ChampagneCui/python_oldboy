@@ -18,7 +18,7 @@ def auth():
 		if user_obj:
 			return user_obj
 		else:
-			print("Wrong username or password."
+			print("Wrong username or password.")
 
 class feature:
 	@staticmethod
@@ -61,7 +61,7 @@ class feature:
 		if source:
 			for key, val in source.items():
 				print(key, val)
-				obj = models.Host(hostname=key,ip_addr=val['ip_addr'], port=val['port'] or 22)
+				obj = models.Host(hostname=key,ip_addr=val['ip_addr'], port=val.get('port') or 22)
 				session.add(obj)
 			session.commit()
 
@@ -71,7 +71,7 @@ class feature:
 		if source:
 			for key,val in source.items():
 				host_obj=session.query(models.Host).filter(models.Host.hostname==val['hostname']).first()
-				print(host_obj.id)
+				#print(host_obj.id)
 				for item in val['remote_users']:
 					print(item)
 					if item['auth_type'] == 'ssh-key':
@@ -102,7 +102,7 @@ class feature:
 			for key, val in source.items():
 				print(key, val)
 				obj = models.RemoteUser(username=val['username'], auth_type=val['auth_type'],
-										password=val['password'])
+										password=val.get('password'))
 				session.add(obj)
 			session.commit()
 
