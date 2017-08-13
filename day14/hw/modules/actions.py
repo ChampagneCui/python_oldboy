@@ -6,6 +6,7 @@ from modules.db_conn import engine,session
 from modules.utils import print_err,yaml_parser
 from conf.settings import help_msg,wisdom_file
 from modules import common
+from modules import ssh_login
 
 def auth():
 	while 1:
@@ -136,8 +137,15 @@ class feature:
 					print(user.bind_hosts)
 				elif choice=='G':
 					print(user.groups)
+					for index, group in enumerate(user.groups):
+						print('\033[32;1m%s.\t%s (%s)\033[0m' % (index, group.name, len(group.bind_hosts)))
 				else:
 					continue
+
+				ssh_login.ssh_login(user,
+									user.groups[choice].bind_hosts[user_option],
+									session,
+									log_recording)
 
 
 
