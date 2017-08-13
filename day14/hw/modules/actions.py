@@ -133,9 +133,9 @@ class feature:
 			while not exit_flag:
 				choice=input(user_choice)
 				if choice=='H':
-					pass
+					print(user.bind_hosts)
 				elif choice=='G':
-					pass
+					print(user.groups)
 				else:
 					continue
 

@@ -2,4 +2,4 @@ server
     只要直接运行就行
 client
     python rpc_c.py --host="x.x.x.x" --command="cd"
-    python rpc.py --check
+    python rpc_c.py --check="task id"
