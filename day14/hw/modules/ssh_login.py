@@ -5,6 +5,7 @@ import paramiko
 import sys
 from  modules import models
 import datetime
+from modules import interactive
 
 
 def ssh_login(user_obj,bind_host_obj,mysql_engine,log_recording):
@@ -28,8 +29,8 @@ def ssh_login(user_obj,bind_host_obj,mysql_engine,log_recording):
                                           action_type='login',
                                           date=datetime.datetime.now()
                                           ))
-        #log_recording(user_obj,bind_host_obj,cmd_caches) #这里有点模糊
-        #interactive.interactive_shell(chan,user_obj,bind_host_obj,cmd_caches,log_recording)
+        log_recording(user_obj,bind_host_obj,cmd_caches)
+        interactive.interactive_shell(chan,user_obj,bind_host_obj,cmd_caches,log_recording)
         chan.close()
         client.close()
 
