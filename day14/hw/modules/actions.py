@@ -138,25 +138,34 @@ class feature:
 				choice=input(user_choice)
 				if choice=='H':
 					print(user.bind_hosts)
-					ssh_login.ssh_login(user,
-										user.bind_hosts[user_option],
-										session,
-										log_recording)
-				elif choice=='G':
-					for index, group in enumerate(user.groups):
-						print('%s  %s (%s)' % (index, group.name, len(group.bind_hosts)))
-					user_option = input("[(b)back, (q)quit, select host to login]:").strip()
-					if user_option == 'b':break
+					for index,bind_host in enumerate(user.bind_hosts):
+						print('%s  %s (%s)' % (index,bind_host.host,len(bind_host.host)))
+					user_option = input("[(q)quit, select host to login]:").strip()
 					if user_option == 'q':
-						exit_flag=True
+						exit_flag = True
 					if user_option.isdigit():
 						user_option = int(user_option)
+						host=user.bind_hosts[user_option]
+				elif choice=='G':
+					for index,group in enumerate(user.groups):
+						print('%s  %s (%s)' % (index, group.name, len(group.bind_hosts)))
+					user_option = input("[select group to login]:").strip()
+					if user_option.isdigit():
+						user_option = int(user_option)
+						for index, bind_host in enumerate(user.groups[user_option].bind_hosts):
+							print('%s  %s' %(index,bind_host))
+						user_option1 = input("[(q)quit, select host to login]:").strip()
+						if user_option1 == 'q':
+							exit_flag = True
+						if user_option1.isdigit():
+							user_option1 = int(user_option)
+							host = user.groups[user_option].bind_hosts[user_option1]
 
 				else:
 					continue
 
 				ssh_login.ssh_login(user,
-									user.groups[choice].bind_hosts[user_option],
+									host,
 									session,
 									log_recording)
 
