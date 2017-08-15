@@ -7,6 +7,8 @@ import getopt
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(BASE_DIR)
 
+print(sys.path)
+
 from modules import actions
 from modules.wisdom import wisdom
 

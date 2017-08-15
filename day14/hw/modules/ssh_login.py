@@ -8,6 +8,7 @@ import datetime
 
 
 def ssh_login(user_obj,bind_host_obj,mysql_engine,log_recording):
+    try:
         client = paramiko.SSHClient()
         client.load_system_host_keys()
         client.set_missing_host_key_policy(paramiko.WarningPolicy())

@@ -1,8 +1,8 @@
 
 bj_group:
-  #bind_hosts:
-  #  - h1
-  #  - h2
+  bind_hosts:
+    - server1
+    - server2
   user_profiles:
     - alex
 

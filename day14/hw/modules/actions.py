@@ -4,7 +4,7 @@ import os
 from modules import models
 from modules.db_conn import engine,session
 from modules.utils import print_err,yaml_parser
-from conf.settings import help_msg,wisdom_file
+from conf.settings import help_msg,wisdom_file,user_choice
 from modules import common
 from modules import ssh_login
 
@@ -20,6 +20,11 @@ def auth():
 			return user_obj
 		else:
 			print("Wrong username or password.")
+
+def log_recording(user_obj,bind_host_obj,logs):
+	session.add_all(logs)
+	session.commit()
+
 
 class feature:
 	@staticmethod
@@ -128,17 +133,25 @@ class feature:
 		user = auth()
 		if user:
 			print('Hello %s!' %(user.username))
-			#print(user.bind_hosts)
-			#print(user.groups)
 			exit_flag = False
 			while not exit_flag:
 				choice=input(user_choice)
 				if choice=='H':
 					print(user.bind_hosts)
+					ssh_login.ssh_login(user,
+										user.bind_hosts[user_option],
+										session,
+										log_recording)
 				elif choice=='G':
-					print(user.groups)
 					for index, group in enumerate(user.groups):
-						print('\033[32;1m%s.\t%s (%s)\033[0m' % (index, group.name, len(group.bind_hosts)))
+						print('%s  %s (%s)' % (index, group.name, len(group.bind_hosts)))
+					user_option = input("[(b)back, (q)quit, select host to login]:").strip()
+					if user_option == 'b':break
+					if user_option == 'q':
+						exit_flag=True
+					if user_option.isdigit():
+						user_option = int(user_option)
+
 				else:
 					continue
 

@@ -122,17 +122,11 @@ class AuditLog(Base):
         (0,'CMD'),
         (1,'Login'),
         (2,'Logout'),
-        (3,'GetFile'),
-        (4,'SendFile'),
-        (5,'Exception'),
     ]
     action_choices2 = [
         (u'cmd',u'CMD'),
         (u'login',u'Login'),
         (u'logout',u'Logout'),
-        #(3,'GetFile'),
-        #(4,'SendFile'),
-        #(5,'Exception'),
     ]
     action_type = Column(ChoiceType(action_choices2))
     #action_type = Column(String(64))
