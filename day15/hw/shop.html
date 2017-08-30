@@ -5,7 +5,7 @@
     <title>xxx商城</title>
     <meta name="Keywords",content="网上购物,网上商城">
     <style>
-    .cities {
+    .front {
         background-color:greenyellow;
         color:white;
         margin:20px;
@@ -16,9 +16,23 @@
     </style>
 </head>
 <body>
-    <div class="cities">
-        <h1>XX商城</h1>
-        <p>国内销售量领先的在线商城</p>
+    <div class="front">
+        <div style="float:left;">
+            <img src="logo.jpg" width="30" height="30">
+            <a href="www.xxoo.com" style="font-size: xx-large">XX商城</a>
+        </div>
+        <div style="float: right">
+            <form action="login.php">
+                <span>账号</span>
+                <input type="text" name="username">
+                <span>密码</span>
+                <input type="password" name="passwd">
+                <input type="submit" value="登录">
+                <a href="register.html">注册</a>
+        </div>
+        <div style="clear: both">
+            <p style="color: blue">国内<span style="color: red;">销售量领先</span>的在线商城</p>
+        </div>
     </div>
 </body>
 </html>
