@@ -5,21 +5,33 @@
     <title>xxx商城</title>
     <meta name="Keywords",content="网上购物,网上商城">
     <style>
-    .front {
-        background-color:greenyellow;
-        color:white;
-        margin:20px;
-        padding:20px;
-        font-style: oblique;
-        font-size: smaller;
-    }
+        a {
+            color: #0e84b5;
+            font-size: medium;
+        }
+        .front {
+            background-color:greenyellow;
+            color:white;
+            padding: 20px;
+            font-style: oblique;
+            font-size: smaller;
+        }
+
+        #nav {
+            line-height:30px;
+            background-color: #ddffdd;
+            height:600px;
+            width:200px;
+            float:left;
+            padding:5px;
+        }
     </style>
 </head>
 <body>
     <div class="front">
         <div style="float:left;">
             <img src="logo.jpg" width="30" height="30">
-            <a href="www.xxoo.com" style="font-size: xx-large">XX商城</a>
+            <a href="shop.html" style="font-size: xx-large">XX商城</a>
         </div>
         <div style="float: right">
             <form action="login.php">
@@ -33,6 +45,13 @@
         <div style="clear: both">
             <p style="color: blue">国内<span style="color: red;">销售量领先</span>的在线商城</p>
         </div>
+    </div>
+    <div id="nav">
+        <a href="electronic.html">电器</a>
+        <a href="food.html">食物</a>
+        <a href="car.html">汽车</a>
+        <a href="clothes.html">衣服</a>
+        <a href="shoes.html">鞋子</a>
     </div>
 </body>
 </html>
