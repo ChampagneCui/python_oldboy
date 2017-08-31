@@ -9,12 +9,16 @@
             color: #0e84b5;
             font-size: medium;
         }
-        .hearder {
+        .response-img {
+            max-width: 100%;
+        }
+        .header {
             background-color: #999999;
             color: white;
             height: 30px;
             padding: 3px;
             font-size: x-small;
+            clear: both;
         }
         .front {
             background-color:greenyellow;
@@ -26,15 +30,16 @@
         .list {
             background-color: ThreeDLightShadow;
             width: 78%;
-            height: 580px;
+            height: 670px;
             float: right;
             padding: 5px;
+            margin: 5px;
         }
 
         #nav {
             line-height:30px;
             background-color: #ddffdd;
-            height:300px;
+            height:350px;
             width:20%;
             float:left;
             padding:5px;
@@ -47,13 +52,14 @@
             margin: 5px;
             padding: 5px;
         }
-        #blanck {
+        #recommand {
             line-height:30px;
             background-color: #c7eefe;
-            height:300px;
+            height:350px;
             width:20%;
             float:left;
             padding:5px;
+            margin-top: 5px;
         }
         #footer {
             background-color: #999999;
@@ -61,11 +67,19 @@
             clear:both;
             text-align:center;
             padding:5px;
+            font-size: xx-small;
+        }
+        #goods {
+            border: 2px #1f1d1d solid;
+            float: left;
+            width: 10%;
+            height: 25%;
+            margin: 3px;
         }
     </style>
 </head>
 <body>
-    <div class="hearder">
+    <div class="header">
         <div style="float: left">
             <span>收藏本站</span>
         </div>
@@ -81,7 +95,7 @@
     </div>
     <div class="front">
         <div style="float:left;">
-            <img src="logo.jpg" width="30" height="30">
+            <img src="img/logo.jpg" width="30" height="30">
             <a href="shop.html" style="font-size: xx-large">XX商城</a>
         </div>
         <div style="clear: both">
@@ -110,14 +124,51 @@
             <option value="0">销量</option>
             <option value="1">价格</option>
             </select>
-            <input type="submit" value="排序">
+            <input type="submit" value="排序" />
         </form>
     </div>
     <div class="list">
-        <span></span>
+        <div id="goods">
+           <img src="img/3.jpg" class="response-img">
+            <form action="">
+                <input type="number" min="0" max="10" step="1" value="1" />
+                <input type="submit" value="排序" />
+            </form>
+        </div>
+        <div id="goods">
+           <img src="img/3.jpg" class="response-img">
+            <form action="">
+                <input type="number" min="0" max="10" step="1" value="1" />
+                <input type="submit" value="排序" />
+            </form>
+        </div>
+        <div id="goods">
+            <img src="img/3.jpg" class="response-img">
+            <form action="">
+                <input type="number" min="0" max="10" step="1" value="1" />
+                <input type="submit" value="排序" />
+            </form>
+        </div>
+        <div id="goods">
+            <img src="img/3.jpg" class="response-img">
+            <form action="">
+                <input type="number" min="0" max="10" step="1" value="1" />
+                <input type="submit" value="排序" />
+            </form>
+        </div>
+        <div id="goods">
+           <img src="img/3.jpg" class="response-img">
+            <form action="">
+                <input type="number" min="0" max="10" step="1" value="1" />
+                <input type="button" value="数量" />
+            </form>
+        </div>
     </div>
-    <div id="blanck">
+    <div id="recommand">
         <span>推荐商品</span>
+        <a href="img/3.jpg" class="response-img">
+            <img src="img/3.jpg" class="response-img" />
+        </a>
     </div>
     <div id="footer">
         <span>Copyright ChampagneCui</span>
