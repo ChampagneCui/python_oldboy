@@ -9,19 +9,19 @@
             color: #0e84b5;
             font-size: medium;
         }
+        .hearder {
+            background-color: #999999;
+            color: white;
+            height: 30px;
+            padding: 3px;
+            font-size: x-small;
+        }
         .front {
             background-color:greenyellow;
             color:white;
             padding: 20px;
             font-style: oblique;
             font-size: smaller;
-        }
-        .banna {
-            background-color: transparent;
-            width: 78%;
-            height: 20px;
-            float: right;
-            padding: 5px;
         }
         .list {
             background-color: ThreeDLightShadow;
@@ -34,7 +34,23 @@
         #nav {
             line-height:30px;
             background-color: #ddffdd;
-            height:600px;
+            height:300px;
+            width:20%;
+            float:left;
+            padding:5px;
+        }
+        #banna {
+            background-color: transparent;
+            width: 78%;
+            height: 20px;
+            float: left;
+            margin: 5px;
+            padding: 5px;
+        }
+        #blanck {
+            line-height:30px;
+            background-color: #c7eefe;
+            height:300px;
             width:20%;
             float:left;
             padding:5px;
@@ -49,45 +65,62 @@
     </style>
 </head>
 <body>
+    <div class="hearder">
+        <div style="float: left">
+            <span>收藏本站</span>
+        </div>
+        <div style="float: right;">
+            <form action="login.php">
+            <span>账号</span>
+            <input type="text" name="username">
+            <span>密码</span>
+            <input type="password" name="passwd">
+            <input type="submit" value="登录">
+            <a href="register.html">注册</a>
+        </div>
+    </div>
     <div class="front">
         <div style="float:left;">
             <img src="logo.jpg" width="30" height="30">
             <a href="shop.html" style="font-size: xx-large">XX商城</a>
-        </div>
-        <div style="float: right">
-            <form action="login.php">
-                <span>账号</span>
-                <input type="text" name="username">
-                <span>密码</span>
-                <input type="password" name="passwd">
-                <input type="submit" value="登录">
-                <a href="register.html">注册</a>
         </div>
         <div style="clear: both">
             <p style="color: blue">国内<span style="color: red;">销售量领先</span>的在线商城</p>
         </div>
     </div>
     <div id="nav">
+        <span>商品分类</span>
+        <br />
         <a href="electronic.html">电器</a>
-        <br>
+        <br />
         <a href="food.html">食物</a>
-        <br>
+        <br />
         <a href="car.html">汽车</a>
-        <br>
+        <br />
         <a href="clothes.html">衣服</a>
-        <br>
+        <br />
         <a href="shoes.html">鞋子</a>
-        <br>
+        <br />
         <a href="book.html">书籍</a>
     </div>
-    <div class="banna">
-        <p></p>
+    <div id="banna">
+        <form action="" method="get">
+            <label>排序方式</label>
+            <select name="">
+            <option value="0">销量</option>
+            <option value="1">价格</option>
+            </select>
+            <input type="submit" value="排序">
+        </form>
     </div>
     <div class="list">
-        <p></p>
+        <span></span>
+    </div>
+    <div id="blanck">
+        <span>推荐商品</span>
     </div>
     <div id="footer">
-        Copyright ChampagneCui
+        <span>Copyright ChampagneCui</span>
     </div>
 </body>
 </html>
