@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>xxx商城</title>
+    <meta name="Keywords",content="网上购物,网上商城">
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+    <div id="i1" class="c1 hide"></div>
+    <div id="i2" class="c2 hide">登陆
+        <div class="b1">
+            <form action="login.php">
+                <p>
+                    <label for="login-u">账号</label>
+                    <input id="login-u" type="text" name="username">
+                </p>
+                <p>
+                    <label for="login-p">密码</label>
+                    <input id="login-p" type="password" name="passwd">
+                </p>
+                <input type="submit" value="登录">
+                <input type="button" value="取消" onclick="rm_login()">
+            </form>
+        </div>
+    </div>
+    <div id="i3" class="c3 hide">注册
+        <div class="b1">
+                <form action="register.php">
+                    <p>
+                        <label for="register-u">账号</label>
+                        <input id="register-u" type="text" name="username">
+                    </p>
+                    <p>
+                        <label for="register-p">输入密码</label>
+                        <input id="register-p" type="password" name="passwd"></p>
+                    <p>
+                        <label for="register-p2">再次输入密码</label>
+                        <input id="register-p2" type="password" name="repasswd">
+                    </p>
+                    <p>
+                        <label for="register-n">姓名</label>
+                        <input id=register-n type="text" name="name">
+                    </p>
+                    <p>
+                        <label>性别</label>
+                        <span>
+                            <input name="sex" id="man" type="radio" value="1" />
+                            <label for="man">男</label>
+                            <input name="sex" id="woman" type="radio" value="2" />
+                            <label for="woman">女</label>
+                        </span>
+                    </p>
+                    <p>
+                        <label for="register-e">邮箱</label>
+                        <input id=register-e type="email" name="email">
+                    </p>
+                    <input type="submit" value="登录">
+                    <input type="button" value="取消" onclick="rm_regiter()">
+                </form>
+        </div>
+    </div>
+    <div id="topAnchor"></div>
+    <div class="header">
+        <div style="float: left">
+            <span>收藏本站</span>
+        </div>
+        <div style="float: right;">
+            <input type="button" value="登录" onclick="login()">
+            <input type="button" value="注册" onclick="register()">
+        </div>
+    </div>
+    <div class="front">
+        <div style="float:left;">
+            <img src="img/logo.jpg" width="30" height="30">
+            <a href="shop.html" style="font-size: xx-large">XX商城</a>
+        </div>
+        <div style="clear: both">
+            <p style="color: blue">国内<span style="color: red;">销售量领先</span>的在线商城</p>
+        </div>
+    </div>
+    <div id="nav">
+        <span>商品分类</span>
+        <br />
+        <a href="electronic.html">电器</a>
+        <br />
+        <a href="food.html">食物</a>
+        <br />
+        <a href="car.html">汽车</a>
+        <br />
+        <a href="clothes.html">衣服</a>
+        <br />
+        <a href="shoes.html">鞋子</a>
+        <br />
+        <a href="book.html">书籍</a>
+    </div>
+    <div id="banna">
+        <form action="" method="get">
+            <label>排序方式</label>
+            <select name="">
+            <option value="0">销量</option>
+            <option value="1">价格</option>
+            </select>
+            <input type="submit" value="排序" />
+        </form>
+    </div>
+    <div class="list">
+        <div id="goods">
+           <img src="img/3.jpg" class="response-img">
+            <form action="">
+                <input type="number" min="0" max="10" step="1" value="1" />
+                <input type="submit" value="排序" />
+            </form>
+        </div>
+        <div id="goods">
+           <img src="img/3.jpg" class="response-img">
+            <form action="">
+                <input type="number" min="0" max="10" step="1" value="1" />
+                <input type="submit" value="排序" />
+            </form>
+        </div>
+        <div id="goods">
+            <img src="img/3.jpg" class="response-img">
+            <form action="">
+                <input type="number" min="0" max="10" step="1" value="1" />
+                <input type="submit" value="排序" />
+            </form>
+        </div>
+        <div id="goods">
+            <img src="img/3.jpg" class="response-img">
+            <form action="">
+                <input type="number" min="0" max="10" step="1" value="1" />
+                <input type="submit" value="排序" />
+            </form>
+        </div>
+        <div id="goods">
+           <img src="img/3.jpg" class="response-img">
+            <form action="">
+                <input type="number" min="0" max="10" step="1" value="1" />
+                <input type="button" value="数量" />
+            </form>
+        </div>
+    </div>
+    <div id="recommand">
+        <span>推荐商品</span>
+        <a href="img/3.jpg" class="response-img">
+            <img src="img/3.jpg" class="response-img" />
+        </a>
+    </div>
+    <a href="#topAnchor" style="position:fixed;right:0;bottom:0;background-color: #c7eefe">回到顶部</a>
+    <div id="footer">
+        <span>Copyright ChampagneCui</span>
+    </div>
+    <script type="text/javascript" src="common.js"></script>
+</body>
+</html>
+
