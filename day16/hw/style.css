@@ -119,3 +119,12 @@ a {
 .b1 p {
     font-size: small;
 }
+.timg {
+    position: relative;
+    background-color: #ddffdd;
+    padding: 5px;
+    color: black;
+}
+.timg:hover {
+    background-color: darkgray;
+}
