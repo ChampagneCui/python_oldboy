@@ -73,21 +73,33 @@
                     <span style="display: block; color: #FFFFFF; height: 15px; line-height: 15px; text-align: center"> 5</span>
                 </span>
                 <div style="position: absolute;background-color: #ddffdd;color: black;width: 160px;" class="d hide">
-                <input type="button" value="全选">
-                <input type="button" value="反选">
-                <input type="button" value="取消">
+                <input type="button" value="全选" onclick="checkedall()">
+                <input type="button" value="反选" onclick="reverseall()">
+                <input type="button" value="取消" onclick="cancelall()">
                 <form action="#">
-                    <div>
-                        <input type="checkbox">
-                        <a style="text-align: center">三鹿奶粉</a>
-                        <input type="number" step="1" value="1" min="0" max="10">
+                    <div id="car">
+                        <div>
+                            <input type="checkbox">
+                            <a style="text-align: center">三鹿奶粉</a>
+                            <input type="number" step="1" value="1" min="0" max="10">
+                        </div>
+                        <div>
+                            <input type="checkbox">
+                            <a style="text-align: center">苏丹红1号</a>
+                            <input type="number" step="1" value="1" min="0" max="10">
+                        </div>
+                        <div>
+                            <input type="checkbox">
+                            <a style="text-align: center">三聚氰胺</a>
+                            <input type="number" step="1" value="1" min="0" max="10">
+                        </div>
+                        <div>
+                            <input type="checkbox">
+                            <a style="text-align: center">黑心棉花</a>
+                            <input type="number" step="1" value="1" min="0" max="10">
+                        </div>
                     </div>
-                    <div>
-                        <input type="checkbox">
-                        <a style="text-align: center">糖果</a>
-                        <input type="number" step="1" value="1" min="0" max="10">
-                    </div>
-                    <input type="submit" value="结算">
+                        <input type="submit" value="结算">
                 </form>
             </div>
             </span>
