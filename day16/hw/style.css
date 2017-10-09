@@ -128,3 +128,6 @@ a {
 .timg:hover {
     background-color: darkgray;
 }
+.timg:hover .d {
+    display: block;
+}
