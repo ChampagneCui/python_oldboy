@@ -131,3 +131,11 @@ a {
 .timg:hover .d {
     display: block;
 }
+
+.car {
+    position: absolute;
+    background-color: #ddffdd;
+    color: black;
+    width: 160px;
+}
+
