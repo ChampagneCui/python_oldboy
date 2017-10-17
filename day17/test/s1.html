@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="c1">
+        <input type="button" value="全选" onclick="chooseAll()">
+        <input type="button" value="反选" onclick="reverseAll()">
+        <input type="button" value="取消" onclick="cancelAll()">
+    </div>
+    <table border="1">
+        <tr>
+            <th>Checkbox</th>
+            <th>Hostname</th>
+            <th>IP</th>
+        </tr>
+        <tr>
+            <td><input type="checkbox" class="box"></td>
+            <td>HostA</td>
+            <td>1.1.1.1</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox" class="box"></td>
+            <td>HostB</td>
+            <td>2.2.2.2</td>
+        </tr>
+    </table>
+    <script src="jquery-1.11.1.min.js"></script>
+    <script>
+        function chooseAll() {
+            $(".box").prop("checked",true);
+        }
+        function reverseAll() {
+            var v=$(".box").prop("checked")?false:true;
+            $(".box").prop("checked",v);
+        }
+        function cancelAll() {
+            $(".box").prop("checked",false);
+        }
+    </script>
+</body>
+</html>
