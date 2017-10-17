@@ -5,6 +5,52 @@
     <title>Title</title>
 </head>
 <body>
+    <form action="#">
+        <div class="d1">
+            <input type="button" class="i1">
+            <input type="button" class="i2">
+            <input type="button" class="i3">
+            <input type="button" class="add1">
+        </div>
+        <table border="1" class="t1">
+            <tr>
+                <th>Checkbox</th>
+                <th>Hostname</th>
+                <th>ip</th>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class="box"></td>
+                <td>HostA</td>
+                <td>1.1.1.1</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class="box"></td>
+                <td>HostB</td>
+                <td>2.2.2.2</td>
+            </tr>
+        </table>
+    </form>
+    <script src="jquery-1.11.1.min.js"></script>
+    <script>
+        $(".i1").attr("value","全选").click(chooseAll);
+        $(".i2").attr("value","反选").click(reverseAll);
+        $(".i3").attr("value","取消").click(cancelAll);
+        $(".add1").attr("value","复制").click(cloneItem);
 
+
+        function chooseAll() {
+            $(".box").prop("checked",true);
+        }
+        function reverseAll() {
+            var v=$(".box").prop("checked")?false:true;
+            $(".box").prop("checked",v);
+        }
+        function cancelAll() {
+            $(".box").prop("checked",false);
+        }
+        function cloneItem() {
+            $(".t1").append($('.t1 :checked').parent().parent().clone());
+        }
+    </script>
 </body>
 </html>

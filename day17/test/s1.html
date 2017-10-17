@@ -5,28 +5,30 @@
     <title>Title</title>
 </head>
 <body>
-    <div class="c1">
-        <input type="button" value="全选" onclick="chooseAll()">
-        <input type="button" value="反选" onclick="reverseAll()">
-        <input type="button" value="取消" onclick="cancelAll()">
-    </div>
-    <table border="1">
-        <tr>
-            <th>Checkbox</th>
-            <th>Hostname</th>
-            <th>IP</th>
-        </tr>
-        <tr>
-            <td><input type="checkbox" class="box"></td>
-            <td>HostA</td>
-            <td>1.1.1.1</td>
-        </tr>
-        <tr>
-            <td><input type="checkbox" class="box"></td>
-            <td>HostB</td>
-            <td>2.2.2.2</td>
-        </tr>
-    </table>
+    <form action="#">
+        <div class="c1">
+            <input type="button" value="全选" onclick="chooseAll()">
+            <input type="button" value="反选" onclick="reverseAll()">
+            <input type="button" value="取消" onclick="cancelAll()">
+        </div>
+        <table border=1>
+            <tr>
+                <th>Checkbox</th>
+                <th>Hostname</th>
+                <th>IP</th>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class="box"></td>
+                <td>HostA</td>
+                <td>1.1.1.1</td>
+            </tr>
+            <tr>
+                <td><input type="checkbox" class="box"></td>
+                <td>HostB</td>
+                <td>2.2.2.2</td>
+            </tr>
+        </table>
+    </form>
     <script src="jquery-1.11.1.min.js"></script>
     <script>
         function chooseAll() {
