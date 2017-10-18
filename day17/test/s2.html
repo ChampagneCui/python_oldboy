@@ -3,39 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .zhezhao {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right:0;
+            bottom: 0;
+            background-color: black;
+            opacity: 0.5;
+            z-index: 10;
+        }
+        .hide {
+            display: none;
+        }
+        .total1 {
+            z-index: 5;
+        }
+        .duihuakuang {
+            background-color: white;
+            z-index: 15;
+            position: fixed;
+            width: 400px;
+            height: 300px;
+            top: 50%;
+            left: 50%;
+            margin-top: -150px;
+            margin-left: -200px;
+
+        }
+        .mid {
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <form action="#">
-        <div class="d1">
-            <input type="button" class="i1">
-            <input type="button" class="i2">
-            <input type="button" class="i3">
-            <input type="button" class="add1">
-        </div>
-        <table border="1" class="t1">
-            <tr>
-                <th>Checkbox</th>
-                <th>Hostname</th>
-                <th>ip</th>
-            </tr>
-            <tr>
-                <td><input type="checkbox" class="box"></td>
-                <td>HostA</td>
-                <td>1.1.1.1</td>
-            </tr>
-            <tr>
-                <td><input type="checkbox" class="box"></td>
-                <td>HostB</td>
-                <td>2.2.2.2</td>
-            </tr>
-        </table>
-    </form>
+    <div class="total1">
+        <form action="#">
+            <div class="d1">
+                <input type="button" class="i1">
+                <input type="button" class="i2">
+                <input type="button" class="i3">
+                <input type="button" class="clone1">
+                <input type="button" class="add1">
+            </div>
+            <table border="1" class="t1">
+                <tr>
+                    <th>Checkbox</th>
+                    <th>Hostname</th>
+                    <th>ip</th>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="box"></td>
+                    <td>HostA</td>
+                    <td>1.1.1.1</td>
+                </tr>
+                <tr>
+                    <td><input type="checkbox" class="box"></td>
+                    <td>HostB</td>
+                    <td>2.2.2.2</td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div class="zhezhao hide"></div>
+    <div class="duihuakuang hide">
+        <form action="#">
+            <p>hostname<input type="text"></p>
+            <p>ip<input type="text"></p>
+            <p>
+                <input type="button">
+                <input type="button">
+            </p>
+        </form>
+    </div>
     <script src="jquery-1.11.1.min.js"></script>
     <script>
         $(".i1").attr("value","全选").click(chooseAll);
         $(".i2").attr("value","反选").click(reverseAll);
         $(".i3").attr("value","取消").click(cancelAll);
-        $(".add1").attr("value","复制").click(cloneItem);
+        $(".clone1").attr("value","复制").click(cloneItem);
+        $(".add1").attr("value","添加").click(addItem);
+        $(".duihuakuang p").addClass("mid");
+        $(".duihuakuang input:first").attr("name","hostname").parent().next().children().attr("name","ip").parent().next().children(":first-child").attr("value","添加").click(answer).next().attr("value","取消").click(cancel);
 
 
         function chooseAll() {
@@ -50,6 +100,19 @@
         }
         function cloneItem() {
             $(".t1").append($('.t1 :checked').parent().parent().clone());
+        }
+        function addItem() {
+            $(".duihuakuang,.zhezhao").removeClass("hide");
+        }
+        function cancel() {
+            $(".duihuakuang,.zhezhao").addClass("hide");
+        }
+        function answer() {
+            var hostname=$('.duihuakuang input[name="hostname"]').val();
+            var ip=$('.duihuakuang input[name="ip"]').val();
+            $(".t1").append($(".t1 tr:last").clone());
+            $(".t1 tr:last td:first").next().text(hostname).next().text(ip);
+            cancel()
         }
     </script>
 </body>
