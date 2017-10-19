@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .d1 {
+            position: fixed;
+            margin-top: 200px;
+            border: solid thin black;
+            width: 100%;
+            height: 50px;
+        }
+        .zan {
+            margin-top: 27px;
+            margin-left: 5px;
+            position: relative;
+        }
+        .plus {
+            position: absolute;
+            opacity: 1;
+        }
+        .red {
+            color: red;
+        }
+        .hide {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="d1">
+        <div class="zan">赞</div>
+        <div class="plus hide">+1</div>
+    </div>
+    <script src="jquery-1.11.1.min.js"></script>
+    <script>
+        $('.zan').click(active);
+        function active() {
+            $(this).toggleClass("red");
+            plus()
+        }
+        function plus() {
+            if($(".zan").hasClass("red")) {
+                piao()
+            }
+            function piao() {
+                var mleft=25;
+                var mtop=-33;
+                var opa=1;
+                var interval= setInterval(function(){
+                    $(".plus").removeClass("hide").css("margin-left",mleft+"px").css("margin-top",mtop+"px").css("opacity",opa);
+                    mleft=mleft+10;
+                    mtop=mtop-10;
+                    opa=opa-0.25;
+                    if(opa<=0) {
+                        $(".plus").addClass("hide");
+                        clearInterval(interval);
+                    }
+                },100)
+            }
+        }
+    </script>
+</body>
+</html>
