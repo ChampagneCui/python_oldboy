@@ -126,17 +126,23 @@
         }
         function editting() {
             if($(".edit").hasClass("editting")) {
-                content()
+                interval=setInterval(content,10);
             }else {
-                rev_content()
+                clearInterval(interval);
+                rev_content();
             }
             function content() {
-                $(".t1 :checked").each(function () {
+                $(".box:checked").each(function () {
                     $(this).parent().parent().attr("contentEditable", "true");
-                })
+                });
+                $(".box").not(":checked").each(function () {
+                    $(this).parent().parent().attr("contentEditable", "false");
+                });
             }
             function rev_content() {
-                $(".t1 tr").attr("contentEditable","false")
+                $(".t1 tr").each(function() {
+                    $(this).attr("contentEditable","false");
+                })
             }
         }
     </script>
