@@ -35,6 +35,9 @@
         .mid {
             text-align: center;
         }
+        .editting {
+            background-color: #2cc36b;
+        }
     </style>
 </head>
 <body>
@@ -118,9 +121,23 @@
             cancel()
         }
         function editItem() {
-            $(".t1 :checked").each(function () {
-                    $(this).parent().parent().attr("contentEditable","true");
-            })
+            $(".edit").toggleClass("editting")
+            editting()
+        }
+        function editting() {
+            if($(".edit").hasClass("editting")) {
+                content()
+            }else {
+                rev_content()
+            }
+            function content() {
+                $(".t1 :checked").each(function () {
+                    $(this).parent().parent().attr("contentEditable", "true");
+                })
+            }
+            function rev_content() {
+                $(".t1 tr").attr("contentEditable","false")
+            }
         }
     </script>
 </body>
